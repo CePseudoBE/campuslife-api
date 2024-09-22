@@ -71,4 +71,7 @@ export default defineConfig({
     ],
     forceExit: false,
   },
+  directories: {
+    models: 'src/infrastructure/orm/models',
+  },
 })
