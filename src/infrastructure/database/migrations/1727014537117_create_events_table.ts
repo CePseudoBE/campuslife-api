@@ -1,0 +1,33 @@
+import { BaseSchema } from '@adonisjs/lucid/schema'
+
+export default class extends BaseSchema {
+  protected tableName = 'events'
+
+  async up() {
+    this.schema.createTable(this.tableName, (table) => {
+      table.increments('id')
+      table.json('title_json').notNullable()
+      table.json('description_json').notNullable()
+      table.json('image').notNullable()
+      table.datetime('start').notNullable()
+      table.datetime('end').notNullable()
+      table.string('url').notNullable()
+      table.string('slug_title').nullable()
+      table.integer('id_waypoint').unsigned().references('waypoints.id').onDelete('CASCADE')
+      table.string('id_user').references('users.id').onDelete('CASCADE')
+      table
+        .integer('id_address')
+        .unsigned()
+        .references('addresses.id')
+        .onDelete('CASCADE')
+        .notNullable()
+
+      table.timestamp('created_at')
+      table.timestamp('updated_at')
+    })
+  }
+
+  async down() {
+    this.schema.dropTable(this.tableName)
+  }
+}

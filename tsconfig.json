@@ -1,0 +1,17 @@
+{
+  "extends": "@adonisjs/tsconfig/tsconfig.app.json",
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "./build",
+    "paths": {
+      "#domain/*": ["./src/domain/*.js"],
+      "#infrastructure/*": ["./src/infrastructure/*.js"],
+      "#adapters/*": ["./src/adapters/*.js"],
+      "#controllers/*": ["./src/adapters/controllers/*.js"],
+      "#exceptions/*": ["./src/infrastructure/exceptions/*.js"],
+      "#middleware/*": ["./src/infrastructure/middleware/*.js"],
+      "#tests/*": ["./tests/*.js"],
+      "#config/*": ["./config/*.js"]
+    }
+  }
+}
