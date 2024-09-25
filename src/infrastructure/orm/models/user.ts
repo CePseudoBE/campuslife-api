@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
+import Event from '#infrastructure/orm/models/event'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -17,6 +19,9 @@ export default class User extends BaseModel {
 
   @column()
   declare role: string
+
+  @hasMany(() => Event)
+  declare event: HasMany<typeof Event>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
