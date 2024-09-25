@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.json('title_json').notNullable()
       table.json('description_json').notNullable()
-      table.json('image').notNullable()
+      table.string('image', 255).notNullable()
       table.datetime('start').notNullable()
       table.datetime('end').notNullable()
       table.string('url').notNullable()

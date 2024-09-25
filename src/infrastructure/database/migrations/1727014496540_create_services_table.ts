@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.json('title_json').notNullable()
       table.json('description_json').notNullable()
       table.string('url').notNullable()
-      table.json('icon').nullable()
+      table.string('icon').nullable()
       table.boolean('is_active').notNullable()
 
       table.timestamp('created_at')
