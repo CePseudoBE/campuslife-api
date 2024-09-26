@@ -1,10 +1,10 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
-import Event from '#infrastructure/orm/models/event'
+import EventModel from '#infrastructure/orm/models/event_model'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 
-export default class User extends BaseModel {
+export default class UserModel extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
@@ -20,8 +20,8 @@ export default class User extends BaseModel {
   @column()
   declare role: string
 
-  @hasMany(() => Event)
-  declare event: HasMany<typeof Event>
+  @hasMany(() => EventModel)
+  declare event: HasMany<typeof EventModel>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -29,5 +29,5 @@ export default class User extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 
-  static accessTokens = DbAccessTokensProvider.forModel(User)
+  static accessTokens = DbAccessTokensProvider.forModel(UserModel)
 }

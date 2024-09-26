@@ -1,30 +1,30 @@
-// src/domain/entities/Waypoint.ts
+import { DateTime } from 'luxon'
 
 export class Waypoint {
   public id: number
   public latitude: number
   public longitude: number
-  public title: Record<string, string> // Représentation du JSON pour le titre
-  public description?: Record<string, string> // Représentation du JSON pour la description (nullable)
+  public title: JSON
+  public description?: JSON | undefined
   public types: string
   public pmr: boolean
   public slug?: string
-  public tags?: string[] // Liste des tags (ou autres objets si nécessaire)
-  public events?: string[] // Liste des événements associés (ou autres objets si nécessaire)
-  public createdAt: Date
-  public updatedAt: Date
+  public tags?: string[]
+  public events?: string[]
+  public createdAt: DateTime
+  public updatedAt: DateTime
 
   constructor(
     id: number,
     latitude: number,
     longitude: number,
-    title: Record<string, string>,
+    title: JSON,
     types: string,
     pmr: boolean,
-    createdAt: Date,
-    updatedAt: Date,
-    description?: Record<string, string>,
-    slug?: string,
+    createdAt: DateTime,
+    updatedAt: DateTime,
+    description?: JSON | undefined,
+    slug?: string | undefined,
     tags?: string[],
     events?: string[]
   ) {

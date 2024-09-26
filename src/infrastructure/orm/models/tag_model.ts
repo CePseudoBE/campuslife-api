@@ -1,10 +1,10 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, manyToMany } from '@adonisjs/lucid/orm'
-import Waypoint from '#infrastructure/orm/models/waypoint'
+import WaypointModel from '#infrastructure/orm/models/waypoint_model'
 import type { ManyToMany } from '@adonisjs/lucid/types/relations'
-import Event from '#infrastructure/orm/models/event'
+import EventModel from '#infrastructure/orm/models/event_model'
 
-export default class Tag extends BaseModel {
+export default class TagModel extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
@@ -14,11 +14,11 @@ export default class Tag extends BaseModel {
   @column()
   declare slugTitle: string
 
-  @manyToMany(() => Waypoint)
-  declare waypoints: ManyToMany<typeof Waypoint>
+  @manyToMany(() => WaypointModel)
+  declare waypoints: ManyToMany<typeof WaypointModel>
 
-  @manyToMany(() => Event)
-  declare events: ManyToMany<typeof Event>
+  @manyToMany(() => EventModel)
+  declare events: ManyToMany<typeof EventModel>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

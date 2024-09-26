@@ -1,12 +1,12 @@
 import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, column, manyToMany } from '@adonisjs/lucid/orm'
-import Tag from '#infrastructure/orm/models/tag'
 import type { BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
-import User from '#infrastructure/orm/models/user'
-import Address from '#infrastructure/orm/models/address'
-import Waypoint from '#infrastructure/orm/models/waypoint'
+import Address_model from '#infrastructure/orm/models/address_model'
+import WaypointModel from '#infrastructure/orm/models/waypoint_model'
+import UserModel from '#infrastructure/orm/models/user_model'
+import TagModel from '#infrastructure/orm/models/tag_model'
 
-export default class Event extends BaseModel {
+export default class EventModel extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
@@ -40,17 +40,17 @@ export default class Event extends BaseModel {
   @column()
   declare idAddress: number
 
-  @manyToMany(() => Tag)
-  declare tags: ManyToMany<typeof Tag>
+  @manyToMany(() => TagModel)
+  declare tags: ManyToMany<typeof TagModel>
 
-  @belongsTo(() => User)
-  declare user: BelongsTo<typeof User>
+  @belongsTo(() => UserModel)
+  declare user: BelongsTo<typeof UserModel>
 
-  @belongsTo(() => Address)
-  declare address: BelongsTo<typeof Address>
+  @belongsTo(() => Address_model)
+  declare address: BelongsTo<typeof Address_model>
 
-  @belongsTo(() => Waypoint)
-  declare waypoint: BelongsTo<typeof Waypoint>
+  @belongsTo(() => WaypointModel)
+  declare waypoint: BelongsTo<typeof WaypointModel>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

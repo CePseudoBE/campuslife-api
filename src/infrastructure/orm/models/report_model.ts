@@ -1,24 +1,21 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
-export default class Log extends BaseModel {
+export default class ReportModel extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
   @column()
-  declare idSession: string
+  declare sessionId: string
 
   @column()
-  declare idUser: string
+  declare deviceId: string
 
   @column()
-  declare actionState: string
+  declare message: string
 
   @column()
-  declare actionType: string
-
-  @column()
-  declare actionInfo: string
+  declare contact: string | undefined
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

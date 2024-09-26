@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
-import Address from '#infrastructure/orm/models/address'
+import AddressModel from '#infrastructure/orm/models/address_model'
 
-export default class Country extends BaseModel {
+export default class CountryModel extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
@@ -13,8 +13,8 @@ export default class Country extends BaseModel {
   @column()
   declare iso: string
 
-  @hasMany(() => Address)
-  declare addresses: HasMany<typeof Address>
+  @hasMany(() => AddressModel)
+  declare addresses: HasMany<typeof AddressModel>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
