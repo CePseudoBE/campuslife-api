@@ -4,6 +4,8 @@ import type { HasMany } from '@adonisjs/lucid/types/relations'
 import AddressModel from '#infrastructure/orm/models/address_model'
 
 export default class CountryModel extends BaseModel {
+  public static table = 'countries'
+
   @column({ isPrimary: true })
   declare id: number
 

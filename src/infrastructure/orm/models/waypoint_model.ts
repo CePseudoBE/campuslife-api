@@ -5,6 +5,8 @@ import EventModel from '#infrastructure/orm/models/event_model'
 import TagModel from '#infrastructure/orm/models/tag_model'
 
 export default class WaypointModel extends BaseModel {
+  public static table = 'waypoints'
+
   @column({ isPrimary: true })
   declare id: number
 

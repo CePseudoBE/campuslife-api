@@ -5,6 +5,8 @@ import EventModel from '#infrastructure/orm/models/event_model'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 
 export default class UserModel extends BaseModel {
+  public static table = 'users'
+
   @column({ isPrimary: true })
   declare id: number
 

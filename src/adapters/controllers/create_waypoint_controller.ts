@@ -33,10 +33,7 @@ export default class CreateWaypointController {
 
       return response.created(waypoint)
     } catch (error) {
-      return response.badRequest({
-        message: "The data that has been send couldn't be treated",
-        details: error.messages,
-      })
+      return response.badRequest(error.message)
     }
   }
 }

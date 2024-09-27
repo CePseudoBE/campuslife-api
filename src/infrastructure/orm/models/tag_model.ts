@@ -5,6 +5,8 @@ import type { ManyToMany } from '@adonisjs/lucid/types/relations'
 import EventModel from '#infrastructure/orm/models/event_model'
 
 export default class TagModel extends BaseModel {
+  public static table = 'tags'
+
   @column({ isPrimary: true })
   declare id: number
 

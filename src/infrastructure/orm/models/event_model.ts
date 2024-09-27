@@ -7,6 +7,8 @@ import UserModel from '#infrastructure/orm/models/user_model'
 import TagModel from '#infrastructure/orm/models/tag_model'
 
 export default class EventModel extends BaseModel {
+  public static table = 'events'
+
   @column({ isPrimary: true })
   declare id: number
 
