@@ -29,7 +29,7 @@ export default class AddressModel extends BaseModel {
   declare idCountry: number
 
   @hasMany(() => EventModel)
-  declare event: HasMany<typeof EventModel>
+  declare events: HasMany<typeof EventModel>
 
   @belongsTo(() => CountryModel)
   declare country: BelongsTo<typeof CountryModel>
