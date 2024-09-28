@@ -1,20 +1,23 @@
+import { Waypoint } from '#domain/entities/waypoint'
+import { Event } from '#domain/entities/event'
+
 export class Tag {
   public id: number
-  public title: Record<string, string>
+  public title: JSON
   public slugTitle: string
-  public waypoints?: string[]
-  public events?: string[]
+  public waypoints?: Waypoint[]
+  public events?: Event[]
   public createdAt: Date
   public updatedAt: Date
 
   constructor(
     id: number,
-    title: Record<string, string>,
+    title: JSON,
     slugTitle: string,
     createdAt: Date,
     updatedAt: Date,
-    waypoints?: string[],
-    events?: string[]
+    waypoints?: Waypoint[],
+    events?: Event[]
   ) {
     this.id = id
     this.title = title

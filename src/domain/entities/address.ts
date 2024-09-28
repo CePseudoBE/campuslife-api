@@ -1,3 +1,6 @@
+import { Country } from '#domain/entities/country'
+import { Event } from '#domain/entities/event'
+
 export class Address {
   public id: number
   public street: string
@@ -6,8 +9,8 @@ export class Address {
   public zip: string
   public city: string
   public idCountry: number
-  public events?: string[]
-  public country?: string
+  public events?: Event[]
+  public country?: Country
   public createdAt: Date
   public updatedAt: Date
 
@@ -21,8 +24,8 @@ export class Address {
     createdAt: Date,
     updatedAt: Date,
     complement?: string,
-    events?: string[],
-    country?: string
+    events?: Event[],
+    country?: Country
   ) {
     this.id = id
     this.street = street

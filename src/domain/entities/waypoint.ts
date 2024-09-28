@@ -1,3 +1,6 @@
+import { Tag } from '#domain/entities/tag'
+import { Event } from '#domain/entities/event'
+
 export class Waypoint {
   public id: number | null
   public latitude: number
@@ -7,8 +10,8 @@ export class Waypoint {
   public types: string
   public pmr: boolean
   public slug?: string
-  public tags?: string[]
-  public events?: string[]
+  public tags?: Tag[]
+  public events?: Event[]
   public createdAt: Date
   public updatedAt: Date
 
@@ -23,8 +26,8 @@ export class Waypoint {
     updatedAt: Date,
     description?: JSON | undefined,
     slug?: string | undefined,
-    tags?: string[],
-    events?: string[]
+    tags?: Tag[],
+    events?: Event[]
   ) {
     this.id = id
     this.latitude = latitude

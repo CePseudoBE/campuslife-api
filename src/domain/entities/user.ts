@@ -1,10 +1,12 @@
+import { Event } from '#domain/entities/event'
+
 export class User {
   public id: number
   public email: string
   public firstName: string
   public lastName: string
   public role: string
-  public events?: string[]
+  public events?: Event[]
   public createdAt: Date
   public updatedAt: Date | null
 
@@ -16,7 +18,7 @@ export class User {
     role: string,
     createdAt: Date,
     updatedAt: Date | null,
-    events?: string[]
+    events?: Event[]
   ) {
     this.id = id
     this.email = email
