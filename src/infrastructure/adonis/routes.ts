@@ -8,6 +8,8 @@
 */
 
 import router from '@adonisjs/core/services/router'
+const FindWaypointByIdsController = () =>
+  import('#controllers/waypoints/find_waypoint_by_ids_controller')
 const CreateWaypointController = () => import('#controllers/waypoints/create_waypoint_controller')
 
 router.get('/', async () => {
@@ -16,4 +18,9 @@ router.get('/', async () => {
   }
 })
 
-router.post('waypoints', [CreateWaypointController])
+router
+  .group(() => {
+    router.post('', [CreateWaypointController])
+    router.get(':id', [FindWaypointByIdsController])
+  })
+  .prefix('waypoints')

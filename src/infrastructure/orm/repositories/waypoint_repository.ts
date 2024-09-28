@@ -16,13 +16,15 @@ export class WaypointRepository extends IWaypointRepository {
   }
 
   async findAll(): Promise<Waypoint[]> {
-    const waypointModels = await WaypointModel.all() // Fetch all waypoints from the database
-    return waypointModels.map(WaypointMapper.toDomain) // Map models to domain entities
+    const waypointModels = await WaypointModel.all()
+    return waypointModels.map(WaypointMapper.toDomain)
   }
 
   async findById(id: number): Promise<Waypoint | null> {
     const waypointModel = await WaypointModel.find(id)
     if (!waypointModel) return null
+    await waypointModel.load('tags')
+    await waypointModel.load('event')
     return WaypointMapper.toDomain(waypointModel)
   }
 }

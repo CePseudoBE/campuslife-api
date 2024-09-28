@@ -7,8 +7,6 @@ export class FindByIdWaypointUseCase {
   constructor(private iwaypointrepository: IWaypointRepository) {}
 
   public async handle(data: { id: number }): Promise<Waypoint | null> {
-    const waypoint = await this.iwaypointrepository.findById(data.id)
-
-    return waypoint
+    return await this.iwaypointrepository.findById(data.id)
   }
 }

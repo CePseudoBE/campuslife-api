@@ -31,10 +31,16 @@ export default class WaypointModel extends BaseModel {
   @column()
   declare slug: string | undefined
 
-  @manyToMany(() => TagModel)
+  @manyToMany(() => TagModel, {
+    pivotTable: 'waypoints_tags',
+    pivotForeignKey: 'id_waypoint',
+    pivotRelatedForeignKey: 'id_tag',
+  })
   declare tags: ManyToMany<typeof TagModel>
 
-  @hasMany(() => EventModel)
+  @hasMany(() => EventModel, {
+    foreignKey: 'idWaypoint',
+  })
   declare event: HasMany<typeof EventModel>
 
   @column.dateTime({ autoCreate: true })
