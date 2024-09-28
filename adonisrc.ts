@@ -74,5 +74,6 @@ export default defineConfig({
   },
   directories: {
     models: 'src/infrastructure/orm/models',
+    httpControllers: 'src/adapters/controllers',
   },
 })

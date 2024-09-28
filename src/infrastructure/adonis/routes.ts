@@ -8,7 +8,7 @@
 */
 
 import router from '@adonisjs/core/services/router'
-const CreateWaypointController = () => import('#controllers/create_waypoint_controller')
+const CreateWaypointController = () => import('#controllers/waypoints/create_waypoint_controller')
 
 router.get('/', async () => {
   return {
