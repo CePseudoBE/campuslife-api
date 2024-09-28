@@ -1,5 +1,3 @@
-import { DateTime } from 'luxon'
-
 export class Waypoint {
   public id: number | null
   public latitude: number
@@ -11,8 +9,8 @@ export class Waypoint {
   public slug?: string
   public tags?: string[]
   public events?: string[]
-  public createdAt: DateTime
-  public updatedAt: DateTime
+  public createdAt: Date
+  public updatedAt: Date
 
   constructor(
     id: number | null,
@@ -21,8 +19,8 @@ export class Waypoint {
     title: JSON,
     types: string,
     pmr: boolean,
-    createdAt: DateTime,
-    updatedAt: DateTime,
+    createdAt: Date,
+    updatedAt: Date,
     description?: JSON | undefined,
     slug?: string | undefined,
     tags?: string[],

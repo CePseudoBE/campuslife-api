@@ -17,18 +17,18 @@ export class AddressMapper {
   }
 
   static toDomain(addressModel: AddressModel): Address {
-    const address = new Address(
+    const createdAt = new Date(addressModel.createdAt.toJSDate())
+    const updatedAt = new Date(addressModel.updatedAt.toJSDate())
+    return new Address(
       addressModel.id,
       addressModel.street,
       addressModel.num,
       addressModel.zip,
       addressModel.city,
       addressModel.idCountry,
-      addressModel.createdAt,
-      addressModel.updatedAt,
+      createdAt,
+      updatedAt,
       addressModel.complement
     )
-
-    return address
   }
 }

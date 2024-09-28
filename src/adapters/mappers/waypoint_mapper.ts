@@ -1,5 +1,6 @@
 import { Waypoint } from '#domain/entities/waypoint'
 import WaypointModel from '#infrastructure/orm/models/waypoint_model'
+import { DateTime } from 'luxon'
 
 //TODO relations when all mapper are done
 export class WaypointMapper {
@@ -16,6 +17,8 @@ export class WaypointMapper {
   }
 
   static toDomain(waypointModel: WaypointModel): Waypoint {
+    const createdAt = new Date(waypointModel.createdAt.toJSDate())
+    const updatedAt = new Date(waypointModel.updatedAt.toJSDate())
     return new Waypoint(
       waypointModel.id,
       waypointModel.latitude,
@@ -23,8 +26,8 @@ export class WaypointMapper {
       waypointModel.titleJson,
       waypointModel.types,
       waypointModel.pmr,
-      waypointModel.createdAt,
-      waypointModel.updatedAt,
+      createdAt,
+      updatedAt,
       waypointModel.descriptionJson,
       waypointModel.slug
     )

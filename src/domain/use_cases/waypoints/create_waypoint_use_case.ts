@@ -1,7 +1,6 @@
 import { Waypoint } from '#domain/entities/waypoint'
 import { IWaypointRepository } from '#domain/repositories/iwaypoint_repository'
 import { inject } from '@adonisjs/core'
-import { DateTime } from 'luxon'
 
 @inject()
 export class CreateWaypointUseCase {
@@ -45,8 +44,8 @@ export class CreateWaypointUseCase {
       JSON.parse(titleJson),
       data.types,
       data.pmr,
-      DateTime.now(),
-      DateTime.now(),
+      new Date(),
+      new Date(),
       descriptionJson ? JSON.parse(descriptionJson) : undefined,
       data.slug
     )
