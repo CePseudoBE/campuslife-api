@@ -1,8 +1,10 @@
+import { Address } from '#domain/entities/address'
+
 export class Country {
   public id: number
   public name: string
   public iso: string
-  public addresses?: string[]
+  public addresses?: Address[]
   public createdAt: Date
   public updatedAt: Date
 
@@ -12,7 +14,7 @@ export class Country {
     iso: string,
     createdAt: Date,
     updatedAt: Date,
-    addresses?: string[]
+    addresses?: Address[]
   ) {
     this.id = id
     this.name = name
