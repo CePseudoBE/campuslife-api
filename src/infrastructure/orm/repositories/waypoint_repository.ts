@@ -10,9 +10,10 @@ export class WaypointRepository extends IWaypointRepository {
     super()
   }
 
-  async create(waypoint: Waypoint): Promise<void> {
+  async create(waypoint: Waypoint): Promise<Waypoint> {
     const waypointModel = WaypointMapper.toPersistence(waypoint)
     await waypointModel.save()
+    return WaypointMapper.toDomain(waypointModel)
   }
 
   async findAll(): Promise<Waypoint[]> {

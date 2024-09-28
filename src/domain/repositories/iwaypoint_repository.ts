@@ -1,7 +1,7 @@
 import { Waypoint } from '#domain/entities/waypoint'
 
 export abstract class IWaypointRepository {
-  abstract create(waypoint: Waypoint): Promise<void>
+  abstract create(waypoint: Waypoint): Promise<Waypoint>
 
   abstract findById(id: number): Promise<Waypoint | null>
 

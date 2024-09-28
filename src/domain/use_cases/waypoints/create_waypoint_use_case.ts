@@ -50,8 +50,6 @@ export class CreateWaypointUseCase {
       data.slug
     )
 
-    await this.iwaypointrepository.create(waypoint)
-
-    return waypoint
+    return await this.iwaypointrepository.create(waypoint)
   }
 }
