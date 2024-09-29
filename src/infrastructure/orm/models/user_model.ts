@@ -22,7 +22,9 @@ export default class UserModel extends BaseModel {
   @column()
   declare role: string
 
-  @hasMany(() => EventModel)
+  @hasMany(() => EventModel, {
+    foreignKey: 'idUser',
+  })
   declare event: HasMany<typeof EventModel>
 
   @column.dateTime({ autoCreate: true })

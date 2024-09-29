@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, column, manyToMany } from '@adonisjs/lucid/orm'
 import type { BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
-import Address_model from '#infrastructure/orm/models/address_model'
+import AddressModel from '#infrastructure/orm/models/address_model'
 import WaypointModel from '#infrastructure/orm/models/waypoint_model'
 import UserModel from '#infrastructure/orm/models/user_model'
 import TagModel from '#infrastructure/orm/models/tag_model'
@@ -42,16 +42,26 @@ export default class EventModel extends BaseModel {
   @column()
   declare idAddress: number
 
-  @manyToMany(() => TagModel)
+  @manyToMany(() => TagModel, {
+    pivotTable: 'event_tag',
+    pivotForeignKey: 'id_event',
+    pivotRelatedForeignKey: 'id_tag',
+  })
   declare tags: ManyToMany<typeof TagModel>
 
-  @belongsTo(() => UserModel)
+  @belongsTo(() => UserModel, {
+    foreignKey: 'idUser',
+  })
   declare user: BelongsTo<typeof UserModel>
 
-  @belongsTo(() => Address_model)
-  declare address: BelongsTo<typeof Address_model>
+  @belongsTo(() => AddressModel, {
+    foreignKey: 'idAddress',
+  })
+  declare address: BelongsTo<typeof AddressModel>
 
-  @belongsTo(() => WaypointModel)
+  @belongsTo(() => WaypointModel, {
+    foreignKey: 'idWaypoint',
+  })
   declare waypoint: BelongsTo<typeof WaypointModel>
 
   @column.dateTime({ autoCreate: true })

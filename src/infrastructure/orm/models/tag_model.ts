@@ -16,10 +16,18 @@ export default class TagModel extends BaseModel {
   @column()
   declare slugTitle: string
 
-  @manyToMany(() => WaypointModel)
+  @manyToMany(() => WaypointModel, {
+    pivotTable: 'waypoints_tags',
+    pivotForeignKey: 'id_waypoint',
+    pivotRelatedForeignKey: 'id_tag',
+  })
   declare waypoints: ManyToMany<typeof WaypointModel>
 
-  @manyToMany(() => EventModel)
+  @manyToMany(() => EventModel, {
+    pivotTable: 'event_tag',
+    pivotForeignKey: 'id_event',
+    pivotRelatedForeignKey: 'id_tag',
+  })
   declare events: ManyToMany<typeof EventModel>
 
   @column.dateTime({ autoCreate: true })

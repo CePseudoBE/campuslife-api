@@ -15,7 +15,9 @@ export default class CountryModel extends BaseModel {
   @column()
   declare iso: string
 
-  @hasMany(() => AddressModel)
+  @hasMany(() => AddressModel, {
+    foreignKey: 'idCountry',
+  })
   declare addresses: HasMany<typeof AddressModel>
 
   @column.dateTime({ autoCreate: true })

@@ -28,10 +28,14 @@ export default class AddressModel extends BaseModel {
   @column()
   declare idCountry: number
 
-  @hasMany(() => EventModel)
+  @hasMany(() => EventModel, {
+    foreignKey: 'idAddress',
+  })
   declare events: HasMany<typeof EventModel>
 
-  @belongsTo(() => CountryModel)
+  @belongsTo(() => CountryModel, {
+    foreignKey: 'idCountry',
+  })
   declare country: BelongsTo<typeof CountryModel>
 
   @column.dateTime({ autoCreate: true })
