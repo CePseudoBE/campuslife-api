@@ -14,10 +14,10 @@ export default class UserModel extends BaseModel {
   declare email: string
 
   @column()
-  declare first_name: string
+  declare firstName: string
 
   @column()
-  declare last_name: string
+  declare lastName: string
 
   @column()
   declare role: string
@@ -29,7 +29,7 @@ export default class UserModel extends BaseModel {
   declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
+  declare updatedAt: DateTime
 
   static accessTokens = DbAccessTokensProvider.forModel(UserModel)
 }

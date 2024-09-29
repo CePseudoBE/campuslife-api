@@ -1,6 +1,5 @@
 import { Waypoint } from '#domain/entities/waypoint'
 import WaypointModel from '#infrastructure/orm/models/waypoint_model'
-import { DateTime } from 'luxon'
 
 //TODO relations when all mapper are done
 export class WaypointMapper {

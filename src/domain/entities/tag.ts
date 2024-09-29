@@ -3,7 +3,7 @@ import { Event } from '#domain/entities/event'
 
 export class Tag {
   public id: number
-  public title: JSON
+  public titleJson: JSON
   public slugTitle: string
   public waypoints?: Waypoint[]
   public events?: Event[]
@@ -12,7 +12,7 @@ export class Tag {
 
   constructor(
     id: number,
-    title: JSON,
+    titleJson: JSON,
     slugTitle: string,
     createdAt: Date,
     updatedAt: Date,
@@ -20,7 +20,7 @@ export class Tag {
     events?: Event[]
   ) {
     this.id = id
-    this.title = title
+    this.titleJson = titleJson
     this.slugTitle = slugTitle
     this.createdAt = createdAt
     this.updatedAt = updatedAt
