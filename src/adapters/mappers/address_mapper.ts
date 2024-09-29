@@ -1,5 +1,7 @@
 import { Address } from '#domain/entities/address'
 import AddressModel from '#infrastructure/orm/models/address_model'
+import { EventMapper } from './event_mapper.js'
+import { CountryMapper } from './country_mapper.js'
 
 export class AddressMapper {
   static toPersistence(address: Address): AddressModel {
@@ -17,7 +19,7 @@ export class AddressMapper {
   }
 
   static toDomain(addressModel: AddressModel): Address {
-    return new Address(
+    const address = new Address(
       addressModel.id,
       addressModel.street,
       addressModel.num,
@@ -28,5 +30,15 @@ export class AddressMapper {
       addressModel.updatedAt.toJSDate(),
       addressModel.complement
     )
+
+    if (addressModel.events) {
+      address.events = addressModel.events.map((eventModel) => EventMapper.toDomain(eventModel))
+    }
+
+    if (addressModel.country) {
+      address.country = CountryMapper.toDomain(addressModel.country)
+    }
+
+    return address
   }
 }
