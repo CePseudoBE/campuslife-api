@@ -16,8 +16,6 @@ export class WaypointMapper {
   }
 
   static toDomain(waypointModel: WaypointModel): Waypoint {
-    const createdAt = new Date(waypointModel.createdAt.toJSDate())
-    const updatedAt = new Date(waypointModel.updatedAt.toJSDate())
     return new Waypoint(
       waypointModel.id,
       waypointModel.latitude,
@@ -25,8 +23,8 @@ export class WaypointMapper {
       waypointModel.titleJson,
       waypointModel.types,
       waypointModel.pmr,
-      createdAt,
-      updatedAt,
+      waypointModel.createdAt.toJSDate(),
+      waypointModel.updatedAt.toJSDate(),
       waypointModel.descriptionJson,
       waypointModel.slug
     )

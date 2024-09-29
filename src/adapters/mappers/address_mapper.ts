@@ -17,8 +17,6 @@ export class AddressMapper {
   }
 
   static toDomain(addressModel: AddressModel): Address {
-    const createdAt = new Date(addressModel.createdAt.toJSDate())
-    const updatedAt = new Date(addressModel.updatedAt.toJSDate())
     return new Address(
       addressModel.id,
       addressModel.street,
@@ -26,8 +24,8 @@ export class AddressMapper {
       addressModel.zip,
       addressModel.city,
       addressModel.idCountry,
-      createdAt,
-      updatedAt,
+      addressModel.createdAt.toJSDate(),
+      addressModel.updatedAt.toJSDate(),
       addressModel.complement
     )
   }

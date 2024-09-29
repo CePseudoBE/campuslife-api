@@ -12,16 +12,14 @@ export class UserMapper {
   }
 
   static toDomain(userModel: UserModel): User {
-    const createdAt = new Date(userModel.createdAt.toJSDate())
-    const updatedAt = new Date(userModel.updatedAt.toJSDate())
     return new User(
       userModel.id,
       userModel.email,
       userModel.firstName,
       userModel.lastName,
       userModel.role,
-      createdAt,
-      updatedAt
+      userModel.createdAt.toJSDate(),
+      userModel.updatedAt.toJSDate()
     )
   }
 }

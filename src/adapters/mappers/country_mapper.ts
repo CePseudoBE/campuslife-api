@@ -14,9 +14,6 @@ export class CountryMapper {
   }
 
   static toDomain(countryModel: CountryModel): Country {
-    const createdAt = new Date(countryModel.createdAt.toJSDate())
-    const updatedAt = new Date(countryModel.updatedAt.toJSDate())
-
     let addresses
     if (countryModel.addresses) {
       addresses = countryModel.addresses.map((addressModel) => AddressMapper.toDomain(addressModel))
@@ -26,8 +23,8 @@ export class CountryMapper {
       countryModel.id,
       countryModel.name,
       countryModel.iso,
-      createdAt,
-      updatedAt,
+      countryModel.createdAt.toJSDate(),
+      countryModel.updatedAt.toJSDate(),
       addresses
     )
   }

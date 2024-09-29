@@ -10,8 +10,12 @@ export class TagMapper {
   }
 
   static toDomain(tagModel: TagModel): Tag {
-    const createdAt = new Date(tagModel.createdAt.toJSDate())
-    const updatedAt = new Date(tagModel.updatedAt.toJSDate())
-    return new Tag(tagModel.id, tagModel.titleJson, tagModel.slugTitle, createdAt, updatedAt)
+    return new Tag(
+      tagModel.id,
+      tagModel.titleJson,
+      tagModel.slugTitle,
+      tagModel.createdAt.toJSDate(),
+      tagModel.updatedAt.toJSDate()
+    )
   }
 }

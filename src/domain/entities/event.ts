@@ -7,8 +7,8 @@ import { Address } from '#domain/entities/address'
 
 export class Event {
   public id: number
-  public title: JSON
-  public description: JSON
+  public titleJson: JSON
+  public descriptionJson: JSON
   public image: string
   public start: Date
   public end: Date
@@ -26,8 +26,8 @@ export class Event {
 
   constructor(
     id: number,
-    title: JSON,
-    description: JSON,
+    titleJson: JSON,
+    descriptionJson: JSON,
     image: string,
     start: Date,
     end: Date,
@@ -44,8 +44,8 @@ export class Event {
     tags?: Tag[]
   ) {
     this.id = id
-    this.title = title
-    this.description = description
+    this.titleJson = titleJson
+    this.descriptionJson = descriptionJson
     this.image = image
     this.start = start
     this.end = end
