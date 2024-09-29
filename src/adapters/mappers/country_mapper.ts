@@ -14,18 +14,20 @@ export class CountryMapper {
   }
 
   static toDomain(countryModel: CountryModel): Country {
-    let addresses
-    if (countryModel.addresses) {
-      addresses = countryModel.addresses.map((addressModel) => AddressMapper.toDomain(addressModel))
-    }
-
-    return new Country(
+    const country = new Country(
       countryModel.id,
       countryModel.name,
       countryModel.iso,
       countryModel.createdAt.toJSDate(),
-      countryModel.updatedAt.toJSDate(),
-      addresses
+      countryModel.updatedAt.toJSDate()
     )
+
+    if (countryModel.addresses) {
+      country.addresses = countryModel.addresses.map((addressModel) =>
+        AddressMapper.toDomain(addressModel)
+      )
+    }
+
+    return country
   }
 }
