@@ -1,5 +1,7 @@
 import { Waypoint } from '#domain/entities/waypoint'
 import WaypointModel from '#infrastructure/orm/models/waypoint_model'
+import { EventMapper } from '#adapters/mappers/event_mapper'
+import { TagMapper } from '#adapters/mappers/tag_mapper'
 
 //TODO relations when all mapper are done
 export class WaypointMapper {
@@ -16,7 +18,7 @@ export class WaypointMapper {
   }
 
   static toDomain(waypointModel: WaypointModel): Waypoint {
-    return new Waypoint(
+    const waypoint = new Waypoint(
       waypointModel.id,
       waypointModel.latitude,
       waypointModel.longitude,
@@ -28,5 +30,15 @@ export class WaypointMapper {
       waypointModel.descriptionJson,
       waypointModel.slug
     )
+
+    if (waypointModel.events) {
+      waypoint.events = waypointModel.events.map((eventModel) => EventMapper.toDomain(eventModel))
+    }
+
+    if (waypointModel.tags) {
+      waypoint.tags = waypointModel.tags.map((tagModel) => TagMapper.toDomain(tagModel))
+    }
+
+    return waypoint
   }
 }
