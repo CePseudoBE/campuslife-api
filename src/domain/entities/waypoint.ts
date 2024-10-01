@@ -5,8 +5,8 @@ export class Waypoint {
   public id: number | null
   public latitude: number
   public longitude: number
-  public title: JSON
-  public description?: JSON | undefined
+  public title: { [key: string]: string }
+  public description?: { [key: string]: string }
   public types: string
   public pmr: boolean
   public slug?: string
@@ -19,13 +19,13 @@ export class Waypoint {
     id: number | null,
     latitude: number,
     longitude: number,
-    title: JSON,
+    title: { [key: string]: string },
     types: string,
     pmr: boolean,
     createdAt: Date,
     updatedAt: Date,
-    description?: JSON | undefined,
-    slug?: string | undefined,
+    description?: { [key: string]: string },
+    slug?: string,
     tags?: Tag[],
     events?: Event[]
   ) {
@@ -41,5 +41,48 @@ export class Waypoint {
     this.events = events
     this.createdAt = createdAt
     this.updatedAt = updatedAt
+  }
+
+  public update(data: {
+    latitude?: number
+    longitude?: number
+    title_en?: string
+    title_fr?: string
+    description_en?: string
+    description_fr?: string
+    types?: string
+    pmr?: boolean
+    slug?: string
+  }): void {
+    this.latitude = data.latitude ?? this.latitude
+    this.longitude = data.longitude ?? this.longitude
+    this.types = data.types ?? this.types
+    this.pmr = data.pmr ?? this.pmr
+    this.slug = data.slug ?? this.slug
+    this.updatedAt = new Date()
+
+    this.updateTitle(data)
+    this.updateDescription(data)
+  }
+
+  private updateTitle(data: { title_en?: string; title_fr?: string }): void {
+    if (data.title_en) {
+      this.title['en'] = data.title_en
+    }
+    if (data.title_fr) {
+      this.title['fr'] = data.title_fr
+    }
+  }
+
+  private updateDescription(data: { description_en?: string; description_fr?: string }): void {
+    if (!this.description) {
+      this.description = {}
+    }
+    if (data.description_en) {
+      this.description['en'] = data.description_en
+    }
+    if (data.description_fr) {
+      this.description['fr'] = data.description_fr
+    }
   }
 }

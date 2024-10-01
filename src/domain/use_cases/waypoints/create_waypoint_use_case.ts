@@ -17,36 +17,24 @@ export class CreateWaypointUseCase {
     pmr: boolean
     slug?: string
   }): Promise<Waypoint> {
-    const title: Record<string, string> = {}
-    const description: Record<string, string> = {}
+    const title: { [key: string]: string } = {}
+    const description: { [key: string]: string } = {}
 
-    // Iterate through the data keys and build the title and description objects
-    for (const key in data) {
-      if (key.startsWith('title_')) {
-        const lang = key.split('_')[1]
-        title[lang] = (data as any)[key] // Cast 'data' as 'any' to handle dynamic indexing
-      }
-      if (key.startsWith('description_')) {
-        const lang = key.split('_')[1]
-        description[lang] = (data as any)[key] // Cast 'data' as 'any' to handle dynamic indexing
-      }
-    }
-
-    const titleJson = JSON.stringify(title)
-    const descriptionJson = Object.keys(description).length
-      ? JSON.stringify(description)
-      : undefined
+    if (data.title_en) title['en'] = data.title_en
+    if (data.title_fr) title['fr'] = data.title_fr
+    if (data.description_en) description['en'] = data.description_en
+    if (data.description_fr) description['fr'] = data.description_fr
 
     const waypoint = new Waypoint(
       null,
       data.latitude,
       data.longitude,
-      JSON.parse(titleJson),
+      title,
       data.types,
       data.pmr,
       new Date(),
       new Date(),
-      descriptionJson ? JSON.parse(descriptionJson) : undefined,
+      Object.keys(description).length > 0 ? description : undefined,
       data.slug
     )
 
