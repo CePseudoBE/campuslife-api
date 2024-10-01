@@ -2,7 +2,7 @@ import { HttpContext } from '@adonisjs/core/http'
 import { CreateWaypointUseCase } from '#domain/use_cases/waypoints/create_waypoint_use_case'
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
-import { ValidationService } from '#adapters/services/validation_service.js'
+import { ValidationService } from '#adapters/services/validation_service'
 
 @inject()
 export default class CreateWaypointController {
