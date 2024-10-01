@@ -39,14 +39,14 @@ export class UpdateWaypointUseCase {
       }
     }
 
-    const titleJson = JSON.stringify({ ...existingWaypoint.title, ...title }) // Merge with existing title
+    const titleJson = Object.keys(title).length ? JSON.stringify(title) : existingWaypoint.title // Remplacer complètement le title
     const descriptionJson = Object.keys(description).length
-      ? JSON.stringify({ ...existingWaypoint.description, ...description }) // Merge with existing description
-      : existingWaypoint.description
+      ? JSON.stringify(description)
+      : existingWaypoint.description // Remplacer complètement la description
 
     existingWaypoint.latitude = data.latitude ?? existingWaypoint.latitude
     existingWaypoint.longitude = data.longitude ?? existingWaypoint.longitude
-    existingWaypoint.title = JSON.parse(titleJson)
+    existingWaypoint.title = typeof titleJson === 'string' ? JSON.parse(titleJson) : titleJson
     existingWaypoint.description =
       typeof descriptionJson === 'string' ? JSON.parse(descriptionJson) : descriptionJson
     existingWaypoint.types = data.types ?? existingWaypoint.types
