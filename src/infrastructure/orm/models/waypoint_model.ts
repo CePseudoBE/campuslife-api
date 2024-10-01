@@ -23,14 +23,11 @@ export default class WaypointModel extends BaseModel {
 
   @column({
     prepare: (value: MultilingualField) => JSON.stringify(value),
-    consume: (value: string) => JSON.parse(value) as MultilingualField,
   })
   declare titleJson: MultilingualField
 
   @column({
     prepare: (value: MultilingualField | undefined) => (value ? JSON.stringify(value) : undefined),
-    consume: (value: string | undefined) =>
-      value ? (JSON.parse(value) as MultilingualField) : undefined,
   })
   declare descriptionJson: MultilingualField | undefined
 
