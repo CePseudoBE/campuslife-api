@@ -3,6 +3,7 @@ import { Waypoint } from '#domain/entities/waypoint'
 import { WaypointMapper } from '#adapters/mappers/waypoint_mapper'
 import WaypointModel from '#infrastructure/orm/models/waypoint_model'
 import { inject } from '@adonisjs/core'
+import { ExtractModelRelations } from '@adonisjs/lucid/types/relations'
 
 @inject()
 export class WaypointRepository extends IWaypointRepository {
@@ -21,11 +22,16 @@ export class WaypointRepository extends IWaypointRepository {
     return waypointModels.map(WaypointMapper.toDomain)
   }
 
-  async findById(id: number): Promise<Waypoint | null> {
+  async findById(id: number, includes?: string[]): Promise<Waypoint | null> {
     const waypointModel = await WaypointModel.find(id)
     if (!waypointModel) return null
-    await waypointModel.load('tags')
-    await waypointModel.load('event')
+
+    if (includes && includes.length > 0) {
+      for (const relation of includes) {
+        await waypointModel.load(relation as ExtractModelRelations<WaypointModel>)
+      }
+    }
+
     return WaypointMapper.toDomain(waypointModel)
   }
 }
