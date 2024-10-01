@@ -1,12 +1,17 @@
 import { Tag } from '#domain/entities/tag'
 import { Event } from '#domain/entities/event'
 
+type MultilingualField = {
+  en?: string
+  fr?: string
+}
+
 export class Waypoint {
   public id: number | null
   public latitude: number
   public longitude: number
-  public title: { [key: string]: string }
-  public description?: { [key: string]: string }
+  public title: MultilingualField
+  public description?: MultilingualField
   public types: string
   public pmr: boolean
   public slug?: string
@@ -19,12 +24,12 @@ export class Waypoint {
     id: number | null,
     latitude: number,
     longitude: number,
-    title: { [key: string]: string },
+    title: MultilingualField,
     types: string,
     pmr: boolean,
     createdAt: Date,
     updatedAt: Date,
-    description?: { [key: string]: string },
+    description?: MultilingualField,
     slug?: string,
     tags?: Tag[],
     events?: Event[]
@@ -67,10 +72,10 @@ export class Waypoint {
 
   private updateTitle(data: { title_en?: string; title_fr?: string }): void {
     if (data.title_en) {
-      this.title['en'] = data.title_en
+      this.title.en = data.title_en
     }
     if (data.title_fr) {
-      this.title['fr'] = data.title_fr
+      this.title.fr = data.title_fr
     }
   }
 
@@ -79,10 +84,10 @@ export class Waypoint {
       this.description = {}
     }
     if (data.description_en) {
-      this.description['en'] = data.description_en
+      this.description.en = data.description_en
     }
     if (data.description_fr) {
-      this.description['fr'] = data.description_fr
+      this.description.fr = data.description_fr
     }
   }
 }
