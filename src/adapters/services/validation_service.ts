@@ -1,5 +1,6 @@
 import vine from '@vinejs/vine'
 import { BaseModel } from '@adonisjs/lucid/orm'
+import type { HttpContext } from '@adonisjs/core/http'
 
 export class ValidationService {
   public static getWaypointRules() {
@@ -20,5 +21,21 @@ export class ValidationService {
     return includes.filter((relation) => {
       return model.$hasRelation(relation)
     })
+  }
+
+  public static async validateRequestAndIncludes(
+    { request }: HttpContext,
+    model: typeof BaseModel
+  ): Promise<string[]> {
+    let includes = request.qs().include ? request.qs().include.split(',') : []
+    const validIncludes = ValidationService.validateIncludes(includes, model)
+
+    // Si certains includes sont invalides, renvoyer une erreur
+    if (validIncludes.length !== includes.length) {
+      const invalidIncludes = includes.filter((rel: string) => !validIncludes.includes(rel))
+      throw new Error(`Invalid includes: ${invalidIncludes.join(', ')}`)
+    }
+
+    return validIncludes
   }
 }
