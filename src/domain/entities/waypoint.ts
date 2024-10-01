@@ -20,6 +20,17 @@ export class Waypoint {
   public createdAt: Date
   public updatedAt: Date
 
+  public static allowedColumns: string[] = [
+    'id',
+    'latitude',
+    'longitude',
+    'title_json',
+    'description_json',
+    'types',
+    'created_at',
+    'updated_at',
+  ]
+
   constructor(
     id: number | null,
     latitude: number,
