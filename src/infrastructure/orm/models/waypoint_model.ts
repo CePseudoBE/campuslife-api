@@ -41,7 +41,7 @@ export default class WaypointModel extends BaseModel {
   @hasMany(() => EventModel, {
     foreignKey: 'idWaypoint',
   })
-  declare event: HasMany<typeof EventModel>
+  declare events: HasMany<typeof EventModel>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

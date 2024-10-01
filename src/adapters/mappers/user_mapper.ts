@@ -1,5 +1,6 @@
 import { User } from '#domain/entities/user'
 import UserModel from '#infrastructure/orm/models/user_model'
+import { EventMapper } from '#adapters/mappers/event_mapper'
 
 export class UserMapper {
   static toPersistence(user: User): UserModel {
@@ -12,7 +13,7 @@ export class UserMapper {
   }
 
   static toDomain(userModel: UserModel): User {
-    return new User(
+    const user = new User(
       userModel.id,
       userModel.email,
       userModel.firstName,
@@ -21,5 +22,11 @@ export class UserMapper {
       userModel.createdAt.toJSDate(),
       userModel.updatedAt.toJSDate()
     )
+
+    if (userModel.events) {
+      user.events = userModel.events.map((eventModel) => EventMapper.toDomain(eventModel))
+    }
+
+    return user
   }
 }
