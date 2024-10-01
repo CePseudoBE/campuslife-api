@@ -6,4 +6,6 @@ export abstract class IWaypointRepository {
   abstract findById(id: number, includes?: string[]): Promise<Waypoint | null>
 
   abstract findAll(): Promise<Waypoint[]>
+
+  abstract update(waypoint: Waypoint): Promise<Waypoint>
 }

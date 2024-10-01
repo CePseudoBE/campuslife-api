@@ -34,4 +34,24 @@ export class WaypointRepository extends IWaypointRepository {
 
     return WaypointMapper.toDomain(waypointModel)
   }
+
+  async update(waypoint: Waypoint): Promise<Waypoint> {
+    const waypointModel = await WaypointModel.find(waypoint.id)
+    if (!waypointModel) {
+      throw new Error('Waypoint not found')
+    }
+
+    // Update the fields in the persistence model
+    waypointModel.latitude = waypoint.latitude
+    waypointModel.longitude = waypoint.longitude
+    waypointModel.titleJson = waypoint.title
+    waypointModel.descriptionJson = waypoint.description
+    waypointModel.types = waypoint.types
+    waypointModel.pmr = waypoint.pmr
+    waypointModel.slug = waypoint.slug
+
+    await waypointModel.save()
+
+    return WaypointMapper.toDomain(waypointModel)
+  }
 }
