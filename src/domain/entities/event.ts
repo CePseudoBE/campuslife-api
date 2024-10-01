@@ -14,9 +14,9 @@ export class Event {
   public end: Date
   public url: string
   public slugTitle?: string
-  public idWaypoint: number
-  public idUser: number
-  public idAddress: number
+  public waypointId: number
+  public userId: number
+  public addressId: number
   public waypoint?: Waypoint
   public user?: User
   public address?: Address
@@ -32,9 +32,9 @@ export class Event {
     start: Date,
     end: Date,
     url: string,
-    idWaypoint: number,
-    idUser: number,
-    idAddress: number,
+    waypointId: number,
+    userId: number,
+    addressId: number,
     createdAt: Date,
     updatedAt: Date,
     slugTitle?: string,
@@ -50,9 +50,9 @@ export class Event {
     this.start = start
     this.end = end
     this.url = url
-    this.idWaypoint = idWaypoint
-    this.idUser = idUser
-    this.idAddress = idAddress
+    this.waypointId = waypointId
+    this.userId = userId
+    this.addressId = addressId
     this.slugTitle = slugTitle
     this.tags = tags
     this.waypoint = waypoint

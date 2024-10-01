@@ -16,7 +16,7 @@ export default class CountryModel extends BaseModel {
   declare iso: string
 
   @hasMany(() => AddressModel, {
-    foreignKey: 'idCountry',
+    foreignKey: 'countryId',
   })
   declare addresses: HasMany<typeof AddressModel>
 

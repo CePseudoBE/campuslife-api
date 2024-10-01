@@ -34,33 +34,33 @@ export default class EventModel extends BaseModel {
   declare slugTitle: string | undefined
 
   @column()
-  declare idWaypoint: number
+  declare waypointId: number
 
   @column()
-  declare idUser: number
+  declare userId: number
 
   @column()
-  declare idAddress: number
+  declare addressId: number
 
   @manyToMany(() => TagModel, {
     pivotTable: 'event_tag',
-    pivotForeignKey: 'id_event',
-    pivotRelatedForeignKey: 'id_tag',
+    pivotForeignKey: 'event_id',
+    pivotRelatedForeignKey: 'tag_id',
   })
   declare tags: ManyToMany<typeof TagModel>
 
   @belongsTo(() => UserModel, {
-    foreignKey: 'idUser',
+    foreignKey: 'userId',
   })
   declare user: BelongsTo<typeof UserModel>
 
   @belongsTo(() => AddressModel, {
-    foreignKey: 'idAddress',
+    foreignKey: 'addressId',
   })
   declare address: BelongsTo<typeof AddressModel>
 
   @belongsTo(() => WaypointModel, {
-    foreignKey: 'idWaypoint',
+    foreignKey: 'waypointId',
   })
   declare waypoint: BelongsTo<typeof WaypointModel>
 

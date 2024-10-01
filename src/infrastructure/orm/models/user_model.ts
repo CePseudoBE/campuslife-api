@@ -23,7 +23,7 @@ export default class UserModel extends BaseModel {
   declare role: string
 
   @hasMany(() => EventModel, {
-    foreignKey: 'idUser',
+    foreignKey: 'userId',
   })
   declare events: HasMany<typeof EventModel>
 

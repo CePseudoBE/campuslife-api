@@ -11,7 +11,7 @@ export default class extends BaseSchema {
       table.string('complement').nullable()
       table.string('zip').notNullable()
       table.string('city').notNullable()
-      table.integer('id_country').unsigned().references('countries.id').onDelete('CASCADE')
+      table.integer('country_id').unsigned().references('countries.id').onDelete('CASCADE')
 
       table.timestamp('created_at')
       table.timestamp('updated_at')

@@ -26,15 +26,15 @@ export default class AddressModel extends BaseModel {
   declare city: string
 
   @column()
-  declare idCountry: number
+  declare countryId: number
 
   @hasMany(() => EventModel, {
-    foreignKey: 'idAddress',
+    foreignKey: 'addressId',
   })
   declare events: HasMany<typeof EventModel>
 
   @belongsTo(() => CountryModel, {
-    foreignKey: 'idCountry',
+    foreignKey: 'countryId',
   })
   declare country: BelongsTo<typeof CountryModel>
 

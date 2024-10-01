@@ -14,9 +14,9 @@ export default class extends BaseSchema {
       table.string('url').notNullable()
       table.string('slug_title').nullable()
       table.integer('id_waypoint').unsigned().references('waypoints.id').onDelete('CASCADE')
-      table.string('id_user').references('users.id').onDelete('CASCADE')
+      table.string('user_id').references('users.id').onDelete('CASCADE')
       table
-        .integer('id_address')
+        .integer('address_id')
         .unsigned()
         .references('addresses.id')
         .onDelete('CASCADE')

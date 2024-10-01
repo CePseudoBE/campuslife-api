@@ -1,7 +1,7 @@
 export class Log {
   public id: number
-  public idSession: string
-  public idUser: string
+  public sessionId: string
+  public userId: string
   public actionState: string
   public actionType: string
   public actionInfo: string
@@ -10,8 +10,8 @@ export class Log {
 
   constructor(
     id: number,
-    idSession: string,
-    idUser: string,
+    sessionId: string,
+    userId: string,
     actionState: string,
     actionType: string,
     actionInfo: string,
@@ -19,8 +19,8 @@ export class Log {
     updatedAt: Date
   ) {
     this.id = id
-    this.idSession = idSession
-    this.idUser = idUser
+    this.sessionId = sessionId
+    this.userId = userId
     this.actionState = actionState
     this.actionType = actionType
     this.actionInfo = actionInfo

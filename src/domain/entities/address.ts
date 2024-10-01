@@ -8,7 +8,7 @@ export class Address {
   public complement?: string
   public zip: string
   public city: string
-  public idCountry: number
+  public countryId: number
   public events?: Event[]
   public country?: Country
   public createdAt: Date
@@ -20,7 +20,7 @@ export class Address {
     num: string,
     zip: string,
     city: string,
-    idCountry: number,
+    countryId: number,
     createdAt: Date,
     updatedAt: Date,
     complement?: string,
@@ -33,7 +33,7 @@ export class Address {
     this.complement = complement
     this.zip = zip
     this.city = city
-    this.idCountry = idCountry
+    this.countryId = countryId
     this.events = events
     this.country = country
     this.createdAt = createdAt

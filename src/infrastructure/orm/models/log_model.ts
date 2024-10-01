@@ -8,10 +8,10 @@ export default class LogModel extends BaseModel {
   declare id: number
 
   @column()
-  declare idSession: string
+  declare sessionId: string
 
   @column()
-  declare idUser: string
+  declare userId: string
 
   @column()
   declare actionState: string
