@@ -3,7 +3,7 @@
 export interface QueryParams {
   page?: number
   limit?: number
-  order?: string
+  order?: 'asc' | 'desc'
   column?: string
 }
 

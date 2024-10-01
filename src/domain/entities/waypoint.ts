@@ -24,8 +24,6 @@ export class Waypoint {
     'id',
     'latitude',
     'longitude',
-    'title_json',
-    'description_json',
     'types',
     'created_at',
     'updated_at',

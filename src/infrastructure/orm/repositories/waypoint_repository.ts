@@ -4,6 +4,7 @@ import { WaypointMapper } from '#adapters/mappers/waypoint_mapper'
 import WaypointModel from '#infrastructure/orm/models/waypoint_model'
 import { inject } from '@adonisjs/core'
 import { ExtractModelRelations } from '@adonisjs/lucid/types/relations'
+import { QueryParams } from '#domain/services/sorting_validation'
 
 @inject()
 export class WaypointRepository extends IWaypointRepository {
@@ -17,9 +18,33 @@ export class WaypointRepository extends IWaypointRepository {
     return WaypointMapper.toDomain(waypointModel)
   }
 
-  async findAll(): Promise<Waypoint[]> {
-    const waypointModels = await WaypointModel.all()
-    return waypointModels.map(WaypointMapper.toDomain)
+  async findAll(
+    { page, limit, order, column }: QueryParams,
+    includes: string[]
+  ): Promise<Waypoint[]> {
+    const query = WaypointModel.query()
+
+    if (page && limit) {
+      query.paginate(page, limit)
+    }
+
+    if (column && order) {
+      console.log(column)
+      query.orderBy(column, order)
+    }
+
+    // Apply includes
+    if (includes && includes.length > 0) {
+      query.preload(includes[0] as ExtractModelRelations<WaypointModel>)
+      for (let i = 1; i < includes.length; i++) {
+        query.preload(includes[i] as ExtractModelRelations<WaypointModel>)
+      }
+    }
+
+    const waypointModels = await query.exec()
+
+    // Map to domain entities, passing the loaded relations
+    return waypointModels.map((model) => WaypointMapper.toDomain(model))
   }
 
   async findById(id: number, includes?: string[]): Promise<Waypoint | null> {
