@@ -1,4 +1,5 @@
 import router from '@adonisjs/core/services/router'
+const DeleteWaypointController = () => import('#controllers/waypoints/delete_waypoint_controller')
 const UpdateWaypointController = () => import('#controllers/waypoints/update_waypoint_controller')
 const FindWaypointsController = () => import('#controllers/waypoints/find_waypoints_controller')
 const FindWaypointByIdsController = () =>
@@ -33,6 +34,7 @@ router
       .group(() => {
         router.post('', [CreateWaypointController]).as('create_waypoint')
         router.patch(':id', [UpdateWaypointController]).as('update_waypoint')
+        router.delete(':id', [DeleteWaypointController]).as('delete_waypoint')
       })
       .prefix('waypoints')
       .as('other_waypoints_urls')

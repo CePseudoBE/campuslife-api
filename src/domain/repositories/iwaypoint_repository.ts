@@ -12,4 +12,6 @@ export abstract class IWaypointRepository {
   ): Promise<Waypoint[]>
 
   abstract update(waypoint: Waypoint): Promise<Waypoint>
+
+  abstract delete(waypoint: Waypoint): Promise<null>
 }

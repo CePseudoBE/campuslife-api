@@ -5,6 +5,7 @@ import WaypointModel from '#infrastructure/orm/models/waypoint_model'
 import { inject } from '@adonisjs/core'
 import { ExtractModelRelations } from '@adonisjs/lucid/types/relations'
 import { QueryParams } from '#domain/services/sorting_validation'
+import { DateTime } from 'luxon'
 
 @inject()
 export class WaypointRepository extends IWaypointRepository {
@@ -13,9 +14,7 @@ export class WaypointRepository extends IWaypointRepository {
   }
 
   async create(waypoint: Waypoint): Promise<Waypoint> {
-    console.log(waypoint)
     const waypointModel = WaypointMapper.toPersistence(waypoint)
-    console.log(waypointModel)
     await waypointModel.save()
     return WaypointMapper.toDomain(waypointModel)
   }
@@ -70,7 +69,7 @@ export class WaypointRepository extends IWaypointRepository {
       .andWhere('id', waypoint.id)
       .first()
     if (!waypointModel) {
-      throw new Error('Waypoint not found')
+      throw new Error('Waypoint deleted')
     }
 
     waypointModel.latitude = waypoint.latitude
@@ -84,5 +83,25 @@ export class WaypointRepository extends IWaypointRepository {
     await waypointModel.save()
 
     return WaypointMapper.toDomain(waypointModel)
+  }
+
+  async delete(waypoint: Waypoint): Promise<null> {
+    if (!waypoint.id) {
+      throw new Error('Waypoint not found')
+    }
+    const waypointModel = await WaypointModel.query()
+      .whereNull('deleted_at')
+      .andWhere('id', waypoint.id)
+      .first()
+
+    if (!waypointModel) {
+      throw new Error('Waypoint deleted')
+    }
+
+    waypointModel.deletedAt = DateTime.fromJSDate(waypoint.deletedAt!)
+
+    await waypointModel.save()
+
+    return null
   }
 }

@@ -60,6 +60,10 @@ export class Waypoint {
     this.deletedAt = deletedAt
   }
 
+  public delete() {
+    this.deletedAt = new Date()
+  }
+
   public update(data: {
     latitude?: number
     longitude?: number
