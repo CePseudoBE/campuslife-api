@@ -2,6 +2,7 @@ import { Waypoint } from '#domain/entities/waypoint'
 import { IWaypointRepository } from '#domain/repositories/iwaypoint_repository'
 import { inject } from '@adonisjs/core'
 import { ISlugService } from '#domain/services/islug_service'
+import { MultilingualField } from '#domain/types/multilingual_field.type'
 
 @inject()
 export class CreateWaypointUseCase {
@@ -20,13 +21,14 @@ export class CreateWaypointUseCase {
     types: string
     pmr: boolean
   }): Promise<Waypoint> {
-    const title: { [key: string]: string } = {}
-    const description: { [key: string]: string } = {}
-
-    if (data.title_en) title['en'] = data.title_en
-    if (data.title_fr) title['fr'] = data.title_fr
-    if (data.description_en) description['en'] = data.description_en
-    if (data.description_fr) description['fr'] = data.description_fr
+    const title: MultilingualField = {
+      en: data.title_en || '',
+      fr: data.title_fr || '',
+    }
+    const description: MultilingualField = {
+      en: data.description_en || '',
+      fr: data.description_fr || '',
+    }
 
     const slug = this.iSlugService.generate(data.title_en)
 

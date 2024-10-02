@@ -23,6 +23,6 @@ export class FindWaypointsUseCase {
       },
       Waypoint
     )
-    return await this.iwaypointrepository.findAll(queryParams, includes)
+    return await this.iwaypointrepository.findAll(queryParams)
   }
 }
