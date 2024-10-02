@@ -1,7 +1,4 @@
-type MultilingualField = {
-  en?: string
-  fr?: string
-}
+import { MultilingualField } from '#domain/types/multilingual_field.type'
 
 export class Service {
   public id: number
@@ -25,6 +22,29 @@ export class Service {
     updatedAt: Date,
     deletedAt: Date | null = null
   ) {
+    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
+    if (!urlRegex.test(url)) {
+      throw new Error('InvalidURLError: The provided URL is not valid.')
+    }
+
+    if (!titleJson.en || titleJson.en.trim().length === 0) {
+      throw new Error('InvalidTitleError: The English title must be provided and cannot be empty.')
+    }
+    if (!titleJson.fr || titleJson.fr.trim().length === 0) {
+      throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
+    }
+
+    if (!descriptionJson.en || descriptionJson.en.trim().length === 0) {
+      throw new Error(
+        'InvalidTitleError: The English description must be provided and cannot be empty.'
+      )
+    }
+    if (!descriptionJson.fr || descriptionJson.fr.trim().length === 0) {
+      throw new Error(
+        'InvalidTitleError: The French description must be provided and cannot be empty.'
+      )
+    }
+
     this.id = id
     this.titleJson = titleJson
     this.descriptionJson = descriptionJson

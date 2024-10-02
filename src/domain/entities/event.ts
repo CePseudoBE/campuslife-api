@@ -50,6 +50,36 @@ export class Event {
     address?: Address,
     tags?: Tag[]
   ) {
+    if (!titleJson.en || titleJson.en.trim().length === 0) {
+      throw new Error('InvalidTitleError: The English title must be provided and cannot be empty.')
+    }
+    if (!titleJson.fr || titleJson.fr.trim().length === 0) {
+      throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
+    }
+
+    if (!descriptionJson.en || descriptionJson.en.trim().length === 0) {
+      throw new Error(
+        'InvalidTitleError: The English description must be provided and cannot be empty.'
+      )
+    }
+    if (!descriptionJson.fr || descriptionJson.fr.trim().length === 0) {
+      throw new Error(
+        'InvalidTitleError: The French description must be provided and cannot be empty.'
+      )
+    }
+    if (start.getTime() <= Date.now()) {
+      throw new Error('InvalidStartDateError: Start date must be in the future.')
+    }
+    if (end.getTime() <= start.getTime()) {
+      throw new Error('InvalidEndDateError: End date must be after the start date.')
+    }
+    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
+    if (url && !urlRegex.test(url)) {
+      throw new Error('InvalidURLError: The provided URL is not valid.')
+    }
+    if (tags && new Set(tags.map((tag) => tag.id)).size !== tags.length) {
+      throw new Error('DuplicateTagsError: Each tag must be unique.')
+    }
     this.id = id
     this.titleJson = titleJson
     this.descriptionJson = descriptionJson

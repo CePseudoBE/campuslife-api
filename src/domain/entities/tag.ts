@@ -1,10 +1,6 @@
 import { Waypoint } from '#domain/entities/waypoint'
 import { Event } from '#domain/entities/event'
-
-type MultilingualField = {
-  en?: string
-  fr?: string
-}
+import { MultilingualField } from '#domain/types/multilingual_field.type'
 
 export class Tag {
   public id: number
@@ -27,6 +23,23 @@ export class Tag {
     events?: Event[]
   ) {
     this.id = id
+
+    if (!titleJson.en || titleJson.en.trim().length === 0) {
+      throw new Error('InvalidTitleError: The English title must be provided and cannot be empty.')
+    }
+    if (!titleJson.fr || titleJson.fr.trim().length === 0) {
+      throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
+    }
+    if (!slugTitle || slugTitle.trim().length === 0) {
+      throw new Error('InvalidSlugError: The slugTitle cannot be empty.')
+    }
+    const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+    if (!slugRegex.test(slugTitle)) {
+      throw new Error(
+        'InvalidSlugFormatError: The slugTitle must only contain lowercase letters, numbers, and hyphens.'
+      )
+    }
+
     this.titleJson = titleJson
     this.slugTitle = slugTitle
     this.createdAt = createdAt

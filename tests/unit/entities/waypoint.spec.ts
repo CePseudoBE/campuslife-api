@@ -61,7 +61,7 @@ test.group('Waypoint Entity', () => {
       1,
       48.8566,
       2.3522,
-      { en: 'Test' },
+      { en: 'Test', fr: 'test' },
       'type',
       true,
       new Date(),
@@ -97,7 +97,7 @@ test.group('Waypoint Entity', () => {
       1,
       48.8566,
       2.3522,
-      { en: 'Title' },
+      { en: 'Title', fr: 'test' },
       'type',
       true,
       new Date(),
@@ -118,14 +118,32 @@ test.group('Waypoint Entity', () => {
   // Test de validation de la latitude
   test('should throw error if latitude is out of bounds', ({ assert }) => {
     assert.throws(() => {
-      new Waypoint(1, 100, 2.3522, { en: 'Title' }, 'type', true, new Date(), new Date())
+      new Waypoint(
+        1,
+        100,
+        2.3522,
+        { en: 'Title', fr: 'test' },
+        'type',
+        true,
+        new Date(),
+        new Date()
+      )
     }, 'Latitude must be between -90 and 90')
   })
 
   // Test de validation de la longitude
   test('should throw error if longitude is out of bounds', ({ assert }) => {
     assert.throws(() => {
-      new Waypoint(1, 48.8566, 200, { en: 'Title' }, 'type', true, new Date(), new Date())
+      new Waypoint(
+        1,
+        48.8566,
+        200,
+        { en: 'Title', fr: 'test' },
+        'type',
+        true,
+        new Date(),
+        new Date()
+      )
     }, 'Longitude must be between -180 and 180')
   })
 })

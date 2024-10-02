@@ -1,17 +1,13 @@
 import { Tag } from '#domain/entities/tag'
 import { Event } from '#domain/entities/event'
-
-type MultilingualField = {
-  en?: string
-  fr?: string
-}
+import { OptionalMultilingualField, MultilingualField } from '#domain/types/multilingual_field.type'
 
 export class Waypoint {
   public id: number | null
   public latitude: number
   public longitude: number
   public title: MultilingualField
-  public description?: MultilingualField
+  public description?: OptionalMultilingualField
   public types: string
   public pmr: boolean
   public slug?: string
@@ -51,6 +47,14 @@ export class Waypoint {
     if (longitude > 180 || longitude < -180) {
       throw Error('Longitude must be between -180 and 180')
     }
+
+    if (!title.en || title.en.trim().length === 0) {
+      throw new Error('InvalidTitleError: The English title must be provided and cannot be empty.')
+    }
+    if (!title.fr || title.fr.trim().length === 0) {
+      throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
+    }
+
     this.id = id
     this.latitude = latitude
     this.longitude = longitude
