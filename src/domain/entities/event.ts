@@ -5,10 +5,15 @@ import { Waypoint } from '#domain/entities/waypoint'
 import { User } from '#domain/entities/user'
 import { Address } from '#domain/entities/address'
 
+type MultilingualField = {
+  en?: string
+  fr?: string
+}
+
 export class Event {
   public id: number
-  public titleJson: JSON
-  public descriptionJson: JSON
+  public titleJson: MultilingualField
+  public descriptionJson: MultilingualField
   public image: string
   public start: Date
   public end: Date
@@ -26,8 +31,8 @@ export class Event {
 
   constructor(
     id: number,
-    titleJson: JSON,
-    descriptionJson: JSON,
+    titleJson: MultilingualField,
+    descriptionJson: MultilingualField,
     image: string,
     start: Date,
     end: Date,

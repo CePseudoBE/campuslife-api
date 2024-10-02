@@ -6,6 +6,11 @@ import WaypointModel from '#infrastructure/orm/models/waypoint_model'
 import UserModel from '#infrastructure/orm/models/user_model'
 import TagModel from '#infrastructure/orm/models/tag_model'
 
+type MultilingualField = {
+  en?: string
+  fr?: string
+}
+
 export default class EventModel extends BaseModel {
   public static table = 'events'
 
@@ -13,10 +18,10 @@ export default class EventModel extends BaseModel {
   declare id: number
 
   @column()
-  declare titleJson: JSON
+  declare titleJson: MultilingualField
 
   @column()
-  declare descriptionJson: JSON
+  declare descriptionJson: MultilingualField
 
   @column()
   declare image: string

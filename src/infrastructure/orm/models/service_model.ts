@@ -1,6 +1,11 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
+type MultilingualField = {
+  en?: string
+  fr?: string
+}
+
 export default class ServiceModel extends BaseModel {
   public static table = 'services'
 
@@ -8,10 +13,10 @@ export default class ServiceModel extends BaseModel {
   declare id: number
 
   @column()
-  declare titleJson: JSON
+  declare titleJson: MultilingualField
 
   @column()
-  declare descriptionJson: JSON
+  declare descriptionJson: MultilingualField
 
   @column()
   declare url: string

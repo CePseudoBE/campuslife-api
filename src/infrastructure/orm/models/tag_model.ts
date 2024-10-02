@@ -4,6 +4,11 @@ import WaypointModel from '#infrastructure/orm/models/waypoint_model'
 import type { ManyToMany } from '@adonisjs/lucid/types/relations'
 import EventModel from '#infrastructure/orm/models/event_model'
 
+type MultilingualField = {
+  en?: string
+  fr?: string
+}
+
 export default class TagModel extends BaseModel {
   public static table = 'tags'
 
@@ -11,7 +16,7 @@ export default class TagModel extends BaseModel {
   declare id: number
 
   @column()
-  declare titleJson: JSON
+  declare titleJson: MultilingualField
 
   @column()
   declare slugTitle: string

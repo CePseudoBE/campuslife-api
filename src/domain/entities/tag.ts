@@ -1,9 +1,14 @@
 import { Waypoint } from '#domain/entities/waypoint'
 import { Event } from '#domain/entities/event'
 
+type MultilingualField = {
+  en?: string
+  fr?: string
+}
+
 export class Tag {
   public id: number
-  public titleJson: JSON
+  public titleJson: MultilingualField
   public slugTitle: string
   public waypoints?: Waypoint[]
   public events?: Event[]
@@ -12,7 +17,7 @@ export class Tag {
 
   constructor(
     id: number,
-    titleJson: JSON,
+    titleJson: MultilingualField,
     slugTitle: string,
     createdAt: Date,
     updatedAt: Date,

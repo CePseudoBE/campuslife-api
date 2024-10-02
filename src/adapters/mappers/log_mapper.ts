@@ -5,8 +5,8 @@ export class LogMapper {
   static toPersistence(log: Log): LogModel {
     const logModel = new LogModel()
     logModel.id = log.id
-    logModel.idSession = log.idSession
-    logModel.idUser = log.idUser
+    logModel.sessionId = log.sessionId
+    logModel.userId = log.userId
     logModel.actionState = log.actionState
     logModel.actionType = log.actionType
     logModel.actionInfo = log.actionInfo
@@ -16,8 +16,8 @@ export class LogMapper {
   static toDomain(logModel: LogModel): Log {
     return new Log(
       logModel.id,
-      logModel.idSession,
-      logModel.idUser,
+      logModel.sessionId,
+      logModel.userId,
       logModel.actionState,
       logModel.actionType,
       logModel.actionInfo,

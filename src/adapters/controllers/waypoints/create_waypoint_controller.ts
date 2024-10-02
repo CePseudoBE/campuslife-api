@@ -33,7 +33,10 @@ export default class CreateWaypointController {
 
       return response.created(waypoint)
     } catch (error) {
-      return response.badRequest(error.message)
+      return response.badRequest({
+        message: error.message,
+        details: error.messages ? error.messages : [],
+      })
     }
   }
 }

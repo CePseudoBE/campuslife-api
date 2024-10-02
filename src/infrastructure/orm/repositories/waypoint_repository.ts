@@ -29,7 +29,6 @@ export class WaypointRepository extends IWaypointRepository {
     }
 
     if (column && order) {
-      console.log(column)
       query.orderBy(column, order)
     }
 
