@@ -8,12 +8,11 @@ export class ValidationService {
       latitude: vine.number().range([-90, 90]),
       longitude: vine.number().range([-180, 180]),
       title_en: vine.string(),
-      title_fr: vine.string().optional(),
-      description_en: vine.string().optional(),
-      description_fr: vine.string().optional(),
+      title_fr: vine.string(),
+      description_en: vine.string(),
+      description_fr: vine.string(),
       types: vine.string(),
       pmr: vine.boolean(),
-      slug: vine.string().optional(),
     })
   }
 
@@ -27,7 +26,6 @@ export class ValidationService {
       description_fr: vine.string().optional(),
       types: vine.string().optional(),
       pmr: vine.boolean().optional(),
-      slug: vine.string().optional(),
     })
   }
 

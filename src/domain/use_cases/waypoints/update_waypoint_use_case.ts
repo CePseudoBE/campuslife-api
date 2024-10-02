@@ -17,7 +17,6 @@ export class UpdateWaypointUseCase {
       description_fr?: string
       types?: string
       pmr?: boolean
-      slug?: string
     }
   ): Promise<Waypoint | null> {
     const existingWaypoint = await this.iwaypointrepository.findById(id)

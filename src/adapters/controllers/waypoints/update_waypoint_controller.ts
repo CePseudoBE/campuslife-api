@@ -18,7 +18,6 @@ export default class UpdateWaypointController {
       'description_fr',
       'types',
       'pmr',
-      'slug',
     ])
 
     const id = Number(params.id)
