@@ -13,7 +13,9 @@ export class WaypointRepository extends IWaypointRepository {
   }
 
   async create(waypoint: Waypoint): Promise<Waypoint> {
+    console.log(waypoint)
     const waypointModel = WaypointMapper.toPersistence(waypoint)
+    console.log(waypointModel)
     await waypointModel.save()
     return WaypointMapper.toDomain(waypointModel)
   }

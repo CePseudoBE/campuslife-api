@@ -34,6 +34,7 @@ export class CreateWaypointUseCase {
       data.pmr,
       new Date(),
       new Date(),
+      null,
       Object.keys(description).length > 0 ? description : undefined,
       data.slug
     )

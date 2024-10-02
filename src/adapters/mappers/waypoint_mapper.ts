@@ -2,6 +2,7 @@ import { Waypoint } from '#domain/entities/waypoint'
 import WaypointModel from '#infrastructure/orm/models/waypoint_model'
 import { EventMapper } from '#adapters/mappers/event_mapper'
 import { TagMapper } from '#adapters/mappers/tag_mapper'
+import { DateTime } from 'luxon'
 
 //TODO relations when all mapper are done
 export class WaypointMapper {
@@ -10,6 +11,7 @@ export class WaypointMapper {
     waypointModel.latitude = waypoint.latitude
     waypointModel.longitude = waypoint.longitude
     waypointModel.titleJson = waypoint.title
+    waypointModel.deletedAt = waypoint.deletedAt ? DateTime.fromJSDate(waypoint.deletedAt) : null
     waypointModel.descriptionJson = waypoint.description
     waypointModel.types = waypoint.types
     waypointModel.pmr = waypoint.pmr
@@ -27,6 +29,7 @@ export class WaypointMapper {
       waypointModel.pmr,
       waypointModel.createdAt.toJSDate(),
       waypointModel.updatedAt.toJSDate(),
+      waypointModel.deletedAt ? waypointModel.deletedAt.toJSDate() : null,
       waypointModel.descriptionJson,
       waypointModel.slug
     )

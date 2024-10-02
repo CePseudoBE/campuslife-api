@@ -42,5 +42,5 @@ export default class TagModel extends BaseModel {
   declare updatedAt: DateTime
 
   @column.dateTime()
-  declare deletedAt: DateTime
+  declare deletedAt: DateTime | null
 }
