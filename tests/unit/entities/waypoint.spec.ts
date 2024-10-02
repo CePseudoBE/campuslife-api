@@ -146,4 +146,62 @@ test.group('Waypoint Entity', () => {
       )
     }, 'Longitude must be between -180 and 180')
   })
+
+  test('should throw error if English title is missing or empty', ({ assert }) => {
+    assert.throws(() => {
+      new Waypoint(
+        1,
+        48.8566,
+        2.3522,
+        { en: '', fr: 'Titre français' }, // Titre anglais vide
+        'type',
+        true,
+        new Date(),
+        new Date()
+      )
+    }, 'InvalidTitleError: The English title must be provided and cannot be empty.')
+
+    assert.throws(() => {
+      new Waypoint(
+        1,
+        48.8566,
+        2.3522,
+        // @ts-ignore
+        { fr: 'Titre français' }, // Titre anglais manquant
+        'type',
+        true,
+        new Date(),
+        new Date()
+      )
+    }, 'InvalidTitleError: The English title must be provided and cannot be empty.')
+  })
+
+  test('should throw error if French title is missing or empty', ({ assert }) => {
+    assert.throws(() => {
+      new Waypoint(
+        1,
+        48.8566,
+        2.3522,
+        { en: 'English title', fr: '' }, // Titre français vide
+        'type',
+        true,
+        new Date(),
+        new Date()
+      )
+    }, 'InvalidTitleError: The French title must be provided and cannot be empty.')
+
+    assert.throws(() => {
+      new Waypoint(
+        1,
+        48.8566,
+        2.3522,
+        // @ts-ignore
+        { en: 'English title' }, // Titre français manquant
+        'type',
+        true,
+        new Date(),
+        new Date()
+      )
+    }, 'InvalidTitleError: The French title must be provided and cannot be empty.')
+  })
 })
