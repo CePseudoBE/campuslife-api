@@ -1,4 +1,5 @@
 import router from '@adonisjs/core/services/router'
+const UpdateWaypointController = () => import('#controllers/waypoints/update_waypoint_controller')
 const FindWaypointsController = () => import('#controllers/waypoints/find_waypoints_controller')
 const FindWaypointByIdsController = () =>
   import('#controllers/waypoints/find_waypoint_by_ids_controller')
@@ -16,8 +17,8 @@ router
   .group(() => {
     router
       .group(() => {
-        router.get('', [FindWaypointsController])
-        router.get(':id', [FindWaypointByIdsController])
+        router.get('', [FindWaypointsController]).as('find_waypoints')
+        router.get(':id', [FindWaypointByIdsController]).as('find_waypoint_by_id')
       })
       .prefix('waypoints')
       .as('get_waypoints_urls')
@@ -30,7 +31,8 @@ router
   .group(() => {
     router
       .group(() => {
-        router.post('', [CreateWaypointController])
+        router.post('', [CreateWaypointController]).as('create_waypoint')
+        router.patch(':id', [UpdateWaypointController]).as('update_waypoint')
       })
       .prefix('waypoints')
       .as('other_waypoints_urls')

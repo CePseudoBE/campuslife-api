@@ -17,6 +17,20 @@ export class ValidationService {
     })
   }
 
+  public static getUpdateWaypointRules() {
+    return vine.object({
+      latitude: vine.number().range([-90, 90]).optional(),
+      longitude: vine.number().range([-180, 180]).optional(),
+      title_en: vine.string().optional(),
+      title_fr: vine.string().optional(),
+      description_en: vine.string().optional(),
+      description_fr: vine.string().optional(),
+      types: vine.string().optional(),
+      pmr: vine.boolean().optional(),
+      slug: vine.string().optional(),
+    })
+  }
+
   static validateIncludes(includes: string[], model: typeof BaseModel): string[] {
     return includes.filter((relation) => {
       return model.$hasRelation(relation)

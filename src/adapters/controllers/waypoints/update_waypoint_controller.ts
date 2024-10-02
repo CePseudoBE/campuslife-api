@@ -27,7 +27,7 @@ export default class UpdateWaypointController {
       return response.badRequest({ message: 'Invalid waypoint ID' })
     }
 
-    const schema = ValidationService.getWaypointRules()
+    const schema = ValidationService.getUpdateWaypointRules()
 
     try {
       const validatedData = await vine.validate({
