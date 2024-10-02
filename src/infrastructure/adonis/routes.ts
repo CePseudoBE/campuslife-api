@@ -23,7 +23,7 @@ router
       .as('get_waypoints_urls')
   })
   .prefix('api/:lang') // Le paramètre 'lang' est ici appliqué à toutes les routes GET
-  .as('base_get_url')
+  .as('base_lang_url')
 
 // Groupes de routes POST/PATCH/DELETE sans paramètre de langue
 router
