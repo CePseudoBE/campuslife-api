@@ -6,6 +6,7 @@ export class Report {
   public contact?: string
   public createdAt: Date
   public updatedAt: Date
+  public deletedAt: Date | null
 
   constructor(
     id: number,
@@ -14,6 +15,7 @@ export class Report {
     message: string,
     createdAt: Date,
     updatedAt: Date,
+    deletedAt: Date | null = null,
     contact?: string
   ) {
     this.id = id
@@ -23,5 +25,6 @@ export class Report {
     this.contact = contact
     this.createdAt = createdAt
     this.updatedAt = updatedAt
+    this.deletedAt = deletedAt
   }
 }

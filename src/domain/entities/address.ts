@@ -13,6 +13,7 @@ export class Address {
   public country?: Country
   public createdAt: Date
   public updatedAt: Date
+  public deletedAt: Date | null
 
   constructor(
     id: number,
@@ -23,6 +24,7 @@ export class Address {
     countryId: number,
     createdAt: Date,
     updatedAt: Date,
+    deletedAt: Date | null = null,
     complement?: string,
     events?: Event[],
     country?: Country
@@ -38,5 +40,6 @@ export class Address {
     this.country = country
     this.createdAt = createdAt
     this.updatedAt = updatedAt
+    this.deletedAt = deletedAt
   }
 }

@@ -19,6 +19,7 @@ export class Waypoint {
   public events?: Event[]
   public createdAt: Date
   public updatedAt: Date
+  public deletedAt: Date | null
 
   public static allowedColumns: string[] = [
     'id',
@@ -38,6 +39,7 @@ export class Waypoint {
     pmr: boolean,
     createdAt: Date,
     updatedAt: Date,
+    deletedAt: Date | null = null,
     description?: MultilingualField,
     slug?: string,
     tags?: Tag[],
@@ -55,6 +57,7 @@ export class Waypoint {
     this.events = events
     this.createdAt = createdAt
     this.updatedAt = updatedAt
+    this.deletedAt = deletedAt
   }
 
   public update(data: {

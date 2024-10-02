@@ -22,7 +22,7 @@ export class WaypointRepository extends IWaypointRepository {
     { page, limit, order, column }: QueryParams,
     includes: string[]
   ): Promise<Waypoint[]> {
-    const query = WaypointModel.query()
+    const query = WaypointModel.query().whereNull('deleted_at')
 
     if (page && limit) {
       query.paginate(page, limit)
@@ -60,12 +60,17 @@ export class WaypointRepository extends IWaypointRepository {
   }
 
   async update(waypoint: Waypoint): Promise<Waypoint> {
-    const waypointModel = await WaypointModel.find(waypoint.id)
+    if (!waypoint.id) {
+      throw new Error('Waypoint not found')
+    }
+    const waypointModel = await WaypointModel.query()
+      .whereNull('deleted_at')
+      .andWhere('id', waypoint.id)
+      .first()
     if (!waypointModel) {
       throw new Error('Waypoint not found')
     }
 
-    // Update the fields in the persistence model
     waypointModel.latitude = waypoint.latitude
     waypointModel.longitude = waypoint.longitude
     waypointModel.titleJson = waypoint.title

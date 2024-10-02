@@ -14,6 +14,7 @@ export class Tag {
   public events?: Event[]
   public createdAt: Date
   public updatedAt: Date
+  public deletedAt: Date | null
 
   constructor(
     id: number,
@@ -21,6 +22,7 @@ export class Tag {
     slugTitle: string,
     createdAt: Date,
     updatedAt: Date,
+    deletedAt: Date | null = null,
     waypoints?: Waypoint[],
     events?: Event[]
   ) {
@@ -29,6 +31,7 @@ export class Tag {
     this.slugTitle = slugTitle
     this.createdAt = createdAt
     this.updatedAt = updatedAt
+    this.deletedAt = deletedAt
     this.waypoints = waypoints
     this.events = events
   }

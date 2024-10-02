@@ -28,6 +28,7 @@ export class Event {
   public tags?: Tag[]
   public createdAt: Date
   public updatedAt: Date
+  public deletedAt: Date | null
 
   constructor(
     id: number,
@@ -42,6 +43,7 @@ export class Event {
     addressId: number,
     createdAt: Date,
     updatedAt: Date,
+    deletedAt: Date | null = null,
     slugTitle?: string,
     waypoint?: Waypoint,
     user?: User,
@@ -65,5 +67,6 @@ export class Event {
     this.address = address
     this.createdAt = createdAt
     this.updatedAt = updatedAt
+    this.deletedAt = deletedAt
   }
 }

@@ -12,6 +12,7 @@ export class Service {
   public isActive: boolean
   public createdAt: Date
   public updatedAt: Date
+  public deletedAt: Date | null
 
   constructor(
     id: number,
@@ -21,7 +22,8 @@ export class Service {
     icon: string | undefined,
     isActive: boolean,
     createdAt: Date,
-    updatedAt: Date
+    updatedAt: Date,
+    deletedAt: Date | null = null
   ) {
     this.id = id
     this.titleJson = titleJson
@@ -31,5 +33,6 @@ export class Service {
     this.isActive = isActive
     this.createdAt = createdAt
     this.updatedAt = updatedAt
+    this.deletedAt = deletedAt
   }
 }
