@@ -45,6 +45,12 @@ export class Waypoint {
     tags?: Tag[],
     events?: Event[]
   ) {
+    if (latitude > 90 || latitude < -90) {
+      throw Error('Latitude must be between -90 and 90')
+    }
+    if (longitude > 180 || longitude < -180) {
+      throw Error('Longitude must be between -180 and 180')
+    }
     this.id = id
     this.latitude = latitude
     this.longitude = longitude
