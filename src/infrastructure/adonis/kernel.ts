@@ -35,12 +35,11 @@ server.use([
 router.use([() => import('@adonisjs/core/bodyparser_middleware')])
 router.use([() => import('@adonisjs/auth/initialize_auth_middleware')])
 
-router.named({
-  auth: () => import('#middleware/auth_middleware'),
-})
-
 /**
  * Named middleware collection must be explicitly assigned to
  * the routes or the routes group.
  */
-export const middleware = router.named({})
+export const middleware = router.named({
+  auth: () => import('#middleware/auth_middleware'),
+  validLanguage: () => import('#middleware/valid_language_middleware'),
+})

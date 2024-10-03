@@ -9,7 +9,7 @@ export default class DeleteWaypointController {
     const id = Number.parseInt(ctx.params.id)
 
     if (!id || Number.isNaN(id)) {
-      return ctx.response.badRequest('Bad ID provided (non existent or NaN)')
+      return ctx.response.badRequest({ message: 'Bad ID provided (non existent or NaN)' })
     }
     try {
       await this.deleteWaypointUseCase.handle(id)

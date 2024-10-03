@@ -1,4 +1,5 @@
 import router from '@adonisjs/core/services/router'
+import { middleware } from '#infrastructure/adonis/kernel'
 const DeleteWaypointController = () => import('#controllers/waypoints/delete_waypoint_controller')
 const UpdateWaypointController = () => import('#controllers/waypoints/update_waypoint_controller')
 const FindWaypointsController = () => import('#controllers/waypoints/find_waypoints_controller')
@@ -26,6 +27,7 @@ router
   })
   .prefix('api/:lang') // Le paramètre 'lang' est ici appliqué à toutes les routes GET
   .as('base_lang_url')
+  .use(middleware.validLanguage())
 
 // Groupes de routes POST/PATCH/DELETE sans paramètre de langue
 router

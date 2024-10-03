@@ -11,7 +11,7 @@ export default class FindWaypointByIdsController {
     const id = Number.parseInt(ctx.params.id)
 
     if (!id || Number.isNaN(id)) {
-      return ctx.response.badRequest('Bad ID provided (non existent or NaN)')
+      return ctx.response.badRequest({ message: 'Bad ID provided (non existent or NaN)' })
     }
     try {
       const validIncludes = await ValidationService.validateRequestAndIncludes(ctx, WaypointModel)
@@ -19,7 +19,7 @@ export default class FindWaypointByIdsController {
       const waypoint = await this.findWaypointByIdUseCase.handle({ id, includes: validIncludes })
 
       if (!waypoint) {
-        return ctx.response.badRequest(`Waypoint with id : ${id} does not exist`)
+        return ctx.response.badRequest({ message: `Waypoint with id : ${id} does not exist` })
       }
 
       return ctx.response.ok({ data: waypoint })
