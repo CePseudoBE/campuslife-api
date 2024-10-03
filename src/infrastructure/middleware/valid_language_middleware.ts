@@ -11,7 +11,7 @@ export default class ValidLanguageMiddleware {
       })
     }
 
-    const validLanguages = ['fr', 'en']
+    const validLanguages = ['fr', 'en', 'all']
 
     if (!validLanguages.includes(lang)) {
       return ctx.response.badRequest({

@@ -12,7 +12,7 @@ export default class extends BaseSchema {
       table.json('description_json').nullable()
       table.string('types').notNullable().defaultTo('default')
       table.boolean('pmr').notNullable().defaultTo(false)
-      table.string('slug').nullable().defaultTo(null)
+      table.string('slug').index('slug_waypoint_index')
 
       table.timestamp('created_at')
       table.timestamp('updated_at')

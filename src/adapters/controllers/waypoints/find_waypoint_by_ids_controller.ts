@@ -3,6 +3,7 @@ import { FindByIdWaypointUseCase } from '#domain/use_cases/waypoints/find_by_id_
 import { inject } from '@adonisjs/core'
 import { ValidationService } from '#adapters/services/validation_service'
 import WaypointModel from '#infrastructure/orm/models/waypoint_model'
+import { WaypointDTO } from '#adapters/dto/waypoint_dto'
 
 @inject()
 export default class FindWaypointByIdsController {
@@ -13,6 +14,9 @@ export default class FindWaypointByIdsController {
     if (!id || Number.isNaN(id)) {
       return ctx.response.badRequest({ message: 'Bad ID provided (non existent or NaN)' })
     }
+
+    const lang = ctx.params.lang
+
     try {
       const validIncludes = await ValidationService.validateRequestAndIncludes(ctx, WaypointModel)
 
@@ -22,7 +26,9 @@ export default class FindWaypointByIdsController {
         return ctx.response.badRequest({ message: `Waypoint with id : ${id} does not exist` })
       }
 
-      return ctx.response.ok({ data: waypoint })
+      const waypointDto = WaypointDTO.toLanguages(waypoint, lang, validIncludes)
+
+      return ctx.response.ok({ data: waypointDto })
     } catch (err) {
       return ctx.response.badRequest({ message: err.message })
     }

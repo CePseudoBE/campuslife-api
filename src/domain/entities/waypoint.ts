@@ -36,7 +36,7 @@ export class Waypoint {
     createdAt: Date,
     updatedAt: Date,
     deletedAt: Date | null = null,
-    description?: MultilingualField,
+    description?: OptionalMultilingualField,
     slug?: string,
     tags?: Tag[],
     events?: Event[]

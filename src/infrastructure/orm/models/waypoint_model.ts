@@ -3,11 +3,10 @@ import { BaseModel, column, hasMany, manyToMany } from '@adonisjs/lucid/orm'
 import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import EventModel from '#infrastructure/orm/models/event_model'
 import TagModel from '#infrastructure/orm/models/tag_model'
-
-type MultilingualField = {
-  en?: string
-  fr?: string
-}
+import type {
+  MultilingualField,
+  OptionalMultilingualField,
+} from '#domain/types/multilingual_field.type'
 
 export default class WaypointModel extends BaseModel {
   public static table = 'waypoints'
@@ -25,7 +24,7 @@ export default class WaypointModel extends BaseModel {
   declare titleJson: MultilingualField
 
   @column()
-  declare descriptionJson: MultilingualField | undefined
+  declare descriptionJson: OptionalMultilingualField | undefined
 
   @column()
   declare types: string
