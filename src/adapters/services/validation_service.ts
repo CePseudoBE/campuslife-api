@@ -7,10 +7,10 @@ export class ValidationService {
     return vine.object({
       latitude: vine.number().range([-90, 90]),
       longitude: vine.number().range([-180, 180]),
-      title_en: vine.string(),
-      title_fr: vine.string(),
-      description_en: vine.string(),
-      description_fr: vine.string(),
+      title_en: vine.string().minLength(3).maxLength(50),
+      title_fr: vine.string().minLength(3).maxLength(50),
+      description_en: vine.string().minLength(5).maxLength(150),
+      description_fr: vine.string().minLength(5).maxLength(150),
       types: vine.string(),
       pmr: vine.boolean(),
     })
