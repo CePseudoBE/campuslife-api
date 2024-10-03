@@ -7,7 +7,7 @@ export class EventDTO {
       title: event.titleJson,
       startDate: event.start,
       endDate: event.end,
-      user: event.idUser,
+      user: event.userId,
     }
   }
 }
