@@ -13,7 +13,7 @@ export class AddressMapper {
     addressModel.complement = address.complement
     addressModel.zip = address.zip
     addressModel.city = address.city
-    addressModel.idCountry = address.idCountry
+    addressModel.countryId = address.countryId
 
     return addressModel
   }
@@ -25,18 +25,21 @@ export class AddressMapper {
       addressModel.num,
       addressModel.zip,
       addressModel.city,
-      addressModel.idCountry,
+      addressModel.countryId,
       addressModel.createdAt.toJSDate(),
       addressModel.updatedAt.toJSDate(),
+      addressModel.deletedAt ? addressModel.deletedAt.toJSDate() : null,
       addressModel.complement
     )
 
     if (addressModel.events) {
-      address.events = addressModel.events.map((eventModel) => EventMapper.toDomain(eventModel))
+      address.events
+        ? addressModel.events.map((eventModel) => EventMapper.toDomain(eventModel))
+        : []
     }
 
     if (addressModel.country) {
-      address.country = CountryMapper.toDomain(addressModel.country)
+      address.country ? CountryMapper.toDomain(addressModel.country) : undefined
     }
 
     return address

@@ -35,11 +35,15 @@ export class WaypointMapper {
     )
 
     if (waypointModel.events) {
-      waypoint.events = waypointModel.events.map((eventModel) => EventMapper.toDomain(eventModel))
+      waypoint.events = waypointModel.events
+        ? waypointModel.events.map((eventModel) => EventMapper.toDomain(eventModel))
+        : []
     }
 
     if (waypointModel.tags) {
-      waypoint.tags = waypointModel.tags.map((tagModel) => TagMapper.toDomain(tagModel))
+      waypoint.tags = waypointModel.tags
+        ? waypointModel.tags.map((tagModel) => TagMapper.toDomain(tagModel))
+        : []
     }
 
     return waypoint

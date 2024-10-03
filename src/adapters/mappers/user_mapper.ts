@@ -24,7 +24,9 @@ export class UserMapper {
     )
 
     if (userModel.events) {
-      user.events = userModel.events.map((eventModel) => EventMapper.toDomain(eventModel))
+      user.events = userModel.events
+        ? userModel.events.map((eventModel) => EventMapper.toDomain(eventModel))
+        : []
     }
 
     return user

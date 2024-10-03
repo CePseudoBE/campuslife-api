@@ -1,10 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
-
-type MultilingualField = {
-  en?: string
-  fr?: string
-}
+import type { MultilingualField } from '#domain/types/multilingual_field.type'
 
 export default class ServiceModel extends BaseModel {
   public static table = 'services'

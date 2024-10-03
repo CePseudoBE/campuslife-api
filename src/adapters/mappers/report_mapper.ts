@@ -20,6 +20,7 @@ export class ReportMapper {
       reportModel.message,
       reportModel.createdAt.toJSDate(),
       reportModel.updatedAt.toJSDate(),
+      reportModel.deletedAt ? reportModel.deletedAt.toJSDate() : null,
       reportModel.contact
     )
   }

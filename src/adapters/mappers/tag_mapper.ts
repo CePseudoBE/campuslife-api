@@ -21,13 +21,15 @@ export class TagMapper {
     )
 
     if (tagModel.events) {
-      tag.events = tagModel.events.map((eventModel) => EventMapper.toDomain(eventModel))
+      tag.events = tagModel.events
+        ? tagModel.events.map((eventModel) => EventMapper.toDomain(eventModel))
+        : []
     }
 
     if (tagModel.waypoints) {
-      tag.waypoints = tagModel.waypoints.map((waypointModel) =>
-        WaypointMapper.toDomain(waypointModel)
-      )
+      tag.waypoints
+        ? tagModel.waypoints.map((waypointModel) => WaypointMapper.toDomain(waypointModel))
+        : []
     }
 
     return tag

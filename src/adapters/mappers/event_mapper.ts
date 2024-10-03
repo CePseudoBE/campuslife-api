@@ -15,9 +15,9 @@ export class EventMapper {
     eventModel.end = DateTime.fromJSDate(event.end)
     eventModel.url = event.url
     eventModel.slugTitle = event.slugTitle
-    eventModel.idWaypoint = event.idWaypoint
-    eventModel.idUser = event.idUser
-    eventModel.idAddress = event.idAddress
+    eventModel.waypointId = event.waypointId
+    eventModel.userId = event.userId
+    eventModel.addressId = event.addressId
     return eventModel
   }
 
@@ -30,28 +30,33 @@ export class EventMapper {
       eventModel.start.toJSDate(),
       eventModel.end.toJSDate(),
       eventModel.url,
-      eventModel.idWaypoint,
-      eventModel.idUser,
-      eventModel.idAddress,
+      eventModel.waypointId,
+      eventModel.userId,
+      eventModel.addressId,
       eventModel.createdAt.toJSDate(),
       eventModel.updatedAt.toJSDate(),
+      eventModel.deletedAt ? eventModel.deletedAt.toJSDate() : null,
       eventModel.slugTitle
     )
 
     if (eventModel.tags) {
-      event.tags = eventModel.tags.map((tagModel) => TagMapper.toDomain(tagModel))
+      event.tags = eventModel.tags
+        ? eventModel.tags.map((tagModel) => TagMapper.toDomain(tagModel))
+        : []
     }
 
     if (eventModel.user) {
-      event.user = UserMapper.toDomain(eventModel.user)
+      event.user = eventModel.user ? UserMapper.toDomain(eventModel.user) : undefined
     }
 
     if (eventModel.address) {
-      event.address = AddressMapper.toDomain(eventModel.address)
+      event.address = eventModel.address ? AddressMapper.toDomain(eventModel.address) : undefined
     }
 
     if (eventModel.waypoint) {
-      event.waypoint = WaypointMapper.toDomain(eventModel.waypoint)
+      event.waypoint = eventModel.waypoint
+        ? WaypointMapper.toDomain(eventModel.waypoint)
+        : undefined
     }
 
     return event
