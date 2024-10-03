@@ -2,6 +2,7 @@ import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
 import WaypointModel from '#infrastructure/orm/models/waypoint_model'
 import string from '@adonisjs/core/helpers/string'
+import { DateTime } from 'luxon'
 
 test.group('Create Waypoint Controller', (group) => {
   // Utiliser une transaction globale pour annuler tout après chaque test
@@ -102,5 +103,66 @@ test.group('Update Waypoint Controller (PATCH)', (group) => {
 
     patchResponse.assertStatus(400) // Doit retourner 400 car l'ID n'est pas valide
     assert.equal(patchResponse.body().message, 'Invalid waypoint ID')
+  })
+})
+
+test.group('Delete Waypoint Controller', (group) => {
+  // Utilisation de la transaction globale pour annuler tout après chaque test
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('should delete an existing waypoint successfully', async ({ client, assert }) => {
+    // Créer un waypoint directement via le modèle sans passer par l'API
+    const waypoint = new WaypointModel()
+    waypoint.latitude = 12.3456
+    waypoint.longitude = 65.4321
+    waypoint.titleJson = { en: 'Test Waypoint', fr: 'test' }
+    waypoint.descriptionJson = { en: 'Test description', fr: 'test' }
+    waypoint.types = 'type1'
+    waypoint.pmr = true
+    waypoint.slug = 'test-waypoint'
+    await waypoint.save()
+
+    // Faire une requête DELETE pour supprimer le waypoint
+    const response = await client.delete(`/api/waypoints/${waypoint.id}`)
+
+    response.assertStatus(204) // Statut 204 No Content pour suppression réussie
+
+    // Vérifier que le waypoint a été soft deleted (en vérifiant deleted_at)
+    const deletedWaypoint = await WaypointModel.find(waypoint.id)
+    assert.exists(deletedWaypoint?.deletedAt) // Vérifier que deletedAt est défini
+  })
+
+  test('should return 400 if trying to delete an already deleted waypoint', async ({
+    client,
+    assert,
+  }) => {
+    // Créer un waypoint directement via le modèle
+    const waypoint = new WaypointModel()
+    waypoint.latitude = 12.3456
+    waypoint.longitude = 65.4321
+    waypoint.titleJson = { en: 'Test Waypoint', fr: 'test' }
+    waypoint.descriptionJson = { en: 'Test description', fr: 'test' }
+    waypoint.types = 'type1'
+    waypoint.pmr = true
+    waypoint.slug = 'test-waypoint'
+    await waypoint.save()
+
+    // Marquer le waypoint comme supprimé (soft delete)
+    waypoint.deletedAt = DateTime.now()
+    await waypoint.save()
+
+    // Tenter de supprimer un waypoint déjà soft deleted
+    const response = await client.delete(`/api/waypoints/${waypoint.id}`)
+
+    response.assertStatus(400) // Statut 400 Bad Request attendu
+    assert.equal(response.body().message, 'Waypoint deleted') // Message d'erreur attendu
+  })
+
+  test('should return 400 if invalid ID is provided', async ({ client, assert }) => {
+    // Tenter de supprimer un waypoint avec un ID invalide (non numérique)
+    const response = await client.delete('/api/waypoints/invalid-id')
+
+    response.assertStatus(400) // Statut 400 attendu pour une requête invalide
+    assert.equal(response.body().message, 'Bad ID provided (non existent or NaN)') // Message d'erreur attendu
   })
 })
