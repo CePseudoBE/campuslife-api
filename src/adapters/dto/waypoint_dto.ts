@@ -18,16 +18,16 @@ type WaypointDTOType = {
 export class WaypointDTO {
   static toLanguages(
     waypoint: Waypoint,
-    lang: 'fr' | 'en' | 'all',
+    lang: 'fr' | 'en' | undefined,
     includes?: string[]
   ): WaypointDTOType {
     const dto: WaypointDTOType = {
       id: waypoint.id!,
       latitude: waypoint.latitude,
       longitude: waypoint.longitude,
-      title: lang === 'all' ? waypoint.title : waypoint.title[lang],
+      title: lang === undefined ? waypoint.title : waypoint.title[lang],
       description: waypoint.description
-        ? lang === 'all'
+        ? lang === undefined
           ? waypoint.description
           : waypoint.description[lang]
         : undefined,
