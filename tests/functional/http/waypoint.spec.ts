@@ -166,3 +166,45 @@ test.group('Delete Waypoint Controller', (group) => {
     assert.equal(response.body().message, 'Bad ID provided (non existent or NaN)') // Message d'erreur attendu
   })
 })
+
+test.group('Get one Waypoint Controller', (group) => {
+  // Utilisation de la transaction globale pour annuler tout après chaque test
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('should get the waypoint successfully', async ({ client, assert }) => {
+    const json = {
+      latitude: 12.3456,
+      longitude: 65.4321,
+      title_en: 'Original Waypoint EN',
+      title_fr: 'Original Waypoint FR',
+      description_en: 'Original description EN',
+      description_fr: 'Original description FR',
+      types: 'type1',
+      pmr: true,
+    }
+    // Créer un waypoint directement
+    const createResponse = await client.post('/api/waypoints').json(json)
+
+    createResponse.assertStatus(201)
+    const createdWaypoint = createResponse.body()
+
+    // Faire une requête GET pour récupérer le waypoint
+    const response = await client.get(`/api/waypoints/${createdWaypoint.id}`)
+
+    const actualDesc = {
+      en: json.description_en,
+      fr: json.description_fr,
+    }
+
+    response.assertStatus(200) // Statut 200 pour récupération réussite
+    assert.equal(json.latitude, response.body().data.latitude)
+    assert.deepEqual(actualDesc, response.body().data.description)
+  })
+
+  test('should return 400 if trying to get non existant waypoint', async ({ client, assert }) => {
+    const response = await client.get(`/api/waypoints/99999`)
+
+    response.assertStatus(400) // Statut 400 Bad Request attendu
+    assert.equal(response.body().message, 'Waypoint with id : 99999 does not exist') // Message d'erreur attendu
+  })
+})
