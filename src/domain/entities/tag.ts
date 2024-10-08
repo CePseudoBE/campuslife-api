@@ -13,7 +13,7 @@ export class Tag {
   public deletedAt: Date | null
 
   constructor(
-    id: number,
+    id: number | null,
     titleJson: MultilingualField,
     slugTitle: string,
     createdAt: Date,
