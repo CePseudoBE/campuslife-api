@@ -3,6 +3,6 @@ import string from '@adonisjs/core/helpers/string'
 
 export class SlugService extends ISlugService {
   generate(entire: string): string {
-    return string.slug(entire)
+    return string.slug(entire, { lower: true })
   }
 }

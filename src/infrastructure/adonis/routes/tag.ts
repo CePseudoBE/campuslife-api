@@ -19,7 +19,7 @@ router
     router
       .group(() => {
         router.post('', [CreateTagController]).as('create_tag')
-        router.delete('', [DeleteTagsController]).as('delete_tags')
+        router.delete(':id', [DeleteTagsController]).as('delete_tags')
       })
       .prefix('tags')
   })
