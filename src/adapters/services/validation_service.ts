@@ -29,6 +29,14 @@ export class ValidationService {
     })
   }
 
+  public static getTagRules() {
+    return vine.object({
+      title_en: vine.string().minLength(3).maxLength(50),
+      title_fr: vine.string().minLength(3).maxLength(50),
+      slug: vine.string().optional(),
+    })
+  }
+
   static validateIncludes(includes: string[], model: typeof BaseModel): string[] {
     return includes.filter((relation) => {
       return model.$hasRelation(relation)

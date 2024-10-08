@@ -5,7 +5,7 @@ import { ITagRepository } from '#domain/repositories/itag_repository'
 import { Tag } from '#domain/entities/tag'
 
 @inject()
-export class CreateWaypointUseCase {
+export class CreateTagUseCase {
   constructor(
     private itagrepository: ITagRepository,
     private iSlugService: ISlugService
