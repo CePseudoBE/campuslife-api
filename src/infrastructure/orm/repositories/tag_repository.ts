@@ -27,7 +27,7 @@ export class TagRepository extends ITagRepository {
     const tagModel = await TagModel.query().whereNull('deleted_at').andWhere('id', tag.id).first()
 
     if (!tagModel) {
-      throw new Error('AlreadyDelete : Tag deleted')
+      throw new Error('AlreadyDelete: Tag deleted')
     }
 
     tagModel.deletedAt = DateTime.fromJSDate(tag.deletedAt!)
@@ -42,7 +42,13 @@ export class TagRepository extends ITagRepository {
 
   async findById(id: number, includes?: string[]): Promise<Tag | null> {
     const tagModel = await TagModel.find(id)
-    if (!tagModel) return null
+    if (!tagModel) {
+      throw new Error('NotFound: Tag not found')
+    }
+
+    if (tagModel.deletedAt) {
+      throw new Error('AlreadyDelete: Tag deleted')
+    }
 
     if (includes && includes.length > 0) {
       for (const relation of includes) {
