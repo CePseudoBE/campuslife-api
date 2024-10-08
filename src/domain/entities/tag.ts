@@ -48,4 +48,8 @@ export class Tag {
     this.waypoints = waypoints
     this.events = events
   }
+
+  public delete() {
+    this.deletedAt = new Date()
+  }
 }

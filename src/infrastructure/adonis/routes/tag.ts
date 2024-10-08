@@ -1,5 +1,6 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#infrastructure/adonis/kernel'
+const DeleteTagsController = () => import('#controllers/tags/delete_tags_controller')
 const CreateTagController = () => import('#controllers/tags/create_tags_controller')
 // Groupes de routes GET avec paramètre de langue
 router
@@ -18,6 +19,7 @@ router
     router
       .group(() => {
         router.post('', [CreateTagController]).as('create_tag')
+        router.delete('', [DeleteTagsController]).as('delete_tags')
       })
       .prefix('tags')
   })
