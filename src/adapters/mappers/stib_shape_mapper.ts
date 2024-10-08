@@ -4,7 +4,6 @@ import StibShapeModel from '#infrastructure/orm/models/stib_shape_model'
 export class StibShapeMapper {
   static toPersistence(stibShape: StibShape): StibShapeModel {
     const stibShapeModel = new StibShapeModel()
-    stibShapeModel.id = stibShape.id
     stibShapeModel.ligne = stibShape.ligne
     stibShapeModel.colorHex = stibShape.colorHex
     return stibShapeModel

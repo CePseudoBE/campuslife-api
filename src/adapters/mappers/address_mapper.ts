@@ -7,7 +7,6 @@ export class AddressMapper {
   static toPersistence(address: Address): AddressModel {
     const addressModel = new AddressModel()
 
-    addressModel.id = address.id
     addressModel.street = address.street
     addressModel.num = address.num
     addressModel.complement = address.complement

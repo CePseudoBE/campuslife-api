@@ -4,7 +4,6 @@ import ReportModel from '#infrastructure/orm/models/report_model'
 export class ReportMapper {
   static toPersistence(report: Report): ReportModel {
     const reportModel = new ReportModel()
-    reportModel.id = report.id
     reportModel.sessionId = report.sessionId
     reportModel.deviceId = report.deviceId
     reportModel.message = report.message

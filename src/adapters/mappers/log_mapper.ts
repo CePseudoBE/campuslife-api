@@ -4,7 +4,6 @@ import LogModel from '#infrastructure/orm/models/log_model'
 export class LogMapper {
   static toPersistence(log: Log): LogModel {
     const logModel = new LogModel()
-    logModel.id = log.id
     logModel.sessionId = log.sessionId
     logModel.userId = log.userId
     logModel.actionState = log.actionState

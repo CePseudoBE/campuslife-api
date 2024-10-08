@@ -5,8 +5,6 @@ import { AddressMapper } from './address_mapper.js'
 export class CountryMapper {
   static toPersistence(country: Country): CountryModel {
     const countryModel = new CountryModel()
-
-    countryModel.id = country.id
     countryModel.name = country.name
     countryModel.iso = country.iso
 
