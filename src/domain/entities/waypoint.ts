@@ -55,6 +55,14 @@ export class Waypoint {
       throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
     }
 
+    if (!types || types.trim().length === 0) {
+      throw new Error('InvalidTypesError: The waypoint type must be provided and cannot be empty.')
+    }
+
+    if (!pmr) {
+      pmr = false
+    }
+
     this.id = id
     this.latitude = latitude
     this.longitude = longitude

@@ -109,6 +109,42 @@ test.group('CreateWaypointUseCase', () => {
 
     await assert.rejects(() => useCase.handle(invalidData), 'Invalid latitude')
   })
+
+  test('should throw error if title is missing', async ({ assert }) => {
+    const useCase = new CreateWaypointUseCase(mockWaypointRepository, mockSlugService)
+
+    const invalidData = {
+      latitude: 48.8566,
+      longitude: 2.3522,
+      // Title missing to trigger validation error
+      description_en: 'Test Description',
+      description_fr: 'Description de test',
+      types: 'type',
+      pmr: true,
+    }
+    //@ts-ignore
+    await assert.rejects(() => useCase.handle(invalidData), 'Title is required')
+  })
+
+  test('should throw error if waypoint type is invalid', async ({ assert }) => {
+    const useCase = new CreateWaypointUseCase(mockWaypointRepository, mockSlugService)
+
+    const invalidData = {
+      latitude: 48.8566,
+      longitude: 2.3522,
+      title_en: 'Test Title',
+      title_fr: 'Titre de test',
+      description_en: 'Test Description',
+      description_fr: 'Description de test',
+      types: '', // Invalid type to trigger validation error
+      pmr: true,
+    }
+
+    await assert.rejects(
+      () => useCase.handle(invalidData),
+      'InvalidTypesError: The waypoint type must be provided and cannot be empty.'
+    )
+  })
 })
 
 test.group('UpdateWaypointUseCase', () => {
@@ -130,6 +166,7 @@ test.group('UpdateWaypointUseCase', () => {
     assert.equal(waypoint.latitude, 40.7128)
     assert.equal(waypoint.title.en, 'Updated Title')
   })
+
   test('should throw error if waypoint not found', async ({ assert }) => {
     const useCase = new UpdateWaypointUseCase(mockWaypointRepository)
 

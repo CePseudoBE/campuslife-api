@@ -30,6 +30,10 @@ export class CreateWaypointUseCase {
       fr: data.description_fr || '',
     }
 
+    if (!data.title_en || !data.title_fr) {
+      throw Error('Title is required')
+    }
+
     const slug = this.iSlugService.generate(data.title_en)
 
     const waypoint = new Waypoint(

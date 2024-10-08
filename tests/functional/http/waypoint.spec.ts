@@ -207,4 +207,33 @@ test.group('Get one Waypoint Controller', (group) => {
     response.assertStatus(400) // Statut 400 Bad Request attendu
     assert.equal(response.body().message, 'Waypoint with id : 99999 does not exist') // Message d'erreur attendu
   })
+
+  test('should get the waypoint successfully with only the french title and description', async ({
+    client,
+    assert,
+  }) => {
+    const json = {
+      latitude: 12.3456,
+      longitude: 65.4321,
+      title_en: 'Original Waypoint EN',
+      title_fr: 'Original Waypoint FR',
+      description_en: 'Original description EN',
+      description_fr: 'Original description FR',
+      types: 'type1',
+      pmr: true,
+    }
+    // Créer un waypoint directement
+    const createResponse = await client.post('/api/waypoints').json(json)
+
+    createResponse.assertStatus(201)
+    const createdWaypoint = createResponse.body()
+
+    // Faire une requête GET pour récupérer le waypoint
+    const response = await client.get(`/api/fr/waypoints/${createdWaypoint.id}`)
+
+    response.assertStatus(200) // Statut 200 pour récupération réussite
+    assert.equal(json.latitude, response.body().data.latitude)
+    assert.equal(json.description_fr, response.body().data.description)
+    assert.equal(json.title_fr, response.body().data.title)
+  })
 })
