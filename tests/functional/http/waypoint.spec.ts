@@ -236,4 +236,64 @@ test.group('Get one Waypoint Controller', (group) => {
     assert.equal(json.description_fr, response.body().data.description)
     assert.equal(json.title_fr, response.body().data.title)
   })
+
+  test('should return 400 if trying to get non existant languages', async ({ client, assert }) => {
+    const response = await client.get(`/api/dz/waypoints/1`)
+
+    response.assertStatus(400) // Statut 400 Bad Request attendu
+    assert.equal(response.body().message, 'InvalidLanguage: Supported languages are fr and en') // Message d'erreur attendu
+  })
+})
+
+test.group('Get all Waypoints Controller', (group) => {
+  // Utilisation de la transaction globale pour annuler tout après chaque test
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('should get all waypoints successfully', async ({ client, assert }) => {
+    const waypoint1 = {
+      latitude: 12.3456,
+      longitude: 65.4321,
+      title_en: 'Waypoint EN 1',
+      title_fr: 'Waypoint FR 1',
+      description_en: 'Description EN 1',
+      description_fr: 'Description FR 1',
+      types: 'type1',
+      pmr: true,
+    }
+    const waypoint2 = {
+      latitude: 23.4567,
+      longitude: 54.321,
+      title_en: 'Waypoint EN 2',
+      title_fr: 'Waypoint FR 2',
+      description_en: 'Description EN 2',
+      description_fr: 'Description FR 2',
+      types: 'type2',
+      pmr: false,
+    }
+
+    // Créer deux waypoints directement
+    await client.post('/api/waypoints').json(waypoint1)
+    await client.post('/api/waypoints').json(waypoint2)
+
+    // Faire une requête GET pour récupérer tous les waypoints
+    const response = await client.get('/api/waypoints')
+
+    response.assertStatus(200) // Statut 200 pour récupération réussite
+
+    assert.isArray(response.body().data) // Vérifie que le résultat est bien un tableau
+    assert.lengthOf(response.body().data, 2) // Vérifie qu'il y a bien 2 waypoints récupérés
+
+    // Vérifie que les données des waypoints sont bien présentes
+    assert.equal(response.body().data[1].latitude, waypoint1.latitude)
+    assert.equal(response.body().data[0].latitude, waypoint2.latitude)
+  })
+
+  test('should return empty array if no waypoints exist', async ({ client, assert }) => {
+    // Faire une requête GET pour récupérer les waypoints (aucun waypoint n'existe)
+    const response = await client.get('/api/waypoints')
+
+    response.assertStatus(200) // Statut 200 OK
+    assert.isArray(response.body().data) // Vérifie que le résultat est bien un tableau
+    assert.isEmpty(response.body().data) // Vérifie que le tableau est vide
+  })
 })
