@@ -38,9 +38,17 @@ export class CreateWaypointUseCase {
 
     let check = await this.iwaypointrepository.findBySlug(slug)
 
-    while (check) {
+    let iterationCount = 0
+    const maxIterations = 10
+
+    while (check && iterationCount < maxIterations) {
       slug = this.iSlugService.slugWithRandom(slug)
       check = await this.iwaypointrepository.findBySlug(slug)
+      iterationCount++
+    }
+
+    if (iterationCount === maxIterations) {
+      throw new Error('MaxIteration: Unable to generate unique slug after several attempts')
     }
 
     const waypoint = new Waypoint(
