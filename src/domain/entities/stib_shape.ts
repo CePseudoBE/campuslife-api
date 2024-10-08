@@ -1,5 +1,5 @@
 export class StibShape {
-  public id: number
+  public id: number | null
   public ligne: string
   public colorHex: string
   public createdAt: Date

@@ -3,7 +3,7 @@ import { Event } from '#domain/entities/event'
 import { MultilingualField } from '#domain/types/multilingual_field.type'
 
 export class Tag {
-  public id: number
+  public id: number | null
   public titleJson: MultilingualField
   public slugTitle: string
   public waypoints?: Waypoint[]

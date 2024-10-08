@@ -1,7 +1,7 @@
 import { Address } from '#domain/entities/address'
 
 export class Country {
-  public id: number
+  public id: number | null
   public name: string
   public iso: string
   public addresses?: Address[]
@@ -9,7 +9,7 @@ export class Country {
   public updatedAt: Date
 
   constructor(
-    id: number,
+    id: number | null,
     name: string,
     iso: string,
     createdAt: Date,

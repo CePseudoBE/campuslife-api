@@ -11,7 +11,7 @@ type MultilingualField = {
 }
 
 export class Event {
-  public id: number
+  public id: number | null
   public titleJson: MultilingualField
   public descriptionJson: MultilingualField
   public image: string
@@ -31,7 +31,7 @@ export class Event {
   public deletedAt: Date | null
 
   constructor(
-    id: number,
+    id: number | null,
     titleJson: MultilingualField,
     descriptionJson: MultilingualField,
     image: string,

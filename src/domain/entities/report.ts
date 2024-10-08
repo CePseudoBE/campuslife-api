@@ -1,5 +1,5 @@
 export class Report {
-  public id: number
+  public id: number | null
   public sessionId: string
   public deviceId: string
   public message: string
@@ -9,7 +9,7 @@ export class Report {
   public deletedAt: Date | null
 
   constructor(
-    id: number,
+    id: number | null,
     sessionId: string,
     deviceId: string,
     message: string,

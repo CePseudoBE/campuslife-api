@@ -1,5 +1,5 @@
 export class Log {
-  public id: number
+  public id: number | null
   public sessionId: string
   public userId: string
   public actionState: string
@@ -9,7 +9,7 @@ export class Log {
   public updatedAt: Date
 
   constructor(
-    id: number,
+    id: number | null,
     sessionId: string,
     userId: string,
     actionState: string,

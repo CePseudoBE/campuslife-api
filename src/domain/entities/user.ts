@@ -1,7 +1,7 @@
 import { Event } from '#domain/entities/event'
 
 export class User {
-  public id: number
+  public id: number | null
   public email: string
   public firstName: string
   public lastName: string
