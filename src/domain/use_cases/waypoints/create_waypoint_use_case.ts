@@ -34,7 +34,14 @@ export class CreateWaypointUseCase {
       throw Error('Title is required')
     }
 
-    const slug = this.iSlugService.generate(data.title_en)
+    let slug = this.iSlugService.generate(data.title_en)
+
+    let check = await this.iwaypointrepository.findBySlug(slug)
+
+    while (check) {
+      slug = this.iSlugService.slugWithRandom(slug)
+      check = await this.iwaypointrepository.findBySlug(slug)
+    }
 
     const waypoint = new Waypoint(
       null,

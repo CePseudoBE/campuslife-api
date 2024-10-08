@@ -47,6 +47,20 @@ export class WaypointRepository extends IWaypointRepository {
     return waypointModels.map((model) => WaypointMapper.toDomain(model))
   }
 
+  async findBySlug(slug: string, includes?: string[]): Promise<Waypoint | null> {
+    const waypointModel = await WaypointModel.query().where('slug', slug).first()
+
+    if (!waypointModel) return null
+
+    if (includes && includes.length > 0) {
+      for (const relation of includes) {
+        await waypointModel.load(relation as ExtractModelRelations<WaypointModel>)
+      }
+    }
+
+    return WaypointMapper.toDomain(waypointModel)
+  }
+
   async findById(id: number, includes?: string[]): Promise<Waypoint | null> {
     const waypointModel = await WaypointModel.find(id)
     if (!waypointModel) return null

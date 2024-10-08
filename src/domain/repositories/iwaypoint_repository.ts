@@ -6,6 +6,8 @@ export abstract class IWaypointRepository {
 
   abstract findById(id: number, includes?: string[]): Promise<Waypoint | null>
 
+  abstract findBySlug(slug: string, includes?: string[]): Promise<Waypoint | null>
+
   abstract findAll(
     { page, limit, order, column }: QueryParams,
     includes: string[]
