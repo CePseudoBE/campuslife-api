@@ -22,7 +22,7 @@ export class CreateWaypointUseCase {
     description_fr: string
     types: string
     pmr: boolean
-    tags: number[] | undefined
+    tags?: number[]
   }): Promise<Waypoint> {
     const title: MultilingualField = {
       en: data.title_en || '',

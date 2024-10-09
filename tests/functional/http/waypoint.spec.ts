@@ -26,7 +26,7 @@ test.group('Create Waypoint Controller', (group) => {
 
     const waypoint = await WaypointModel.find(response.body().id)
     assert.exists(waypoint)
-    assert.equal(string.slug(json.title_en), waypoint?.slug)
+    assert.equal(string.slug(json.title_en, { lower: true }), waypoint?.slug)
   })
 
   test('should fail when validation fails', async ({ client, assert }) => {

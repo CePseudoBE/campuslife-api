@@ -12,7 +12,7 @@ export class ValidationService {
       description_en: vine.string().minLength(5).maxLength(150),
       description_fr: vine.string().minLength(5).maxLength(150),
       types: vine.string(),
-      pmr: vine.boolean(),
+      pmr: vine.boolean().optional(),
       tags: vine.array(vine.number()).optional(),
     })
   }
