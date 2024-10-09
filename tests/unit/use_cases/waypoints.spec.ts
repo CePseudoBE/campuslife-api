@@ -8,6 +8,7 @@ import string from '@adonisjs/core/helpers/string'
 import { mockTagRepository } from '#tests/unit/use_cases/tags.spec'
 import { Tag } from '#domain/entities/tag'
 import { FindSlugWaypointUseCase } from '#domain/use_cases/waypoints/find_slug_waypoint_use_case'
+import { WaypointTagsAssociateUseCase } from '#domain/use_cases/waypoints/waypoint_tags_associate_use_case'
 
 export const mockWaypointRepository: IWaypointRepository = {
   async create(waypoint: Waypoint): Promise<Waypoint> {
@@ -340,5 +341,74 @@ test.group('FindSlugWaypointUseCase', () => {
 
     assert.isNotNull(waypoint)
     assert.isArray(waypoint?.tags)
+  })
+})
+test.group('WaypointTagsAssociateUseCase', () => {
+  test('should successfully associate tags with a waypoint', async ({ assert }) => {
+    const useCase = new WaypointTagsAssociateUseCase(mockWaypointRepository, mockTagRepository)
+
+    const data = {
+      id: 1,
+      tags: [1, 2],
+    }
+
+    const waypoint = await useCase.handle(data)
+
+    assert.isNotNull(waypoint)
+    assert.isArray(waypoint.tags)
+    assert.lengthOf(waypoint.tags!, 2)
+    assert.equal(waypoint.tags![0].id, 1)
+    assert.equal(waypoint.tags![1].id, 2)
+  })
+
+  test('should throw error if no tags are provided', async ({ assert }) => {
+    const useCase = new WaypointTagsAssociateUseCase(mockWaypointRepository, mockTagRepository)
+
+    const data = {
+      id: 1, // Valid Waypoint ID
+      tags: [], // No tags provided
+    }
+
+    await assert.rejects(
+      () => useCase.handle(data),
+      'NoAssocation : 0 tags were provided, provide more tags'
+    )
+  })
+
+  test('should throw error if tags are not an array of numbers', async ({ assert }) => {
+    const useCase = new WaypointTagsAssociateUseCase(mockWaypointRepository, mockTagRepository)
+
+    const data = {
+      id: 1, // Valid Waypoint ID
+      tags: ['invalid-tag'], // Invalid tags
+    }
+
+    await assert.rejects(
+      //@ts-ignore
+      () => useCase.handle(data),
+      'Invalid tag format: tags must be an array of numbers'
+    )
+  })
+
+  test('should throw error if tag does not exist', async ({ assert }) => {
+    const useCase = new WaypointTagsAssociateUseCase(mockWaypointRepository, mockTagRepository)
+
+    const data = {
+      id: 1, // Valid Waypoint ID
+      tags: [999], // Non-existent Tag ID
+    }
+
+    await assert.rejects(() => useCase.handle(data), 'Tag with ID 999 does not exist')
+  })
+
+  test('should throw error if waypoint does not exist', async ({ assert }) => {
+    const useCase = new WaypointTagsAssociateUseCase(mockWaypointRepository, mockTagRepository)
+
+    const data = {
+      id: 999, // Non-existent Waypoint ID
+      tags: [1, 2], // Valid Tag IDs
+    }
+
+    await assert.rejects(() => useCase.handle(data), 'Waypoint with ID 999 does not exist')
   })
 })
