@@ -13,6 +13,7 @@ export class ValidationService {
       description_fr: vine.string().minLength(5).maxLength(150),
       types: vine.string(),
       pmr: vine.boolean(),
+      tags: vine.array(vine.number()).optional(),
     })
   }
 

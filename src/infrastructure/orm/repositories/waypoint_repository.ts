@@ -117,4 +117,17 @@ export class WaypointRepository extends IWaypointRepository {
 
     return null
   }
+
+  async associateTags(idTags: number[], waypoint: Waypoint): Promise<Waypoint> {
+    const waypointModel = await WaypointModel.find(waypoint.id)
+    if (!waypointModel) {
+      throw new Error('Waypoint not found')
+    }
+
+    await waypointModel.related('tags').sync(idTags)
+
+    await waypointModel.load('tags')
+
+    return WaypointMapper.toDomain(waypointModel)
+  }
 }

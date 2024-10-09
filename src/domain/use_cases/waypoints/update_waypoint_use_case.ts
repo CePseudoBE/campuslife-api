@@ -46,6 +46,7 @@ export class UpdateWaypointUseCase {
       if (iterationCount === maxIterations) {
         throw new Error('MaxIteration: Unable to generate unique slug after several attempts')
       }
+
       data = {
         ...data,
         slug: slug,

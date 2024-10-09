@@ -37,6 +37,6 @@ router
         router.get(':slug/slug', [FindSlugWaypointController]).as('find_waypoint_by_slug')
       })
       .prefix('waypoints')
-      .as('lang_waypoints_urls')
+      .as('waypoints_urls')
   })
   .prefix('api') // Routes sans langue dans l'URL

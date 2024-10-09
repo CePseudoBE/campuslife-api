@@ -19,6 +19,7 @@ export default class CreateWaypointController {
       'types',
       'pmr',
       'slug',
+      'tags',
     ])
 
     const schema = ValidationService.getWaypointRules()

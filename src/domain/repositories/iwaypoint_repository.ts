@@ -16,4 +16,6 @@ export abstract class IWaypointRepository {
   abstract update(waypoint: Waypoint): Promise<Waypoint>
 
   abstract delete(waypoint: Waypoint): Promise<null>
+
+  abstract associateTags(idTags: number[], waypoint: Waypoint): Promise<Waypoint>
 }
