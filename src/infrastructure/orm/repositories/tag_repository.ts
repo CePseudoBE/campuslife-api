@@ -59,6 +59,20 @@ export class TagRepository extends ITagRepository {
     return TagMapper.toDomain(tagModel)
   }
 
+  async findBySlug(slug: string, includes?: string[]): Promise<Tag | null> {
+    const tagModel = await TagModel.query().where('slug_title', slug).first()
+
+    if (!tagModel) return null
+
+    if (includes && includes.length > 0) {
+      for (const relation of includes) {
+        await tagModel.load(relation as ExtractModelRelations<TagModel>)
+      }
+    }
+
+    return TagMapper.toDomain(tagModel)
+  }
+
   update(tag: Tag): Promise<Tag> {
     return Promise.resolve(undefined)
   }

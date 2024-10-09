@@ -43,7 +43,6 @@ export class WaypointRepository extends IWaypointRepository {
 
     const waypointModels = await query.exec()
 
-    // Map to domain entities, passing the loaded relations
     return waypointModels.map((model) => WaypointMapper.toDomain(model))
   }
 
