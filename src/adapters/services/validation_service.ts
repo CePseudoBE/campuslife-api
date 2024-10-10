@@ -38,6 +38,14 @@ export class ValidationService {
     })
   }
 
+  public static getUpdateTagRules() {
+    return vine.object({
+      title_en: vine.string().minLength(3).maxLength(50).optional(),
+      title_fr: vine.string().minLength(3).maxLength(50).optional(),
+      slug: vine.string().optional(),
+    })
+  }
+
   static validateIncludes(includes: string[], model: typeof BaseModel): string[] {
     return includes.filter((relation) => {
       return model.$hasRelation(relation)

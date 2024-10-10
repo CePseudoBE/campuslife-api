@@ -8,8 +8,8 @@ import { CollectionMapper } from '#adapters/mappers/collection_mapper'
 export class TagMapper {
   static toPersistence(tag: Tag): TagModel {
     const tagModel = new TagModel()
-    tagModel.titleJson = tag.titleJson
-    tagModel.slugTitle = tag.slugTitle
+    tagModel.title = tag.title
+    tagModel.slug = tag.slug
     tagModel.deletedAt = tag.deletedAt ? DateTime.fromJSDate(tag.deletedAt) : null
     return tagModel
   }
@@ -17,8 +17,8 @@ export class TagMapper {
   static toDomain(tagModel: TagModel): Tag {
     const tag = new Tag(
       tagModel.id,
-      tagModel.titleJson,
-      tagModel.slugTitle,
+      tagModel.title,
+      tagModel.slug,
       tagModel.createdAt.toJSDate(),
       tagModel.updatedAt.toJSDate(),
       tagModel.deletedAt ? tagModel.deletedAt.toJSDate() : null

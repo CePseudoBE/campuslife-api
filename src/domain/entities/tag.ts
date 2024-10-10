@@ -56,4 +56,30 @@ export class Tag {
   public delete() {
     this.deletedAt = new Date()
   }
+
+  public update(data: {
+    title_en?: string
+    title_fr?: string
+    slug?: string
+    waypoints?: Waypoint[]
+    events?: Event[]
+    collections?: Collection[]
+  }): void {
+    this.slug = data.slug ?? this.slug
+    this.waypoints = data.waypoints ?? this.waypoints
+    this.events = data.events ?? this.events
+    this.collections = data.collections ?? this.collections
+    this.updatedAt = new Date()
+
+    this.updateTitle(data)
+  }
+
+  private updateTitle(data: { title_en?: string; title_fr?: string }): void {
+    if (data.title_en) {
+      this.title.en = data.title_en
+    }
+    if (data.title_fr) {
+      this.title.fr = data.title_fr
+    }
+  }
 }

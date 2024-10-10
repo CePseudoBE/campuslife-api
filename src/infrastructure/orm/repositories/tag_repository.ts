@@ -15,6 +15,7 @@ export class TagRepository extends ITagRepository {
 
   async create(tag: Tag): Promise<Tag> {
     const tagModel = TagMapper.toPersistence(tag)
+    console.log(tagModel)
     await tagModel.save()
     return TagMapper.toDomain(tagModel)
   }
@@ -60,7 +61,7 @@ export class TagRepository extends ITagRepository {
   }
 
   async findBySlug(slug: string, includes?: string[]): Promise<Tag | null> {
-    const tagModel = await TagModel.query().where('slug_title', slug).first()
+    const tagModel = await TagModel.query().where('slug', slug).first()
 
     if (!tagModel) return null
 
@@ -73,7 +74,22 @@ export class TagRepository extends ITagRepository {
     return TagMapper.toDomain(tagModel)
   }
 
-  update(tag: Tag): Promise<Tag> {
-    return Promise.resolve(undefined)
+  async update(tag: Tag): Promise<Tag> {
+    if (!tag.id) {
+      throw new Error(`NotFound: Tag not found`)
+    }
+
+    const tagModel = await TagModel.query().whereNull('deleted_at').andWhere('id', tag.id).first()
+
+    if (!tagModel) {
+      throw new Error('Deleted: Tag deleted')
+    }
+
+    tagModel.title = tag.title
+    tagModel.slug = tag.slug
+
+    await tagModel.save()
+
+    return TagMapper.toDomain(tagModel)
   }
 }

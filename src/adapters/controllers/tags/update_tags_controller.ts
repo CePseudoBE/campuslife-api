@@ -2,16 +2,22 @@ import { HttpContext } from '@adonisjs/core/http'
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
 import { ValidationService } from '#adapters/services/validation_service'
-import { CreateTagUseCase } from '#domain/use_cases/tags/create_tag_use_case'
+import { UpdateTagUseCase } from '#domain/use_cases/tags/update_tag_use_case'
 
 @inject()
-export default class CreateTagController {
-  constructor(private createTagUseCase: CreateTagUseCase) {}
+export default class UpdateTagController {
+  constructor(private updateTagUseCase: UpdateTagUseCase) {}
 
-  async handle({ request, response }: HttpContext) {
+  async handle({ request, response, params }: HttpContext) {
     const body = request.only(['title_en', 'title_fr', 'slug'])
 
-    const schema = ValidationService.getTagRules()
+    const id = Number(params.id)
+
+    if (Number.isNaN(id)) {
+      return response.badRequest({ message: 'Invalid tag ID' })
+    }
+
+    const schema = ValidationService.getUpdateTagRules()
 
     try {
       const validatedData = await vine.validate({
@@ -19,9 +25,9 @@ export default class CreateTagController {
         data: body,
       })
 
-      const tag = await this.createTagUseCase.handle(validatedData)
+      const tag = await this.updateTagUseCase.handle(id, validatedData)
 
-      return response.created({ data: tag })
+      return response.ok({ data: tag })
     } catch (error) {
       return response.badRequest({
         message: error.message,
