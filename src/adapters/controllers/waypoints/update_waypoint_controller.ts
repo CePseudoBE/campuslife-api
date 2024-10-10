@@ -39,7 +39,7 @@ export default class UpdateWaypointController {
         return response.notFound({ message: 'Waypoint not found' })
       }
 
-      return response.ok(waypoint)
+      return response.ok({ data: waypoint })
     } catch (err) {
       return response.badRequest({ message: err.message, details: err.messages || err })
     }

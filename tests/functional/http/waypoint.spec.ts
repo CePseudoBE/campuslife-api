@@ -3,6 +3,7 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import WaypointModel from '#infrastructure/orm/models/waypoint_model'
 import string from '@adonisjs/core/helpers/string'
 import { DateTime } from 'luxon'
+import TagModel from '#infrastructure/orm/models/tag_model'
 
 test.group('Create Waypoint Controller', (group) => {
   // Utiliser une transaction globale pour annuler tout après chaque test
@@ -22,9 +23,9 @@ test.group('Create Waypoint Controller', (group) => {
     const response = await client.post('/api/waypoints').json(json)
 
     response.assertStatus(201)
-    assert.exists(response.body().id)
+    assert.exists(response.body().data.id)
 
-    const waypoint = await WaypointModel.find(response.body().id)
+    const waypoint = await WaypointModel.find(response.body().data.id)
     assert.exists(waypoint)
     assert.equal(string.slug(json.title_en, { lower: true }), waypoint?.slug)
   })
@@ -46,10 +47,67 @@ test.group('Create Waypoint Controller', (group) => {
     assert.equal(response.body().message, 'Validation failure')
     assert.isArray(response.body().details)
   })
+
+  //TODO: faire les tags
+  test('should create a new waypoint with tags successfully', async ({ client, assert }) => {
+    const tag1 = await TagModel.create({
+      titleJson: { en: 'Tag 1 EN', fr: 'Tag 1 FR' },
+      slugTitle: 'tag-1',
+    })
+    const tag2 = await TagModel.create({
+      titleJson: { en: 'Tag 2 EN', fr: 'Tag 2 FR' },
+      slugTitle: 'tag-2',
+    })
+
+    const waypointPayload = {
+      latitude: 12.3456,
+      longitude: 65.4321,
+      title_en: 'Test Waypoint EN',
+      title_fr: 'Test Waypoint FR',
+      description_en: 'Test description EN',
+      description_fr: 'Test description FR',
+      types: 'test',
+      pmr: true,
+      tags: [tag1.id, tag2.id],
+    }
+    const response = await client.post('/api/waypoints').json(waypointPayload)
+
+    response.assertStatus(201)
+    assert.exists(response.body().data.id)
+
+    const waypoint = await WaypointModel.query()
+      .preload('tags')
+      .where('id', response.body().data.id)
+      .first()
+
+    assert.exists(waypoint)
+    assert.equal(waypoint?.tags.length, 2, 'Waypoint should have 2 associated tags')
+    assert.includeMembers(
+      //@ts-ignore
+      waypoint?.tags.map((tag) => tag.slugTitle),
+      ['tag-1', 'tag-2']
+    )
+  })
+
+  test('should fail when validation fails due to invalid tags', async ({ client, assert }) => {
+    const response = await client.post('/api/waypoints').json({
+      latitude: 12.3456,
+      longitude: 65.4321,
+      title_en: 'Test Waypoint EN',
+      title_fr: 'Test Waypoint FR',
+      description_en: 'Test description EN',
+      description_fr: 'Test description FR',
+      types: 'test',
+      pmr: false,
+      tags: [9999, 8888],
+    })
+
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'NotFound: Tag not found')
+  })
 })
 
 test.group('Update Waypoint Controller (PATCH)', (group) => {
-  // Utilise la transaction globale pour annuler tout après chaque test
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
   test('should update an existing waypoint partially', async ({ client, assert }) => {
@@ -66,7 +124,7 @@ test.group('Update Waypoint Controller (PATCH)', (group) => {
     })
 
     createResponse.assertStatus(201)
-    const createdWaypoint = createResponse.body()
+    const createdWaypoint = createResponse.body().data
 
     // Faire une requête PATCH pour mettre à jour seulement certaines propriétés
     const patchResponse = await client.patch(`/api/waypoints/${createdWaypoint.id}`).json({
@@ -75,7 +133,7 @@ test.group('Update Waypoint Controller (PATCH)', (group) => {
     })
 
     patchResponse.assertStatus(200) // Statut 200 pour succès
-    const updatedWaypoint = patchResponse.body()
+    const updatedWaypoint = patchResponse.body().data
 
     // Vérifier que seulement les champs modifiés ont changé
     assert.equal(updatedWaypoint.latitude, 13.5678) // Latitude mise à jour
@@ -186,7 +244,7 @@ test.group('Get one Waypoint Controller', (group) => {
     const createResponse = await client.post('/api/waypoints').json(json)
 
     createResponse.assertStatus(201)
-    const createdWaypoint = createResponse.body()
+    const createdWaypoint = createResponse.body().data
 
     // Faire une requête GET pour récupérer le waypoint
     const response = await client.get(`/api/waypoints/${createdWaypoint.id}`)
@@ -226,7 +284,7 @@ test.group('Get one Waypoint Controller', (group) => {
     const createResponse = await client.post('/api/waypoints').json(json)
 
     createResponse.assertStatus(201)
-    const createdWaypoint = createResponse.body()
+    const createdWaypoint = createResponse.body().data
 
     // Faire une requête GET pour récupérer le waypoint
     const response = await client.get(`/api/fr/waypoints/${createdWaypoint.id}`)
@@ -317,14 +375,20 @@ test.group('Get waypoint through slug Controller', (group) => {
     // Créer deux waypoints directement
     const createResponse = await client.post('/api/waypoints').json(waypoint)
 
-    const waypointResponse = createResponse.body()
+    const waypointResponse = createResponse.body().data
 
     // Faire une requête GET pour récupérer tous les waypoints
     const response = await client.get(`/api/waypoints/${waypointResponse.slug}/slug`)
 
     response.assertStatus(200) // Statut 200 pour récupération réussite
 
+    const title = {
+      en: waypoint.title_en,
+      fr: waypoint.title_fr,
+    }
+
     const returnedWaypoint = response.body().data
+    assert.deepEqual(returnedWaypoint.title, title)
     assert.equal(returnedWaypoint.latitude, waypoint.latitude)
     assert.equal(returnedWaypoint.longitude, waypoint.longitude)
   })
@@ -337,5 +401,138 @@ test.group('Get waypoint through slug Controller', (group) => {
     assert.deepEqual(response.body(), {
       message: 'Waypoint with slug : test-inexistant does not exist',
     })
+  })
+
+  test('should successfully return a slug based on language', async ({ client, assert }) => {
+    const waypoint = {
+      latitude: 12.3456,
+      longitude: 65.4321,
+      title_en: 'Waypoint EN 1',
+      title_fr: 'Waypoint FR 1',
+      description_en: 'Description EN 1',
+      description_fr: 'Description FR 1',
+      types: 'type1',
+      pmr: true,
+    }
+
+    // Créer deux waypoints directement
+    const createResponse = await client.post('/api/waypoints').json(waypoint)
+
+    const waypointResponse = createResponse.body().data
+
+    // Faire une requête GET pour récupérer tous les waypoints
+    const response = await client.get(`/api/fr/waypoints/${waypointResponse.slug}/slug`)
+
+    response.assertStatus(200) // Statut 200 pour récupération réussite
+
+    const returnedWaypoint = response.body().data
+    assert.equal(returnedWaypoint.latitude, waypoint.latitude)
+    assert.equal(returnedWaypoint.description, waypoint.description_fr)
+    assert.equal(returnedWaypoint.longitude, waypoint.longitude)
+  })
+})
+
+test.group('WaypointsTagsAssociateController', (group) => {
+  // Use global transaction for each test to rollback changes
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('should associate tags with a waypoint successfully', async ({ client, assert }) => {
+    // 1. Create Waypoint
+    const waypointPayload = {
+      latitude: 12.3456,
+      longitude: 65.4321,
+      title_en: 'Test Waypoint EN',
+      title_fr: 'Test Waypoint FR',
+      description_en: 'Test description EN',
+      description_fr: 'Test description FR',
+      types: 'test',
+      pmr: true,
+    }
+    const waypointResponse = await client.post('/api/waypoints').json(waypointPayload)
+    const waypoint = waypointResponse.body().data
+
+    // 2. Create Tags directly using the model
+    const tag1 = await TagModel.create({
+      titleJson: { en: 'Tag 1 EN', fr: 'Tag 1 FR' },
+      slugTitle: 'tag-1',
+    })
+    const tag2 = await TagModel.create({
+      titleJson: { en: 'Tag 2 EN', fr: 'Tag 2 FR' },
+      slugTitle: 'tag-2',
+    })
+
+    // 3. Use WaypointsTagsAssociateController to associate the tags
+    const tagsPayload = {
+      tags: [tag1.id, tag2.id],
+    }
+    const response = await client.post(`/api/waypoints/${waypoint.id}/tags`).json(tagsPayload)
+
+    response.assertStatus(201)
+    console.log(response.body().data)
+    assert.exists(response.body().data)
+    assert.equal(response.body().data.id, waypoint.id)
+
+    const associatedWaypoint = await WaypointModel.query()
+      .preload('tags')
+      .where('id', waypoint.id)
+      .first()
+
+    assert.equal(associatedWaypoint?.tags.length, 2, 'Waypoint should have 2 associated tags')
+    assert.includeMembers(
+      // @ts-ignore
+      associatedWaypoint?.tags.map((tag) => tag.slugTitle),
+      ['tag-1', 'tag-2']
+    )
+  })
+
+  test('should return an error if waypoint does not exist', async ({ client, assert }) => {
+    const nonExistentWaypointId = 9999
+    const tag1 = await TagModel.create({
+      titleJson: { en: 'Tag 1 EN', fr: 'Tag 1 FR' },
+      slugTitle: 'tag-1',
+    })
+    const tag2 = await TagModel.create({
+      titleJson: { en: 'Tag 2 EN', fr: 'Tag 2 FR' },
+      slugTitle: 'tag-2',
+    })
+
+    const tagsPayload = {
+      tags: [tag1.id, tag2.id],
+    }
+
+    const response = await client
+      .post(`/api/waypoints/${nonExistentWaypointId}/tags`)
+      .json(tagsPayload)
+
+    response.assertStatus(400)
+
+    assert.equal(response.body().message, 'Waypoint with ID 9999 does not exist')
+  })
+
+  test('should return an error if tags do not exist', async ({ client, assert }) => {
+    const waypointPayload = {
+      latitude: 12.3456,
+      longitude: 65.4321,
+      title_en: 'Test Waypoint EN',
+      title_fr: 'Test Waypoint FR',
+      description_en: 'Test description EN',
+      description_fr: 'Test description FR',
+      types: 'test',
+      pmr: true,
+    }
+    const waypointResponse = await client.post('/api/waypoints').json(waypointPayload)
+    const waypoint = waypointResponse.body().data
+
+    const nonExistentTagsPayload = {
+      tags: [9999, 8888],
+    }
+
+    const response = await client
+      .post(`/api/waypoints/${waypoint.id}/tags`)
+      .json(nonExistentTagsPayload)
+
+    response.assertStatus(400)
+
+    assert.equal(response.body().message, 'NotFound: Tag not found')
   })
 })

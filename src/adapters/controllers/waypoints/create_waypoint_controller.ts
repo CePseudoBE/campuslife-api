@@ -32,7 +32,7 @@ export default class CreateWaypointController {
 
       const waypoint = await this.createWaypointUseCase.handle(validatedData)
 
-      return response.created(waypoint)
+      return response.created({ data: waypoint })
     } catch (error) {
       return response.badRequest({
         message: error.message,

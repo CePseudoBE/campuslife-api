@@ -20,12 +20,12 @@ export default class WaypointsTagsAssociateController {
     try {
       const validatedData = await vine.validate({
         schema,
-        data: body,
+        data: body.tags,
       })
 
       const waypoint = await this.waypointTagsAssociateUseCase.handle({ id, tags: validatedData })
 
-      return response.created(waypoint)
+      return response.created({ data: waypoint })
     } catch (error) {
       return response.badRequest({
         message: error.message,
