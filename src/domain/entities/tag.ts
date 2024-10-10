@@ -13,6 +13,8 @@ export class Tag {
   public updatedAt: Date
   public deletedAt: Date | null
 
+  public static allowedColumns: string[] = ['id', 'created_at', 'updated_at']
+
   constructor(
     id: number | null,
     title: MultilingualField,
