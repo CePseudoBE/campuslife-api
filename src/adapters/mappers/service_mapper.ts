@@ -5,8 +5,8 @@ import { DateTime } from 'luxon'
 export class ServiceMapper {
   static toPersistence(service: Service): ServiceModel {
     const serviceModel = new ServiceModel()
-    serviceModel.titleJson = service.titleJson
-    serviceModel.descriptionJson = service.descriptionJson
+    serviceModel.title = service.title
+    serviceModel.description = service.description
     serviceModel.url = service.url
     serviceModel.icon = service.icon
     serviceModel.isActive = service.isActive
@@ -17,8 +17,8 @@ export class ServiceMapper {
   static toDomain(serviceModel: ServiceModel): Service {
     return new Service(
       serviceModel.id,
-      serviceModel.titleJson,
-      serviceModel.descriptionJson,
+      serviceModel.title,
+      serviceModel.description,
       serviceModel.url,
       serviceModel.icon,
       serviceModel.isActive,

@@ -8,13 +8,13 @@ import { WaypointMapper } from '#adapters/mappers/waypoint_mapper'
 export class EventMapper {
   static toPersistence(event: Event): EventModel {
     const eventModel = new EventModel()
-    eventModel.titleJson = event.titleJson
-    eventModel.descriptionJson = event.descriptionJson
+    eventModel.title = event.title
+    eventModel.description = event.description
     eventModel.image = event.image
     eventModel.start = DateTime.fromJSDate(event.start)
     eventModel.end = DateTime.fromJSDate(event.end)
     eventModel.url = event.url
-    eventModel.slugTitle = event.slugTitle
+    eventModel.slug = event.slug
     eventModel.deletedAt = event.deletedAt ? DateTime.fromJSDate(event.deletedAt) : null
     eventModel.waypointId = event.waypointId
     eventModel.userId = event.userId
@@ -25,8 +25,8 @@ export class EventMapper {
   static toDomain(eventModel: EventModel): Event {
     const event = new Event(
       eventModel.id,
-      eventModel.titleJson,
-      eventModel.descriptionJson,
+      eventModel.title,
+      eventModel.description,
       eventModel.image,
       eventModel.start.toJSDate(),
       eventModel.end.toJSDate(),
@@ -37,7 +37,7 @@ export class EventMapper {
       eventModel.createdAt.toJSDate(),
       eventModel.updatedAt.toJSDate(),
       eventModel.deletedAt ? eventModel.deletedAt.toJSDate() : null,
-      eventModel.slugTitle
+      eventModel.slug
     )
 
     if (eventModel.tags) {

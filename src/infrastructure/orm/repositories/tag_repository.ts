@@ -36,8 +36,28 @@ export class TagRepository extends ITagRepository {
     return null
   }
 
-  findAll({ page, limit, order, column }: QueryParams, includes: string[]): Promise<Tag[]> {
-    return Promise.resolve([])
+  async findAll({ page, limit, order, column }: QueryParams, includes: string[]): Promise<Tag[]> {
+    const query = TagModel.query().whereNull('deleted_at')
+
+    if (page && limit) {
+      await query.paginate(page, limit)
+    }
+
+    if (column && order) {
+      query.orderBy(column, order)
+    }
+
+    // Apply includes
+    if (includes && includes.length > 0) {
+      query.preload(includes[0] as ExtractModelRelations<TagModel>)
+      for (let i = 1; i < includes.length; i++) {
+        query.preload(includes[i] as ExtractModelRelations<TagModel>)
+      }
+    }
+
+    const tagModels = await query.exec()
+
+    return tagModels.map((tag) => TagMapper.toDomain(tag))
   }
 
   async findById(id: number, includes?: string[]): Promise<Tag | null> {

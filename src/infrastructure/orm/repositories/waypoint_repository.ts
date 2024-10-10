@@ -26,7 +26,7 @@ export class WaypointRepository extends IWaypointRepository {
     const query = WaypointModel.query().whereNull('deleted_at')
 
     if (page && limit) {
-      query.paginate(page, limit)
+      await query.paginate(page, limit)
     }
 
     if (column && order) {
