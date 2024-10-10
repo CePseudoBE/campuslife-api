@@ -15,7 +15,6 @@ export class TagRepository extends ITagRepository {
 
   async create(tag: Tag): Promise<Tag> {
     const tagModel = TagMapper.toPersistence(tag)
-    console.log(tagModel)
     await tagModel.save()
     return TagMapper.toDomain(tagModel)
   }
@@ -50,20 +49,6 @@ export class TagRepository extends ITagRepository {
     if (tagModel.deletedAt) {
       throw new Error('AlreadyDelete: Tag deleted')
     }
-
-    if (includes && includes.length > 0) {
-      for (const relation of includes) {
-        await tagModel.load(relation as ExtractModelRelations<TagModel>)
-      }
-    }
-
-    return TagMapper.toDomain(tagModel)
-  }
-
-  async findBySlug(slug: string, includes?: string[]): Promise<Tag | null> {
-    const tagModel = await TagModel.query().where('slug', slug).first()
-
-    if (!tagModel) return null
 
     if (includes && includes.length > 0) {
       for (const relation of includes) {

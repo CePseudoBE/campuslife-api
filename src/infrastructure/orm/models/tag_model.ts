@@ -15,9 +15,6 @@ export default class TagModel extends BaseModel {
   @column()
   declare title: MultilingualField
 
-  @column()
-  declare slug: string
-
   @manyToMany(() => WaypointModel, {
     pivotTable: 'waypoints_tags',
     pivotForeignKey: 'waypoint_id',

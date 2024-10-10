@@ -118,29 +118,25 @@ export const mockWaypointRepository: IWaypointRepository = {
         if (relation === 'tags') {
           // Simulate loading related tags
           waypoint.tags = [
+            //@ts-ignore
             {
               id: 1,
-              titleJson: { en: 'Tag 1', fr: 'Étiquette 1' },
-              slugTitle: 'tag-1',
+              title: { en: 'Tag 1', fr: 'Étiquette 1' },
               createdAt: new Date(),
               updatedAt: new Date(),
               deletedAt: null,
               waypoints: [],
               events: [],
-              delete() {},
             },
+            //@ts-ignore
             {
               id: 2,
-              titleJson: { en: 'Tag 2', fr: 'Étiquette 2' },
-              slugTitle: 'tag-2',
+              title: { en: 'Tag 2', fr: 'Étiquette 2' },
               createdAt: new Date(),
               updatedAt: new Date(),
               deletedAt: null,
               waypoints: [],
               events: [],
-              delete: function (): void {
-                throw new Error('Function not implemented.')
-              },
             },
           ]
         }
@@ -151,6 +147,7 @@ export const mockWaypointRepository: IWaypointRepository = {
   },
 
   async associateTags(idTags: number[], waypoint: Waypoint): Promise<Waypoint> {
+    //@ts-ignore
     const mockTagData: Tag[] = idTags.map((id) => ({
       id,
       titleJson: { en: `Tag ${id}`, fr: `Étiquette ${id}` },

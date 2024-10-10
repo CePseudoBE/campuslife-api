@@ -9,7 +9,6 @@ export class TagMapper {
   static toPersistence(tag: Tag): TagModel {
     const tagModel = new TagModel()
     tagModel.title = tag.title
-    tagModel.slug = tag.slug
     tagModel.deletedAt = tag.deletedAt ? DateTime.fromJSDate(tag.deletedAt) : null
     return tagModel
   }
@@ -18,7 +17,6 @@ export class TagMapper {
     const tag = new Tag(
       tagModel.id,
       tagModel.title,
-      tagModel.slug,
       tagModel.createdAt.toJSDate(),
       tagModel.updatedAt.toJSDate(),
       tagModel.deletedAt ? tagModel.deletedAt.toJSDate() : null

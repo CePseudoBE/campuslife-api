@@ -48,16 +48,15 @@ test.group('Create Waypoint Controller', (group) => {
     assert.isArray(response.body().details)
   })
 
-  //TODO: faire les tags
   test('should create a new waypoint with tags successfully', async ({ client, assert }) => {
     const tag1 = await TagModel.create({
-      titleJson: { en: 'Tag 1 EN', fr: 'Tag 1 FR' },
-      slugTitle: 'tag-1',
+      title: { en: 'Tag 1 EN', fr: 'Tag 1 FR' },
     })
     const tag2 = await TagModel.create({
-      titleJson: { en: 'Tag 2 EN', fr: 'Tag 2 FR' },
-      slugTitle: 'tag-2',
+      title: { en: 'Tag 2 EN', fr: 'Tag 2 FR' },
     })
+
+    console.log(tag1)
 
     const waypointPayload = {
       latitude: 12.3456,
@@ -84,8 +83,8 @@ test.group('Create Waypoint Controller', (group) => {
     assert.equal(waypoint?.tags.length, 2, 'Waypoint should have 2 associated tags')
     assert.includeMembers(
       //@ts-ignore
-      waypoint?.tags.map((tag) => tag.slugTitle),
-      ['tag-1', 'tag-2']
+      waypoint?.tags.map((tag) => tag.title.en),
+      ['Tag 1 EN', 'Tag 2 EN']
     )
   })
 
@@ -173,8 +172,8 @@ test.group('Delete Waypoint Controller', (group) => {
     const waypoint = new WaypointModel()
     waypoint.latitude = 12.3456
     waypoint.longitude = 65.4321
-    waypoint.titleJson = { en: 'Test Waypoint', fr: 'test' }
-    waypoint.descriptionJson = { en: 'Test description', fr: 'test' }
+    waypoint.title = { en: 'Test Waypoint', fr: 'test' }
+    waypoint.description = { en: 'Test description', fr: 'test' }
     waypoint.types = 'type1'
     waypoint.pmr = true
     waypoint.slug = 'test-waypoint'
@@ -198,8 +197,8 @@ test.group('Delete Waypoint Controller', (group) => {
     const waypoint = new WaypointModel()
     waypoint.latitude = 12.3456
     waypoint.longitude = 65.4321
-    waypoint.titleJson = { en: 'Test Waypoint', fr: 'test' }
-    waypoint.descriptionJson = { en: 'Test description', fr: 'test' }
+    waypoint.title = { en: 'Test Waypoint', fr: 'test' }
+    waypoint.description = { en: 'Test description', fr: 'test' }
     waypoint.types = 'type1'
     waypoint.pmr = true
     waypoint.slug = 'test-waypoint'
@@ -453,12 +452,10 @@ test.group('WaypointsTagsAssociateController', (group) => {
 
     // 2. Create Tags directly using the model
     const tag1 = await TagModel.create({
-      titleJson: { en: 'Tag 1 EN', fr: 'Tag 1 FR' },
-      slugTitle: 'tag-1',
+      title: { en: 'Tag 1 EN', fr: 'Tag 1 FR' },
     })
     const tag2 = await TagModel.create({
-      titleJson: { en: 'Tag 2 EN', fr: 'Tag 2 FR' },
-      slugTitle: 'tag-2',
+      title: { en: 'Tag 2 EN', fr: 'Tag 2 FR' },
     })
 
     // 3. Use WaypointsTagsAssociateController to associate the tags
@@ -468,7 +465,6 @@ test.group('WaypointsTagsAssociateController', (group) => {
     const response = await client.post(`/api/waypoints/${waypoint.id}/tags`).json(tagsPayload)
 
     response.assertStatus(201)
-    console.log(response.body().data)
     assert.exists(response.body().data)
     assert.equal(response.body().data.id, waypoint.id)
 
@@ -480,20 +476,18 @@ test.group('WaypointsTagsAssociateController', (group) => {
     assert.equal(associatedWaypoint?.tags.length, 2, 'Waypoint should have 2 associated tags')
     assert.includeMembers(
       // @ts-ignore
-      associatedWaypoint?.tags.map((tag) => tag.slugTitle),
-      ['tag-1', 'tag-2']
+      associatedWaypoint?.tags.map((tag) => tag.title.en),
+      ['Tag 1 EN', 'Tag 2 EN']
     )
   })
 
   test('should return an error if waypoint does not exist', async ({ client, assert }) => {
     const nonExistentWaypointId = 9999
     const tag1 = await TagModel.create({
-      titleJson: { en: 'Tag 1 EN', fr: 'Tag 1 FR' },
-      slugTitle: 'tag-1',
+      title: { en: 'Tag 1 EN', fr: 'Tag 1 FR' },
     })
     const tag2 = await TagModel.create({
-      titleJson: { en: 'Tag 2 EN', fr: 'Tag 2 FR' },
-      slugTitle: 'tag-2',
+      title: { en: 'Tag 2 EN', fr: 'Tag 2 FR' },
     })
 
     const tagsPayload = {

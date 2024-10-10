@@ -11,6 +11,4 @@ export abstract class ITagRepository {
   abstract update(tag: Tag): Promise<Tag>
 
   abstract delete(tag: Tag): Promise<null>
-
-  abstract findBySlug(slug: string, includes?: string[]): Promise<Tag | null>
 }
