@@ -71,7 +71,6 @@ export class TagRepository extends ITagRepository {
     }
 
     tagModel.title = tag.title
-    tagModel.slug = tag.slug
 
     await tagModel.save()
 
