@@ -60,7 +60,7 @@ export class TagRepository extends ITagRepository {
     return tagModels.map((tag) => TagMapper.toDomain(tag))
   }
 
-  async findById(id: number, includes?: string[]): Promise<Tag | null> {
+  async findById(id: number, includes?: string[]): Promise<Tag> {
     const tagModel = await TagModel.find(id)
     if (!tagModel) {
       throw new Error('NotFound: Tag not found')
