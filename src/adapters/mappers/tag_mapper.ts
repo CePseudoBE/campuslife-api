@@ -2,12 +2,15 @@ import TagModel from '#infrastructure/orm/models/tag_model'
 import { Tag } from '#domain/entities/tag'
 import { EventMapper } from '#adapters/mappers/event_mapper'
 import { WaypointMapper } from '#adapters/mappers/waypoint_mapper'
+import { DateTime } from 'luxon'
+import { CollectionMapper } from '#adapters/mappers/collection_mapper'
 
 export class TagMapper {
   static toPersistence(tag: Tag): TagModel {
     const tagModel = new TagModel()
     tagModel.titleJson = tag.titleJson
     tagModel.slugTitle = tag.slugTitle
+    tagModel.deletedAt = tag.deletedAt ? DateTime.fromJSDate(tag.deletedAt) : null
     return tagModel
   }
 
@@ -17,7 +20,8 @@ export class TagMapper {
       tagModel.titleJson,
       tagModel.slugTitle,
       tagModel.createdAt.toJSDate(),
-      tagModel.updatedAt.toJSDate()
+      tagModel.updatedAt.toJSDate(),
+      tagModel.deletedAt ? tagModel.deletedAt.toJSDate() : null
     )
 
     if (tagModel.events) {
@@ -29,6 +33,12 @@ export class TagMapper {
     if (tagModel.waypoints) {
       tag.waypoints
         ? tagModel.waypoints.map((waypointModel) => WaypointMapper.toDomain(waypointModel))
+        : []
+    }
+
+    if (tagModel.collections) {
+      tag.collections
+        ? tagModel.collections.map((collectionModel) => CollectionMapper.toDomain(collectionModel))
         : []
     }
 

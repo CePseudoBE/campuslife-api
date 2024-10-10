@@ -1,5 +1,6 @@
 import { Report } from '#domain/entities/report'
 import ReportModel from '#infrastructure/orm/models/report_model'
+import { DateTime } from 'luxon'
 
 export class ReportMapper {
   static toPersistence(report: Report): ReportModel {
@@ -7,6 +8,7 @@ export class ReportMapper {
     reportModel.sessionId = report.sessionId
     reportModel.deviceId = report.deviceId
     reportModel.message = report.message
+    reportModel.deletedAt = report.deletedAt ? DateTime.fromJSDate(report.deletedAt) : null
     reportModel.contact = report.contact
     return reportModel
   }

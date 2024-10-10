@@ -15,6 +15,7 @@ export class EventMapper {
     eventModel.end = DateTime.fromJSDate(event.end)
     eventModel.url = event.url
     eventModel.slugTitle = event.slugTitle
+    eventModel.deletedAt = event.deletedAt ? DateTime.fromJSDate(event.deletedAt) : null
     eventModel.waypointId = event.waypointId
     eventModel.userId = event.userId
     eventModel.addressId = event.addressId

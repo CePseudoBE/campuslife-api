@@ -1,6 +1,7 @@
 import { Waypoint } from '#domain/entities/waypoint'
 import { Event } from '#domain/entities/event'
 import { MultilingualField } from '#domain/types/multilingual_field.type'
+import { Collection } from '#domain/entities/collection'
 
 export class Tag {
   public id: number | null
@@ -8,6 +9,7 @@ export class Tag {
   public slugTitle: string
   public waypoints?: Waypoint[]
   public events?: Event[]
+  public collections?: Collection[]
   public createdAt: Date
   public updatedAt: Date
   public deletedAt: Date | null
@@ -20,7 +22,8 @@ export class Tag {
     updatedAt: Date,
     deletedAt: Date | null = null,
     waypoints?: Waypoint[],
-    events?: Event[]
+    events?: Event[],
+    collections?: Collection[]
   ) {
     this.id = id
 
@@ -47,6 +50,7 @@ export class Tag {
     this.deletedAt = deletedAt
     this.waypoints = waypoints
     this.events = events
+    this.collections = collections
   }
 
   public delete() {

@@ -48,7 +48,7 @@ export default class EventModel extends BaseModel {
   declare addressId: number
 
   @manyToMany(() => TagModel, {
-    pivotTable: 'event_tag',
+    pivotTable: 'events_tags',
     pivotForeignKey: 'event_id',
     pivotRelatedForeignKey: 'tag_id',
   })

@@ -4,7 +4,6 @@ import { EventMapper } from '#adapters/mappers/event_mapper'
 import { TagMapper } from '#adapters/mappers/tag_mapper'
 import { DateTime } from 'luxon'
 
-//TODO relations when all mapper are done
 export class WaypointMapper {
   static toPersistence(waypoint: Waypoint): WaypointModel {
     const waypointModel = new WaypointModel()

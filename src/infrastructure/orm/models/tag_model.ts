@@ -4,6 +4,7 @@ import WaypointModel from '#infrastructure/orm/models/waypoint_model'
 import type { ManyToMany } from '@adonisjs/lucid/types/relations'
 import EventModel from '#infrastructure/orm/models/event_model'
 import type { MultilingualField } from '#domain/types/multilingual_field.type'
+import CollectionModel from '#infrastructure/orm/models/collection_model'
 
 export default class TagModel extends BaseModel {
   public static table = 'tags'
@@ -25,11 +26,18 @@ export default class TagModel extends BaseModel {
   declare waypoints: ManyToMany<typeof WaypointModel>
 
   @manyToMany(() => EventModel, {
-    pivotTable: 'event_tag',
+    pivotTable: 'events_tags',
     pivotForeignKey: 'event_id',
     pivotRelatedForeignKey: 'tag_id',
   })
   declare events: ManyToMany<typeof EventModel>
+
+  @manyToMany(() => CollectionModel, {
+    pivotTable: 'tags_collections',
+    pivotForeignKey: 'collection_id',
+    pivotRelatedForeignKey: 'tag_id',
+  })
+  declare collections: ManyToMany<typeof CollectionModel>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

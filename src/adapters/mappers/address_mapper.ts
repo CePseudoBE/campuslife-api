@@ -2,6 +2,7 @@ import { Address } from '#domain/entities/address'
 import AddressModel from '#infrastructure/orm/models/address_model'
 import { EventMapper } from './event_mapper.js'
 import { CountryMapper } from './country_mapper.js'
+import { DateTime } from 'luxon'
 
 export class AddressMapper {
   static toPersistence(address: Address): AddressModel {
@@ -13,6 +14,7 @@ export class AddressMapper {
     addressModel.zip = address.zip
     addressModel.city = address.city
     addressModel.countryId = address.countryId
+    addressModel.deletedAt = address.deletedAt ? DateTime.fromJSDate(address.deletedAt) : null
 
     return addressModel
   }
