@@ -297,3 +297,45 @@ test.group('Get all Waypoints Controller', (group) => {
     assert.isEmpty(response.body().data) // Vérifie que le tableau est vide
   })
 })
+
+test.group('Get waypoint through slug Controller', (group) => {
+  // Utilisation de la transaction globale pour annuler tout après chaque test
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('should get the waypoint by slug successfully', async ({ client, assert }) => {
+    const waypoint = {
+      latitude: 12.3456,
+      longitude: 65.4321,
+      title_en: 'Waypoint EN 1',
+      title_fr: 'Waypoint FR 1',
+      description_en: 'Description EN 1',
+      description_fr: 'Description FR 1',
+      types: 'type1',
+      pmr: true,
+    }
+
+    // Créer deux waypoints directement
+    const createResponse = await client.post('/api/waypoints').json(waypoint)
+
+    const waypointResponse = createResponse.body()
+
+    // Faire une requête GET pour récupérer tous les waypoints
+    const response = await client.get(`/api/waypoints/${waypointResponse.slug}/slug`)
+
+    response.assertStatus(200) // Statut 200 pour récupération réussite
+
+    const returnedWaypoint = response.body().data
+    assert.equal(returnedWaypoint.latitude, waypoint.latitude)
+    assert.equal(returnedWaypoint.longitude, waypoint.longitude)
+  })
+
+  test('should return an error if there is no matching slug', async ({ client, assert }) => {
+    // Faire une requête GET pour récupérer les waypoints (aucun waypoint n'existe)
+    const response = await client.get('/api/waypoints/test-inexistant/slug')
+
+    response.assertStatus(400) // Statut 200 OK
+    assert.deepEqual(response.body(), {
+      message: 'Waypoint with slug : test-inexistant does not exist',
+    })
+  })
+})
