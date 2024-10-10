@@ -87,8 +87,8 @@ export class WaypointRepository extends IWaypointRepository {
 
     waypointModel.latitude = waypoint.latitude
     waypointModel.longitude = waypoint.longitude
-    waypointModel.titleJson = waypoint.title
-    waypointModel.descriptionJson = waypoint.description
+    waypointModel.title = waypoint.title
+    waypointModel.description = waypoint.description
     waypointModel.types = waypoint.types
     waypointModel.pmr = waypoint.pmr
     waypointModel.slug = waypoint.slug

@@ -21,10 +21,10 @@ export default class WaypointModel extends BaseModel {
   declare longitude: number
 
   @column()
-  declare titleJson: MultilingualField
+  declare title: MultilingualField
 
   @column()
-  declare descriptionJson: OptionalMultilingualField | undefined
+  declare description: OptionalMultilingualField | undefined
 
   @column()
   declare types: string

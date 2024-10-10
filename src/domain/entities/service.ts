@@ -2,8 +2,8 @@ import { MultilingualField } from '#domain/types/multilingual_field.type'
 
 export class Service {
   public id: number | null
-  public titleJson: MultilingualField
-  public descriptionJson: MultilingualField
+  public title: MultilingualField
+  public description: MultilingualField
   public url: string
   public icon: string | undefined
   public isActive: boolean
@@ -13,8 +13,8 @@ export class Service {
 
   constructor(
     id: number | null,
-    titleJson: MultilingualField,
-    descriptionJson: MultilingualField,
+    title: MultilingualField,
+    description: MultilingualField,
     url: string,
     icon: string | undefined,
     isActive: boolean,
@@ -27,27 +27,27 @@ export class Service {
       throw new Error('InvalidURLError: The provided URL is not valid.')
     }
 
-    if (!titleJson.en || titleJson.en.trim().length === 0) {
+    if (!title.en || title.en.trim().length === 0) {
       throw new Error('InvalidTitleError: The English title must be provided and cannot be empty.')
     }
-    if (!titleJson.fr || titleJson.fr.trim().length === 0) {
+    if (!title.fr || title.fr.trim().length === 0) {
       throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
     }
 
-    if (!descriptionJson.en || descriptionJson.en.trim().length === 0) {
+    if (!description.en || description.en.trim().length === 0) {
       throw new Error(
         'InvalidTitleError: The English description must be provided and cannot be empty.'
       )
     }
-    if (!descriptionJson.fr || descriptionJson.fr.trim().length === 0) {
+    if (!description.fr || description.fr.trim().length === 0) {
       throw new Error(
         'InvalidTitleError: The French description must be provided and cannot be empty.'
       )
     }
 
     this.id = id
-    this.titleJson = titleJson
-    this.descriptionJson = descriptionJson
+    this.title = title
+    this.description = description
     this.url = url
     this.icon = icon
     this.isActive = isActive

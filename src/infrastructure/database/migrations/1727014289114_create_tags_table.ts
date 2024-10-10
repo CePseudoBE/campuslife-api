@@ -6,8 +6,8 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.json('title_json').notNullable()
-      table.string('slug_title').notNullable().index('slug_tag_index')
+      table.json('title').notNullable()
+      table.string('slug').notNullable().index('slug_tag_index')
 
       table.timestamp('created_at')
       table.timestamp('updated_at')

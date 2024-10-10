@@ -6,8 +6,8 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.json('title_json').notNullable()
-      table.json('description_json').notNullable()
+      table.json('title').notNullable()
+      table.json('description').notNullable()
       table.string('url').notNullable()
       table.string('icon').nullable()
       table.boolean('is_active').notNullable()

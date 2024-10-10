@@ -18,10 +18,10 @@ export default class EventModel extends BaseModel {
   declare id: number
 
   @column()
-  declare titleJson: MultilingualField
+  declare title: MultilingualField
 
   @column()
-  declare descriptionJson: MultilingualField
+  declare description: MultilingualField
 
   @column()
   declare image: string
@@ -36,7 +36,7 @@ export default class EventModel extends BaseModel {
   declare url: string
 
   @column()
-  declare slugTitle: string | undefined
+  declare slug: string | undefined
 
   @column()
   declare waypointId: number

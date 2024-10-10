@@ -13,10 +13,10 @@ export default class TagModel extends BaseModel {
   declare id: number
 
   @column()
-  declare titleJson: MultilingualField
+  declare title: MultilingualField
 
   @column()
-  declare slugTitle: string
+  declare slug: string
 
   @manyToMany(() => WaypointModel, {
     pivotTable: 'waypoints_tags',

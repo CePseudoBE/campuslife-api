@@ -9,9 +9,9 @@ export class WaypointMapper {
     const waypointModel = new WaypointModel()
     waypointModel.latitude = waypoint.latitude
     waypointModel.longitude = waypoint.longitude
-    waypointModel.titleJson = waypoint.title
+    waypointModel.title = waypoint.title
     waypointModel.deletedAt = waypoint.deletedAt ? DateTime.fromJSDate(waypoint.deletedAt) : null
-    waypointModel.descriptionJson = waypoint.description
+    waypointModel.description = waypoint.description
     waypointModel.types = waypoint.types
     waypointModel.pmr = waypoint.pmr
     waypointModel.slug = waypoint.slug
@@ -23,13 +23,13 @@ export class WaypointMapper {
       waypointModel.id,
       waypointModel.latitude,
       waypointModel.longitude,
-      waypointModel.titleJson,
+      waypointModel.title,
       waypointModel.types,
       waypointModel.pmr,
       waypointModel.createdAt.toJSDate(),
       waypointModel.updatedAt.toJSDate(),
       waypointModel.deletedAt ? waypointModel.deletedAt.toJSDate() : null,
-      waypointModel.descriptionJson,
+      waypointModel.description,
       waypointModel.slug
     )
 

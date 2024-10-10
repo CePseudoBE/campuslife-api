@@ -9,10 +9,10 @@ export default class ServiceModel extends BaseModel {
   declare id: number
 
   @column()
-  declare titleJson: MultilingualField
+  declare title: MultilingualField
 
   @column()
-  declare descriptionJson: MultilingualField
+  declare description: MultilingualField
 
   @column()
   declare url: string

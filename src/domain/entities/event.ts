@@ -12,13 +12,13 @@ type MultilingualField = {
 
 export class Event {
   public id: number | null
-  public titleJson: MultilingualField
-  public descriptionJson: MultilingualField
+  public title: MultilingualField
+  public description: MultilingualField
   public image: string
   public start: Date
   public end: Date
   public url: string
-  public slugTitle?: string
+  public slug?: string
   public waypointId: number
   public userId: number
   public addressId: number
@@ -32,8 +32,8 @@ export class Event {
 
   constructor(
     id: number | null,
-    titleJson: MultilingualField,
-    descriptionJson: MultilingualField,
+    title: MultilingualField,
+    description: MultilingualField,
     image: string,
     start: Date,
     end: Date,
@@ -44,25 +44,25 @@ export class Event {
     createdAt: Date,
     updatedAt: Date,
     deletedAt: Date | null = null,
-    slugTitle?: string,
+    slug?: string,
     waypoint?: Waypoint,
     user?: User,
     address?: Address,
     tags?: Tag[]
   ) {
-    if (!titleJson.en || titleJson.en.trim().length === 0) {
+    if (!title.en || title.en.trim().length === 0) {
       throw new Error('InvalidTitleError: The English title must be provided and cannot be empty.')
     }
-    if (!titleJson.fr || titleJson.fr.trim().length === 0) {
+    if (!title.fr || title.fr.trim().length === 0) {
       throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
     }
 
-    if (!descriptionJson.en || descriptionJson.en.trim().length === 0) {
+    if (!description.en || description.en.trim().length === 0) {
       throw new Error(
         'InvalidTitleError: The English description must be provided and cannot be empty.'
       )
     }
-    if (!descriptionJson.fr || descriptionJson.fr.trim().length === 0) {
+    if (!description.fr || description.fr.trim().length === 0) {
       throw new Error(
         'InvalidTitleError: The French description must be provided and cannot be empty.'
       )
@@ -73,7 +73,7 @@ export class Event {
     if (end.getTime() <= start.getTime()) {
       throw new Error('InvalidEndDateError: End date must be after the start date.')
     }
-    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
+    const urlRegex = /^(https?|ftp):\/\/[^\s\/$.?#].\S*$/i
     if (url && !urlRegex.test(url)) {
       throw new Error('InvalidURLError: The provided URL is not valid.')
     }
@@ -81,8 +81,8 @@ export class Event {
       throw new Error('DuplicateTagsError: Each tag must be unique.')
     }
     this.id = id
-    this.titleJson = titleJson
-    this.descriptionJson = descriptionJson
+    this.title = title
+    this.description = description
     this.image = image
     this.start = start
     this.end = end
@@ -90,7 +90,7 @@ export class Event {
     this.waypointId = waypointId
     this.userId = userId
     this.addressId = addressId
-    this.slugTitle = slugTitle
+    this.slug = slug
     this.tags = tags
     this.waypoint = waypoint
     this.user = user

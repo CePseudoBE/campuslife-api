@@ -5,8 +5,8 @@ import { Collection } from '#domain/entities/collection'
 
 export class Tag {
   public id: number | null
-  public titleJson: MultilingualField
-  public slugTitle: string
+  public title: MultilingualField
+  public slug: string
   public waypoints?: Waypoint[]
   public events?: Event[]
   public collections?: Collection[]
@@ -16,8 +16,8 @@ export class Tag {
 
   constructor(
     id: number | null,
-    titleJson: MultilingualField,
-    slugTitle: string,
+    title: MultilingualField,
+    slug: string,
     createdAt: Date,
     updatedAt: Date,
     deletedAt: Date | null = null,
@@ -27,24 +27,24 @@ export class Tag {
   ) {
     this.id = id
 
-    if (!titleJson.en || titleJson.en.trim().length === 0) {
+    if (!title.en || title.en.trim().length === 0) {
       throw new Error('InvalidTitleError: The English title must be provided and cannot be empty.')
     }
-    if (!titleJson.fr || titleJson.fr.trim().length === 0) {
+    if (!title.fr || title.fr.trim().length === 0) {
       throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
     }
-    if (!slugTitle || slugTitle.trim().length === 0) {
+    if (!slug || slug.trim().length === 0) {
       throw new Error('InvalidSlugError: The slugTitle cannot be empty.')
     }
     const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
-    if (!slugRegex.test(slugTitle)) {
+    if (!slugRegex.test(slug)) {
       throw new Error(
         'InvalidSlugFormatError: The slugTitle must only contain lowercase letters, numbers, and hyphens.'
       )
     }
 
-    this.titleJson = titleJson
-    this.slugTitle = slugTitle
+    this.title = title
+    this.slug = slug
     this.createdAt = createdAt
     this.updatedAt = updatedAt
     this.deletedAt = deletedAt
