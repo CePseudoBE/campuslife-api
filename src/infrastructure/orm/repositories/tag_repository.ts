@@ -96,4 +96,17 @@ export class TagRepository extends ITagRepository {
 
     return TagMapper.toDomain(tagModel)
   }
+
+  async associateCollections(idCollections: number[], tag: Tag): Promise<Tag> {
+    const tagModel = await TagModel.find(tag.id)
+    if (!tagModel) {
+      throw new Error('NotFound: Tag not found')
+    }
+
+    await tagModel.related('collections').sync(idCollections)
+
+    await tagModel.load('collections')
+
+    return TagMapper.toDomain(tagModel)
+  }
 }

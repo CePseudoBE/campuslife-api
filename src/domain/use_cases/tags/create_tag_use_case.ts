@@ -2,12 +2,20 @@ import { inject } from '@adonisjs/core'
 import { MultilingualField } from '#domain/types/multilingual_field.type'
 import { ITagRepository } from '#domain/repositories/itag_repository'
 import { Tag } from '#domain/entities/tag'
+import { ICollectionRepository } from '#domain/repositories/icollection_repository'
 
 @inject()
 export class CreateTagUseCase {
-  constructor(private iTagRepository: ITagRepository) {}
+  constructor(
+    private iTagRepository: ITagRepository,
+    private iCollectionRepository: ICollectionRepository
+  ) {}
 
-  public async handle(data: { title_en: string; title_fr: string; slug?: string }): Promise<Tag> {
+  public async handle(data: {
+    title_en: string
+    title_fr: string
+    collections?: number[]
+  }): Promise<Tag> {
     const title: MultilingualField = {
       en: data.title_en || '',
       fr: data.title_fr || '',
@@ -19,6 +27,26 @@ export class CreateTagUseCase {
 
     const tag = new Tag(null, title, new Date(), new Date())
 
-    return await this.iTagRepository.create(tag)
+    if (!data.collections || data.collections.length === 0) {
+      return await this.iTagRepository.create(tag)
+    }
+
+    if (
+      !Array.isArray(data.collections) ||
+      data.collections.some((collection) => !Number.isInteger(collection))
+    ) {
+      throw new Error('Invalid collection format: collections must be an array of numbers')
+    }
+
+    for (const collectionId of data.collections) {
+      const collection = await this.iCollectionRepository.findById(collectionId)
+      if (!collection) {
+        throw new Error(`IdNotFound : Collection with ID ${collectionId} does not exist`)
+      }
+    }
+
+    const tagFromRepo = await this.iTagRepository.create(tag)
+
+    return await this.iTagRepository.associateCollections(data.collections, tagFromRepo)
   }
 }

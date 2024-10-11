@@ -34,7 +34,7 @@ export class ValidationService {
     return vine.object({
       title_en: vine.string().minLength(3).maxLength(50),
       title_fr: vine.string().minLength(3).maxLength(50),
-      slug: vine.string().optional(),
+      collections: vine.array(vine.number()).optional(),
     })
   }
 
@@ -42,7 +42,6 @@ export class ValidationService {
     return vine.object({
       title_en: vine.string().minLength(3).maxLength(50).optional(),
       title_fr: vine.string().minLength(3).maxLength(50).optional(),
-      slug: vine.string().optional(),
     })
   }
 

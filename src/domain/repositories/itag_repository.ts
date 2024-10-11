@@ -11,4 +11,6 @@ export abstract class ITagRepository {
   abstract update(tag: Tag): Promise<Tag>
 
   abstract delete(tag: Tag): Promise<null>
+
+  abstract associateCollections(idCollections: number[], tag: Tag): Promise<Tag>
 }

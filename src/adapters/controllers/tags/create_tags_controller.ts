@@ -9,7 +9,7 @@ export default class CreateTagController {
   constructor(private createTagUseCase: CreateTagUseCase) {}
 
   async handle({ request, response }: HttpContext) {
-    const body = request.only(['title_en', 'title_fr', 'slug'])
+    const body = request.only(['title_en', 'title_fr', 'collections'])
 
     const schema = ValidationService.getTagRules()
 
