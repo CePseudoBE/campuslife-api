@@ -1,8 +1,9 @@
 import { Tag } from '#domain/entities/tag'
+import type { MultilingualField } from '#domain/types/multilingual_field.type'
 
 export class Collection {
   public id: number | null
-  public name: string
+  public name: MultilingualField
   public heroicons: string
   public tags?: Tag[]
   public createdAt: Date
@@ -11,7 +12,7 @@ export class Collection {
 
   constructor(
     id: number | null,
-    name: string,
+    name: MultilingualField,
     heroicons: string,
     createdAt: Date,
     updatedAt: Date,
@@ -19,6 +20,14 @@ export class Collection {
     tags?: Tag[]
   ) {
     this.id = id
+
+    if (!name.en || name.en.trim().length === 0) {
+      throw new Error('InvalidTitleError: The English title must be provided and cannot be empty.')
+    }
+    if (!name.fr || name.fr.trim().length === 0) {
+      throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
+    }
+
     this.name = name
     this.heroicons = heroicons
     this.createdAt = createdAt

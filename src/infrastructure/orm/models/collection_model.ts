@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, manyToMany } from '@adonisjs/lucid/orm'
 import type { ManyToMany } from '@adonisjs/lucid/types/relations'
 import TagModel from '#infrastructure/orm/models/tag_model'
+import type { MultilingualField } from '#domain/types/multilingual_field.type'
 
 export default class CollectionModel extends BaseModel {
   public static table = 'tags'
@@ -10,7 +11,7 @@ export default class CollectionModel extends BaseModel {
   declare id: number
 
   @column()
-  declare name: string
+  declare name: MultilingualField
 
   @column()
   declare heroicons: string
