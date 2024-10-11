@@ -1,6 +1,8 @@
 import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
 import CollectionModel from '#infrastructure/orm/models/collection_model'
+import TagModel from '#infrastructure/orm/models/tag_model'
+import { DateTime } from 'luxon'
 
 // Test group for the CreateTagController
 test.group('CreateTagController', (group) => {
@@ -135,5 +137,60 @@ test.group('CreateTagController', (group) => {
     assert.equal(tag.title.en, 'Test Tag EN')
     assert.equal(tag.title.fr, 'Test Tag FR')
     assert.lengthOf(tag.collections, 2)
+  })
+})
+
+test.group('DeleteTagController', (group) => {
+  // Use global transaction for each test to rollback changes
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('should delete an existing tag successfully', async ({ client, assert }) => {
+    // Create a tag directly via the model
+    const tag = new TagModel()
+    tag.title = { en: 'Test Tag EN', fr: 'Test Tag FR' }
+    await tag.save()
+
+    // Make a DELETE request to delete the tag
+    const response = await client.delete(`/api/tags/${tag.id}`)
+
+    // Expect 204 No Content response
+    response.assertStatus(204)
+
+    // Check if the tag was soft deleted
+    const deletedTag = await TagModel.find(tag.id)
+    assert.exists(deletedTag?.deletedAt) // Ensure deletedAt field is set
+  })
+
+  test('should return 400 if tag does not exist', async ({ client, assert }) => {
+    // Try to delete a tag with a non-existent ID
+    const response = await client.delete('/api/tags/9999')
+
+    // Expect 400 Bad Request response with a specific error message
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'NotFound: Tag not found')
+  })
+
+  test('should return 400 for invalid tag ID', async ({ client, assert }) => {
+    // Try to delete a tag with an invalid (non-numeric) ID
+    const response = await client.delete('/api/tags/invalid-id')
+
+    // Expect 400 Bad Request response with a specific error message
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'Bad ID provided (non existent or NaN)')
+  })
+
+  test('should return 400 if tag is already deleted', async ({ client, assert }) => {
+    // Create a tag and mark it as deleted
+    const tag = new TagModel()
+    tag.title = { en: 'Test Tag EN', fr: 'Test Tag FR' }
+    tag.deletedAt = DateTime.now() // Soft delete the tag
+    await tag.save()
+
+    // Try to delete the already deleted tag
+    const response = await client.delete(`/api/tags/${tag.id}`)
+
+    // Expect 400 Bad Request response with a specific error message
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'AlreadyDelete: Tag deleted')
   })
 })
