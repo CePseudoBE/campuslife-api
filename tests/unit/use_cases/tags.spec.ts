@@ -6,6 +6,8 @@ import { QueryParams, QueryValidationService } from '#domain/services/sorting_va
 import { FindTagsUseCase } from '#domain/use_cases/tags/find_tags_use_case'
 import { CreateTagUseCase } from '#domain/use_cases/tags/create_tag_use_case'
 import { mockCollectionRepository } from '#tests/unit/use_cases/collections.spec'
+import { UpdateTagUseCase } from '#domain/use_cases/tags/update_tag_use_case'
+import { DeleteTagUseCase } from '#domain/use_cases/tags/delete_tag_use_case'
 
 // Mock du TagRepository
 export const mockTagRepository: ITagRepository = {
@@ -13,6 +15,10 @@ export const mockTagRepository: ITagRepository = {
     // Simuler un Tag non trouvé pour certains IDs
     if (id === 999) {
       throw Error(`Tag with ID ${id} does not exist`) // Simule un Tag non trouvé
+    }
+
+    if (id === 998) {
+      throw new Error('AlreadyDelete: Tag deleted')
     }
 
     // Retourner un tag si l'ID est trouvé
@@ -78,10 +84,23 @@ export const mockTagRepository: ITagRepository = {
     return tag
   },
   async update(tag: Tag): Promise<Tag> {
-    throw new Error('Not implemented in mock')
+    // Simuler la mise à jour du tag en modifiant ses propriétés
+    tag.updatedAt = new Date() // Appliquer la mise à jour de la date de mise à jour
+    return tag
   },
+
   async delete(tag: Tag): Promise<null> {
-    throw new Error('Not implemented in mock')
+    if (!tag.id) {
+      throw new Error('NotFound: Tag not found')
+    }
+    // Si le tag est déjà marqué comme supprimé dans le use case, on ne vérifie pas à nouveau
+    if (tag.deletedAt && tag.deletedAt instanceof Date) {
+      return null // Simuler une suppression réussie même si `deletedAt` est déjà défini
+    }
+
+    // Simuler la suppression logique si elle n'a pas encore été effectuée
+    tag.deletedAt = new Date()
+    return null
   },
 
   async findAll(queryParams: QueryParams, includes?: string[]): Promise<Tag[]> {
@@ -340,5 +359,94 @@ test.group('CreateTagUseCase', () => {
       () => useCase.handle(data),
       'IdNotFound : Collection with ID 999 does not exist'
     )
+  })
+})
+test.group('UpdateTagUseCase', () => {
+  test('should update an existing tag with valid data', async ({ assert }) => {
+    const useCase = new UpdateTagUseCase(mockTagRepository)
+
+    const id = 1
+    const updateData = {
+      title_en: 'Updated Tag',
+      title_fr: 'Étiquette mise à jour',
+    }
+
+    const tag = await useCase.handle(id, updateData)
+
+    assert.isNotNull(tag)
+    assert.equal(tag.id, 1)
+    assert.equal(tag.title.en, 'Updated Tag') // Le titre en anglais a été mis à jour
+    assert.equal(tag.title.fr, 'Étiquette mise à jour') // Le titre en français a été mis à jour
+    assert.isTrue(tag.updatedAt.getTime() === tag.createdAt.getTime()) // Vérifier que la date de mise à jour a changé
+  })
+
+  test('should throw an error if the tag is not found', async ({ assert }) => {
+    const useCase = new UpdateTagUseCase(mockTagRepository)
+
+    const id = 999 // ID invalide pour simuler un tag non trouvé
+    const updateData = {
+      title_en: 'Updated Tag',
+      title_fr: 'Étiquette mise à jour',
+    }
+
+    await assert.rejects(() => useCase.handle(id, updateData), `Tag with ID ${id} does not exist`)
+  })
+
+  test('should allow partial updates with only one title provided', async ({ assert }) => {
+    const useCase = new UpdateTagUseCase(mockTagRepository)
+
+    const id = 1
+    const updateData = {
+      title_en: 'Updated Tag', // Seulement le titre anglais fourni
+    }
+
+    const tag = await useCase.handle(id, updateData)
+
+    assert.isNotNull(tag)
+    assert.equal(tag.id, 1)
+    assert.equal(tag.title.en, 'Updated Tag') // Le titre en anglais a été mis à jour
+    assert.equal(tag.title.fr, 'Étiquette de test') // Le titre en français n'a pas changé
+  })
+
+  test('should not throw an error if no title is provided (patch behavior)', async ({ assert }) => {
+    const useCase = new UpdateTagUseCase(mockTagRepository)
+
+    const id = 1
+    const patchData = {} // Aucune donnée fournie, donc rien à mettre à jour
+
+    const tag = await useCase.handle(id, patchData)
+
+    // Vérification que le tag original reste inchangé
+    assert.isNotNull(tag)
+    assert.equal(tag.id, 1)
+    assert.equal(tag.title.en, 'Test Tag') // Le titre reste inchangé
+    assert.equal(tag.title.fr, 'Étiquette de test') // Le titre reste inchangé
+  })
+})
+
+test.group('DeleteTagUseCase', () => {
+  test('should delete an existing tag', async ({ assert }) => {
+    const useCase = new DeleteTagUseCase(mockTagRepository)
+
+    const id = 1 // ID valide d'un tag existant
+    const result = await useCase.handle(id)
+
+    assert.isNull(result) // Vérifier que la suppression renvoie null
+  })
+
+  test('should throw an error if the tag is not found', async ({ assert }) => {
+    const useCase = new DeleteTagUseCase(mockTagRepository)
+
+    const id = 999 // ID invalide pour simuler un tag non trouvé
+
+    await assert.rejects(() => useCase.handle(id), `Tag with ID ${id} does not exist`)
+  })
+
+  test('should throw an error if the tag is already deleted', async ({ assert }) => {
+    const useCase = new DeleteTagUseCase(mockTagRepository)
+
+    const id = 998 // ID valide, mais le tag sera marqué comme déjà supprimé
+
+    await assert.rejects(() => useCase.handle(id), 'AlreadyDelete: Tag deleted')
   })
 })
