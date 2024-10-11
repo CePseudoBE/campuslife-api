@@ -94,7 +94,7 @@ export const mockTagRepository: ITagRepository = {
       throw new Error('NotFound: Tag not found')
     }
     // Si le tag est déjà marqué comme supprimé dans le use case, on ne vérifie pas à nouveau
-    if (tag.deletedAt && tag.deletedAt instanceof Date) {
+    if (tag.deletedAt) {
       return null // Simuler une suppression réussie même si `deletedAt` est déjà défini
     }
 
