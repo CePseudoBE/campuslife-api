@@ -4,6 +4,8 @@ import { Tag } from '#domain/entities/tag'
 import { ITagRepository } from '#domain/repositories/itag_repository'
 import { QueryParams, QueryValidationService } from '#domain/services/sorting_validation'
 import { FindTagsUseCase } from '#domain/use_cases/tags/find_tags_use_case'
+import { CreateTagUseCase } from '#domain/use_cases/tags/create_tag_use_case'
+import { mockCollectionRepository } from '#tests/unit/use_cases/collections.spec'
 
 // Mock du TagRepository
 export const mockTagRepository: ITagRepository = {
@@ -57,7 +59,23 @@ export const mockTagRepository: ITagRepository = {
   },
 
   async create(tag: Tag): Promise<Tag> {
-    throw new Error('Not implemented in mock')
+    // Simuler l'insertion et retourner le tag avec un ID
+    tag.id = 1
+    return tag
+  },
+
+  async associateCollections(collectionIds: number[], tag: Tag): Promise<Tag> {
+    // Simuler l'association de collections au tag
+    //@ts-ignore
+    tag.collections = collectionIds.map((id) => ({
+      id,
+      name: { en: `Collection ${id}`, fr: `Collection ${id}` },
+      heroicons: 'add',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      deletedAt: null,
+    }))
+    return tag
   },
   async update(tag: Tag): Promise<Tag> {
     throw new Error('Not implemented in mock')
@@ -65,9 +83,7 @@ export const mockTagRepository: ITagRepository = {
   async delete(tag: Tag): Promise<null> {
     throw new Error('Not implemented in mock')
   },
-  async associateCollections(ids, tag: Tag): Promise<Tag> {
-    return tag
-  },
+
   async findAll(queryParams: QueryParams, includes?: string[]): Promise<Tag[]> {
     const tags = [
       new Tag(
@@ -244,5 +260,85 @@ test.group('FindTagsUseCase with filtering and pagination', () => {
     assert.isArray(tags)
     assert.lengthOf(tags, 1)
     assert.equal(tags[0].title.en, 'Test Tag 2')
+  })
+})
+
+test.group('CreateTagUseCase', () => {
+  test('should create a tag without collections', async ({ assert }) => {
+    const useCase = new CreateTagUseCase(mockTagRepository, mockCollectionRepository)
+
+    const data = {
+      title_en: 'Test Tag',
+      title_fr: 'Étiquette de test',
+      collections: [],
+    }
+
+    const tag = await useCase.handle(data)
+
+    assert.isNotNull(tag)
+    assert.equal(tag.id, 1)
+    assert.equal(tag.title.en, 'Test Tag')
+    assert.isUndefined(tag.collections)
+  })
+
+  test('should create a tag with valid collections', async ({ assert }) => {
+    const useCase = new CreateTagUseCase(mockTagRepository, mockCollectionRepository)
+
+    const data = {
+      title_en: 'Test Tag',
+      title_fr: 'Étiquette de test',
+      collections: [1, 2],
+    }
+
+    const tag = await useCase.handle(data)
+
+    assert.isNotNull(tag)
+    assert.equal(tag.id, 1)
+    assert.equal(tag.title.en, 'Test Tag')
+    assert.lengthOf(tag.collections!, 2)
+    assert.equal(tag.collections![0].id, 1)
+    assert.equal(tag.collections![1].id, 2)
+  })
+
+  test('should throw an error if title is missing', async ({ assert }) => {
+    const useCase = new CreateTagUseCase(mockTagRepository, mockCollectionRepository)
+
+    const invalidData = {
+      title_en: '', // Titre manquant en anglais
+      title_fr: 'Étiquette de test',
+    }
+
+    await assert.rejects(() => useCase.handle(invalidData), 'Title is required')
+  })
+
+  test('should throw an error if collections are not an array of numbers', async ({ assert }) => {
+    const useCase = new CreateTagUseCase(mockTagRepository, mockCollectionRepository)
+
+    const invalidData = {
+      title_en: 'Test Tag',
+      title_fr: 'Étiquette de test',
+      collections: ['invalid-collection'], // Format invalide pour les collections
+    }
+
+    await assert.rejects(
+      //@ts-ignore
+      () => useCase.handle(invalidData),
+      'Invalid collection format: collections must be an array of numbers'
+    )
+  })
+
+  test('should throw an error if a collection does not exist', async ({ assert }) => {
+    const useCase = new CreateTagUseCase(mockTagRepository, mockCollectionRepository)
+
+    const data = {
+      title_en: 'Test Tag',
+      title_fr: 'Étiquette de test',
+      collections: [999], // Collection ID invalide
+    }
+
+    await assert.rejects(
+      () => useCase.handle(data),
+      'IdNotFound : Collection with ID 999 does not exist'
+    )
   })
 })
