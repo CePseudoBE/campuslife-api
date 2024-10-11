@@ -56,8 +56,6 @@ test.group('Create Waypoint Controller', (group) => {
       title: { en: 'Tag 2 EN', fr: 'Tag 2 FR' },
     })
 
-    console.log(tag1)
-
     const waypointPayload = {
       latitude: 12.3456,
       longitude: 65.4321,

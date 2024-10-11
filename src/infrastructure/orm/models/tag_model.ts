@@ -17,22 +17,22 @@ export default class TagModel extends BaseModel {
 
   @manyToMany(() => WaypointModel, {
     pivotTable: 'waypoints_tags',
-    pivotForeignKey: 'waypoint_id',
-    pivotRelatedForeignKey: 'tag_id',
+    pivotForeignKey: 'tag_id',
+    pivotRelatedForeignKey: 'waypoint_id',
   })
   declare waypoints: ManyToMany<typeof WaypointModel>
 
   @manyToMany(() => EventModel, {
     pivotTable: 'events_tags',
-    pivotForeignKey: 'event_id',
-    pivotRelatedForeignKey: 'tag_id',
+    pivotForeignKey: 'tag_id',
+    pivotRelatedForeignKey: 'event_id',
   })
   declare events: ManyToMany<typeof EventModel>
 
   @manyToMany(() => CollectionModel, {
     pivotTable: 'tags_collections',
-    pivotForeignKey: 'collection_id',
-    pivotRelatedForeignKey: 'tag_id',
+    pivotForeignKey: 'tag_id',
+    pivotRelatedForeignKey: 'collection_id',
   })
   declare collections: ManyToMany<typeof CollectionModel>
 

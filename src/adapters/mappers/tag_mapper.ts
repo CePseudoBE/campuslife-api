@@ -29,13 +29,13 @@ export class TagMapper {
     }
 
     if (tagModel.waypoints) {
-      tag.waypoints
+      tag.waypoints = tagModel.waypoints
         ? tagModel.waypoints.map((waypointModel) => WaypointMapper.toDomain(waypointModel))
         : []
     }
 
     if (tagModel.collections) {
-      tag.collections
+      tag.collections = tagModel.collections
         ? tagModel.collections.map((collectionModel) => CollectionMapper.toDomain(collectionModel))
         : []
     }

@@ -2,10 +2,10 @@ import { Collection } from '#domain/entities/collection'
 import { ICollectionRepository } from '#domain/repositories/icollection_repository'
 import { QueryParams } from '#domain/services/sorting_validation'
 
-// Mock complet du CollectionRepository
+// Mock complet du CollectionRepository avec gestion des includes
 export const mockCollectionRepository: ICollectionRepository = {
   async create(collection: Collection): Promise<Collection> {
-    // Simuler la création et retourner le collection avec un ID
+    // Simuler la création et retourner la collection avec un ID
     collection.id = 1
     return collection
   },
@@ -47,6 +47,35 @@ export const mockCollectionRepository: ICollectionRepository = {
     const endIndex = startIndex + queryParams.limit!
     const paginatedCollections = collections.slice(startIndex, endIndex)
 
+    // Simuler les includes (relations)
+    if (includes && includes.length > 0) {
+      paginatedCollections.forEach((collection) => {
+        includes.forEach((relation) => {
+          if (relation === 'tags') {
+            // Simuler la relation avec des tags
+            collection.tags = [
+              //@ts-ignore
+              {
+                id: 1,
+                title: { en: 'Tag 1', fr: 'Étiquette 1' },
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                deletedAt: null,
+              },
+              //@ts-ignore
+              {
+                id: 2,
+                title: { en: 'Tag 2', fr: 'Étiquette 2' },
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                deletedAt: null,
+              },
+            ]
+          }
+        })
+      })
+    }
+
     return paginatedCollections
   },
 
@@ -65,9 +94,37 @@ export const mockCollectionRepository: ICollectionRepository = {
       null
     )
 
+    // Simuler une collection supprimée
     if (id === 1000) {
-      collection.deletedAt = new Date() // Simuler une collection supprimée
+      collection.deletedAt = new Date()
       throw new Error('AlreadyDelete: Collection deleted')
+    }
+
+    // Simuler les includes (relations)
+    if (includes && includes.length > 0) {
+      includes.forEach((relation) => {
+        if (relation === 'tags') {
+          // Simuler la relation avec des tags
+          collection.tags = [
+            //@ts-ignore
+            {
+              id: 1,
+              title: { en: 'Tag 1', fr: 'Étiquette 1' },
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              deletedAt: null,
+            },
+            //@ts-ignore
+            {
+              id: 2,
+              title: { en: 'Tag 2', fr: 'Étiquette 2' },
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              deletedAt: null,
+            },
+          ]
+        }
+      })
     }
 
     return collection

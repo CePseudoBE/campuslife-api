@@ -5,7 +5,7 @@ import TagModel from '#infrastructure/orm/models/tag_model'
 import type { MultilingualField } from '#domain/types/multilingual_field.type'
 
 export default class CollectionModel extends BaseModel {
-  public static table = 'tags'
+  public static table = 'collections'
 
   @column({ isPrimary: true })
   declare id: number
@@ -18,8 +18,8 @@ export default class CollectionModel extends BaseModel {
 
   @manyToMany(() => TagModel, {
     pivotTable: 'tags_collections',
-    pivotForeignKey: 'tag_id',
-    pivotRelatedForeignKey: 'collection_id',
+    pivotForeignKey: 'collection_id',
+    pivotRelatedForeignKey: 'tag_id',
   })
   declare tags: ManyToMany<typeof TagModel>
 

@@ -14,12 +14,15 @@ export class FindWaypointsUseCase {
     { page, limit, order, column }: QueryParams,
     includes: string[]
   ): Promise<Waypoint[]> {
-    const queryParams = this.sortingValidation.validateAndSanitizeQueryParams({
-      page,
-      limit,
-      order,
-      column,
-    })
+    const queryParams = this.sortingValidation.validateAndSanitizeQueryParams(
+      {
+        page,
+        limit,
+        order,
+        column,
+      },
+      Waypoint
+    )
     return await this.iwaypointrepository.findAll(queryParams, includes)
   }
 }
