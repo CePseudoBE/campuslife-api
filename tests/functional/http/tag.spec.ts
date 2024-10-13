@@ -6,43 +6,36 @@ import { DateTime } from 'luxon'
 
 // Test group for the CreateTagController
 test.group('CreateTagController', (group) => {
-  // Use a global transaction to rollback any changes after each test
+  // Use a global transaction to roll back any changes after each test
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
   test('should create a new tag successfully', async ({ client, assert }) => {
-    // Mock payload
     const payload = {
       title_en: 'Test Tag EN',
       title_fr: 'Test Tag FR',
       collections: [],
     }
 
-    // Simulate the request to the CreateTagController
     const response = await client.post('/api/tags').json(payload)
 
-    // Check that the response status is 201 Created
     response.assertStatus(201)
 
-    // Check that the tag has been created successfully
     const tag = response.body().data
     assert.exists(tag)
     assert.equal(tag.title.en, 'Test Tag EN')
     assert.equal(tag.title.fr, 'Test Tag FR')
-    assert.isUndefined(tag.collections) // No collections associated
+    assert.isUndefined(tag.collections)
   })
 
   test('should fail validation if title_en is too short', async ({ client, assert }) => {
-    // Mock invalid payload
     const invalidPayload = {
       title_en: 'Te', // Too short
       title_fr: 'Test Tag FR',
       collections: [],
     }
 
-    // Simulate the request to the CreateTagController
     const response = await client.post('/api/tags').json(invalidPayload)
 
-    // Check that the response status is 400 Bad Request due to validation failure
     response.assertStatus(400)
     assert.equal(response.body().message, 'Validation failure')
     assert.isArray(response.body().details)
@@ -55,16 +48,13 @@ test.group('CreateTagController', (group) => {
   })
 
   test('should fail if title_fr is not provided', async ({ client, assert }) => {
-    // Mock invalid payload with missing title_fr
     const invalidPayload = {
       title_en: 'Test Tag EN',
       collections: [],
     }
 
-    // Simulate the request to the CreateTagController
     const response = await client.post('/api/tags').json(invalidPayload)
 
-    // Check that the response status is 400 Bad Request due to missing field
     response.assertStatus(400)
     assert.equal(response.body().message, 'Validation failure')
     assert.isArray(response.body().details)
@@ -76,17 +66,14 @@ test.group('CreateTagController', (group) => {
   })
 
   test('should fail if collections are not an array of numbers', async ({ client, assert }) => {
-    // Mock invalid payload with wrong collections format
     const invalidPayload = {
       title_en: 'Test Tag EN',
       title_fr: 'Test Tag FR',
-      collections: ['invalid-collection'], // Invalid collection format
+      collections: ['invalid-collection'],
     }
 
-    // Simulate the request to the CreateTagController
     const response = await client.post('/api/tags').json(invalidPayload)
 
-    // Check that the response status is 400 Bad Request due to invalid collections
     response.assertStatus(400)
     assert.equal(response.body().message, 'Validation failure')
     assert.isArray(response.body().details)
@@ -102,7 +89,6 @@ test.group('CreateTagController', (group) => {
     client,
     assert,
   }) => {
-    // Mock valid collections
     const collection1 = await CollectionModel.create({
       name: {
         fr: 'collection1fr',
@@ -119,19 +105,15 @@ test.group('CreateTagController', (group) => {
       heroicons: 'test',
     })
 
-    // Mock payload
     const payload = {
       title_en: 'Test Tag EN',
       title_fr: 'Test Tag FR',
       collections: [collection1.id, collection2.id],
     }
 
-    // Simulate the request to the CreateTagController
     const response = await client.post('/api/tags').json(payload)
-    // Check that the response status is 201 Created
     response.assertStatus(201)
 
-    // Check that the tag has been created successfully
     const tag = response.body().data
     assert.exists(tag)
     assert.equal(tag.title.en, 'Test Tag EN')
@@ -145,52 +127,121 @@ test.group('DeleteTagController', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
   test('should delete an existing tag successfully', async ({ client, assert }) => {
-    // Create a tag directly via the model
     const tag = new TagModel()
     tag.title = { en: 'Test Tag EN', fr: 'Test Tag FR' }
     await tag.save()
 
-    // Make a DELETE request to delete the tag
     const response = await client.delete(`/api/tags/${tag.id}`)
 
-    // Expect 204 No Content response
     response.assertStatus(204)
 
-    // Check if the tag was soft deleted
     const deletedTag = await TagModel.find(tag.id)
-    assert.exists(deletedTag?.deletedAt) // Ensure deletedAt field is set
+    assert.exists(deletedTag?.deletedAt)
   })
 
   test('should return 400 if tag does not exist', async ({ client, assert }) => {
-    // Try to delete a tag with a non-existent ID
     const response = await client.delete('/api/tags/9999')
 
-    // Expect 400 Bad Request response with a specific error message
     response.assertStatus(400)
     assert.equal(response.body().message, 'NotFound: Tag not found')
   })
 
   test('should return 400 for invalid tag ID', async ({ client, assert }) => {
-    // Try to delete a tag with an invalid (non-numeric) ID
     const response = await client.delete('/api/tags/invalid-id')
 
-    // Expect 400 Bad Request response with a specific error message
     response.assertStatus(400)
     assert.equal(response.body().message, 'Bad ID provided (non existent or NaN)')
   })
 
   test('should return 400 if tag is already deleted', async ({ client, assert }) => {
-    // Create a tag and mark it as deleted
     const tag = new TagModel()
     tag.title = { en: 'Test Tag EN', fr: 'Test Tag FR' }
-    tag.deletedAt = DateTime.now() // Soft delete the tag
+    tag.deletedAt = DateTime.now()
     await tag.save()
 
-    // Try to delete the already deleted tag
     const response = await client.delete(`/api/tags/${tag.id}`)
 
-    // Expect 400 Bad Request response with a specific error message
     response.assertStatus(400)
     assert.equal(response.body().message, 'AlreadyDelete: Tag deleted')
+  })
+})
+
+test.group('UpdateTagController', (group) => {
+  // Use global transaction for each test to rollback changes
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('should update an existing tag partially (PATCH behavior)', async ({ client, assert }) => {
+    const tag = new TagModel()
+    tag.title = { en: 'Original Tag EN', fr: 'Original Tag FR' }
+    await tag.save()
+
+    const payload = {
+      title_en: 'Updated Tag EN',
+    }
+
+    const response = await client.patch(`/api/tags/${tag.id}`).json(payload)
+
+    response.assertStatus(200)
+
+    const updatedTag = response.body().data
+    assert.equal(updatedTag.title.en, 'Updated Tag EN')
+    assert.equal(updatedTag.title.fr, 'Original Tag FR')
+  })
+
+  test('should fail if invalid tag ID is provided', async ({ client, assert }) => {
+    const response = await client.patch('/api/tags/invalid-id').json({
+      title_en: 'New Tag EN',
+    })
+
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'Invalid tag ID')
+  })
+
+  test('should return 404 if tag does not exist', async ({ client, assert }) => {
+    const response = await client.patch('/api/tags/9999').json({
+      title_en: 'Updated Tag EN',
+    })
+
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'NotFound: Tag not found')
+  })
+
+  test('should return validation error if title_en is too short', async ({ client, assert }) => {
+    const tag = new TagModel()
+    tag.title = { en: 'Original Tag EN', fr: 'Original Tag FR' }
+    await tag.save()
+
+    const payload = {
+      title_en: 'Up',
+    }
+
+    const response = await client.patch(`/api/tags/${tag.id}`).json(payload)
+
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'Validation failure')
+    assert.isArray(response.body().details)
+    assert.deepInclude(response.body().details[0], {
+      message: 'The title_en field must have at least 3 characters',
+      rule: 'minLength',
+      field: 'title_en',
+      meta: { min: 3 },
+    })
+  })
+
+  test('should handle partial updates without errors when no fields are provided', async ({
+    client,
+    assert,
+  }) => {
+    const tag = new TagModel()
+    tag.title = { en: 'Original Tag EN', fr: 'Original Tag FR' }
+    await tag.save()
+
+    const response = await client.patch(`/api/tags/${tag.id}`).json({})
+
+    response.assertStatus(200)
+
+    const updatedTag = response.body().data
+    assert.equal(updatedTag.title.en, 'Original Tag EN')
+    assert.equal(updatedTag.title.fr, 'Original Tag FR')
   })
 })

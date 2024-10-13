@@ -9,7 +9,7 @@ export default class UpdateTagController {
   constructor(private updateTagUseCase: UpdateTagUseCase) {}
 
   async handle({ request, response, params }: HttpContext) {
-    const body = request.only(['title_en', 'title_fr', 'slug'])
+    const body = request.only(['title_en', 'title_fr'])
 
     const id = Number(params.id)
 
