@@ -56,9 +56,8 @@ export class ValidationService {
     model: typeof BaseModel
   ): Promise<string[]> {
     let includes = request.qs().include ? request.qs().include.split(',') : []
-    const validIncludes = ValidationService.validateIncludes(includes, model)
 
-    // Si certains includes sont invalides, renvoyer une erreur
+    const validIncludes = ValidationService.validateIncludes(includes, model)
     if (validIncludes.length !== includes.length) {
       const invalidIncludes = includes.filter((rel: string) => !validIncludes.includes(rel))
       throw new Error(`Invalid includes: ${invalidIncludes.join(', ')}`)

@@ -245,3 +245,92 @@ test.group('UpdateTagController', (group) => {
     assert.equal(updatedTag.title.fr, 'Original Tag FR')
   })
 })
+
+test.group('FindTagByIdController', (group) => {
+  // Use a global transaction to roll back any changes after each test
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('should return a tag by ID successfully', async ({ client, assert }) => {
+    const tag = await TagModel.create({
+      title: { en: 'Test Tag EN', fr: 'Test Tag FR' },
+    })
+    const response = await client.get(`/api/tags/${tag.id}`)
+
+    response.assertStatus(200)
+
+    const responseData = response.body().data
+    assert.exists(responseData)
+    assert.equal(responseData.title.en, 'Test Tag EN')
+    assert.equal(responseData.title.fr, 'Test Tag FR')
+  })
+
+  test('should return 400 if invalid ID is provided', async ({ client, assert }) => {
+    const response = await client.get('/api/tags/invalid-id')
+
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'Bad ID provided (non existent or NaN)')
+  })
+
+  test('should return 400 if tag does not exist', async ({ client, assert }) => {
+    const response = await client.get('/api/tags/9999')
+
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'NotFound: Tag not found')
+  })
+
+  test('should return a tag with collections included', async ({ client, assert }) => {
+    const collection1 = await CollectionModel.create({
+      name: { fr: 'collection1fr', en: 'collection1en' },
+      heroicons: 'test',
+    })
+    const collection2 = await CollectionModel.create({
+      name: { fr: 'collection2fr', en: 'collection2en' },
+      heroicons: 'test',
+    })
+
+    const tag = await TagModel.create({
+      title: { en: 'Test Tag EN', fr: 'Test Tag FR' },
+    })
+
+    await tag.related('collections').sync([collection1.id, collection2.id])
+
+    const response = await client.get(`/api/tags/${tag.id}?include=collections`)
+
+    response.assertStatus(200)
+
+    const responseData = response.body().data
+    assert.exists(responseData)
+    assert.equal(responseData.title.en, 'Test Tag EN')
+    assert.equal(responseData.title.fr, 'Test Tag FR')
+    assert.exists(responseData.collections)
+    assert.lengthOf(responseData.collections, 2)
+  })
+
+  test('should handle multilingual data and return tag in the requested language', async ({
+    client,
+    assert,
+  }) => {
+    const tag = await TagModel.create({
+      title: { en: 'Test Tag EN', fr: 'Test Tag FR' },
+    })
+
+    const response = await client.get(`/api/fr/tags/${tag.id}`)
+
+    response.assertStatus(200)
+
+    const responseData = response.body().data
+    assert.exists(responseData)
+    assert.equal(responseData.title, 'Test Tag FR')
+  })
+
+  test('should return 400 if an unsupported language is requested', async ({ client, assert }) => {
+    const tag = await TagModel.create({
+      title: { en: 'Test Tag EN', fr: 'Test Tag FR' },
+    })
+
+    const response = await client.get(`/api/dz/tags/${tag.id}`)
+
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'InvalidLanguage: Supported languages are fr and en')
+  })
+})

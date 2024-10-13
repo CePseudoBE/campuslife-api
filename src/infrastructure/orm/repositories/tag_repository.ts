@@ -72,6 +72,7 @@ export class TagRepository extends ITagRepository {
 
     if (includes && includes.length > 0) {
       for (const relation of includes) {
+        console.log(relation)
         await tagModel.load(relation as ExtractModelRelations<TagModel>)
       }
     }
