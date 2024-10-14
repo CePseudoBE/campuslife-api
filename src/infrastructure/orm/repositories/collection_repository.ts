@@ -41,9 +41,14 @@ export class CollectionRepository extends ICollectionRepository {
 
   async findAll(
     { page, limit, order, column }: QueryParams,
-    includes: string[]
+    includes: string[],
+    deleted?: boolean
   ): Promise<Collection[]> {
-    const query = CollectionModel.query().whereNull('deleted_at')
+    const query = CollectionModel.query()
+
+    if (!deleted) {
+      query.whereNull('deleted_at')
+    }
 
     if (page && limit) {
       await query.paginate(page, limit)
@@ -53,7 +58,6 @@ export class CollectionRepository extends ICollectionRepository {
       query.orderBy(column, order)
     }
 
-    // Apply includes
     if (includes && includes.length > 0) {
       query.preload(includes[0] as ExtractModelRelations<CollectionModel>)
       for (let i = 1; i < includes.length; i++) {

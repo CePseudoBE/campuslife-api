@@ -10,7 +10,8 @@ export abstract class IWaypointRepository {
 
   abstract findAll(
     { page, limit, order, column }: QueryParams,
-    includes: string[]
+    includes: string[],
+    deleted?: boolean
   ): Promise<Waypoint[]>
 
   abstract update(waypoint: Waypoint): Promise<Waypoint>

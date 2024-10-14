@@ -12,7 +12,8 @@ export class FindTagsUseCase {
 
   public async handle(
     { page, limit, order, column }: QueryParams,
-    includes: string[]
+    includes: string[],
+    deleted?: boolean
   ): Promise<Tag[]> {
     const queryParams = this.sortingValidation.validateAndSanitizeQueryParams(
       {
@@ -23,6 +24,6 @@ export class FindTagsUseCase {
       },
       Tag
     )
-    return await this.iTagsRepository.findAll(queryParams, includes)
+    return await this.iTagsRepository.findAll(queryParams, includes, deleted)
   }
 }

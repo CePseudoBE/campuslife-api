@@ -12,7 +12,8 @@ export class FindWaypointsUseCase {
 
   public async handle(
     { page, limit, order, column }: QueryParams,
-    includes: string[]
+    includes: string[],
+    deleted?: boolean
   ): Promise<Waypoint[]> {
     const queryParams = this.sortingValidation.validateAndSanitizeQueryParams(
       {
@@ -23,6 +24,6 @@ export class FindWaypointsUseCase {
       },
       Waypoint
     )
-    return await this.iwaypointrepository.findAll(queryParams, includes)
+    return await this.iwaypointrepository.findAll(queryParams, includes, deleted)
   }
 }

@@ -6,7 +6,11 @@ export abstract class ITagRepository {
 
   abstract findById(id: number, includes?: string[]): Promise<Tag>
 
-  abstract findAll({ page, limit, order, column }: QueryParams, includes: string[]): Promise<Tag[]>
+  abstract findAll(
+    { page, limit, order, column }: QueryParams,
+    includes: string[],
+    deleted?: boolean
+  ): Promise<Tag[]>
 
   abstract update(tag: Tag): Promise<Tag>
 

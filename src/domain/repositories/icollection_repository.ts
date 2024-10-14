@@ -8,7 +8,8 @@ export abstract class ICollectionRepository {
 
   abstract findAll(
     { page, limit, order, column }: QueryParams,
-    includes: string[]
+    includes: string[],
+    deleted?: boolean
   ): Promise<Collection[]>
 
   abstract update(tag: Collection): Promise<Collection>

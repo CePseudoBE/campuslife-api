@@ -23,7 +23,21 @@ export default class FindWaypointsController {
         column: ctx.request.input('column'),
       }
 
-      const waypoints = await this.findWaypointsUseCase.handle(queryParams, validIncludes)
+      const deletedParam = ctx.request.input('deleted')
+
+      if (deletedParam !== undefined) {
+        if (deletedParam !== 'true' && deletedParam !== 'false') {
+          return ctx.response.badRequest({ message: 'BadType: deleted needs to be true or false' })
+        }
+      }
+
+      const deleted = deletedParam === 'true' ? true : deletedParam === 'false' ? false : undefined
+
+      if (deleted === null) {
+        return ctx.response.badRequest({ message: 'BadType: deleted needs to be true or false' })
+      }
+
+      const waypoints = await this.findWaypointsUseCase.handle(queryParams, validIncludes, deleted)
 
       const waypointsDTO = waypoints.map((waypoint) =>
         WaypointDTO.toLanguages(waypoint, lang, validIncludes)
