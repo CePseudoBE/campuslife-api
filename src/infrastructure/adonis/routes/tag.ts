@@ -1,5 +1,6 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#infrastructure/adonis/kernel'
+const AssociateTagController = () => import('#controllers/tags/associate_tag_controller')
 const FindTagsController = () => import('#controllers/tags/find_tags_controller')
 const FindTagByIdController = () => import('#controllers/tags/find_tags_by_id_controller')
 const UpdateTagController = () => import('#controllers/tags/update_tags_controller')
@@ -24,6 +25,7 @@ router
   .group(() => {
     router
       .group(() => {
+        router.post(':id/collections', [AssociateTagController]).as('associate_tag_collection')
         router.post('', [CreateTagController]).as('create_tag')
         router.delete(':id', [DeleteTagsController]).as('delete_tags')
         router.patch(':id', [UpdateTagController]).as('update_tags')

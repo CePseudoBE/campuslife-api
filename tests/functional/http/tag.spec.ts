@@ -401,3 +401,113 @@ test.group('FindWaypointsController', (group) => {
     assert.equal(response.body().message, 'BadType: deleted needs to be true or false')
   })
 })
+
+test.group('AssociateTagController', (group) => {
+  // Utilisation de la transaction globale pour annuler tout après chaque test
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('should associate valid collections with an existing tag', async ({ client, assert }) => {
+    // Créer un tag
+    const tag = await TagModel.create({
+      title: { en: 'Test Tag EN', fr: 'Test Tag FR' },
+    })
+
+    // Créer deux collections valides
+    const collection1 = await CollectionModel.create({
+      name: { en: 'Collection EN 1', fr: 'Collection FR 1' },
+      heroicons: 'test',
+    })
+
+    const collection2 = await CollectionModel.create({
+      name: { en: 'Collection EN 2', fr: 'Collection FR 2' },
+      heroicons: 'test',
+    })
+
+    const collectionsPayload = {
+      collections: [collection1.id, collection2.id],
+    }
+
+    // Associer les collections au tag
+    const response = await client.post(`/api/tags/${tag.id}/collections`).json(collectionsPayload)
+
+    response.assertStatus(201)
+    assert.exists(response.body().data)
+
+    const associatedTag = await TagModel.query().preload('collections').where('id', tag.id).first()
+
+    assert.exists(associatedTag)
+    assert.equal(associatedTag?.collections.length, 2)
+  })
+
+  test('should return error when trying to associate non-existing collections', async ({
+    client,
+    assert,
+  }) => {
+    // Créer un tag
+    const tag = await TagModel.create({
+      title: { en: 'Test Tag EN', fr: 'Test Tag FR' },
+    })
+
+    const collectionsPayload = {
+      collections: [9999, 8888], // Collections qui n'existent pas
+    }
+
+    // Essayer d'associer les collections inexistantes au tag
+    const response = await client.post(`/api/tags/${tag.id}/collections`).json(collectionsPayload)
+
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'NotFound: Collection not found')
+  })
+
+  test('should return error if invalid ID is provided', async ({ client, assert }) => {
+    const collectionsPayload = {
+      collections: [1, 2],
+    }
+
+    // Essayer de faire une requête avec un ID de tag invalide (non numérique)
+    const response = await client.post(`/api/tags/invalid-id/collections`).json(collectionsPayload)
+
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'Bad ID provided (non existent or NaN)')
+  })
+
+  test('should return validation error if collections are not an array of numbers', async ({
+    client,
+    assert,
+  }) => {
+    // Créer un tag
+    const tag = await TagModel.create({
+      title: { en: 'Test Tag EN', fr: 'Test Tag FR' },
+    })
+
+    const invalidCollectionsPayload = {
+      collections: ['invalid-collection'],
+    }
+
+    const response = await client
+      .post(`/api/tags/${tag.id}/collections`)
+      .json(invalidCollectionsPayload)
+
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'Validation failure')
+    assert.isArray(response.body().details)
+    assert.deepInclude(response.body().details[0], {
+      message: 'The 0 field must be a number',
+      rule: 'number',
+      field: 0,
+      index: 0,
+    })
+  })
+
+  test('should return error if tag does not exist', async ({ client, assert }) => {
+    const collectionsPayload = {
+      collections: [1, 2], // Collections valides
+    }
+
+    // Essayer d'associer des collections à un tag qui n'existe pas
+    const response = await client.post(`/api/tags/9999/collections`).json(collectionsPayload)
+
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'NotFound: Collection not found')
+  })
+})
