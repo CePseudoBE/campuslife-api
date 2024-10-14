@@ -334,3 +334,70 @@ test.group('FindTagByIdController', (group) => {
     assert.equal(response.body().message, 'InvalidLanguage: Supported languages are fr and en')
   })
 })
+
+test.group('FindWaypointsController', (group) => {
+  // Use a global transaction to rollback any changes after each test
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('should return a list of tags', async ({ client, assert }) => {
+    await TagModel.create({
+      title: { en: 'Tag 1 EN', fr: 'Tag 1 FR' },
+    })
+
+    await TagModel.create({
+      title: { en: 'Tag 2 EN', fr: 'Tag 2 FR' },
+    })
+
+    const response = await client.get('/api/tags')
+
+    response.assertStatus(200)
+    const responseData = response.body().data
+    assert.isArray(responseData)
+    assert.lengthOf(responseData, 2)
+  })
+
+  test('should filter out deleted tags when deleted=false', async ({ client, assert }) => {
+    await TagModel.create({
+      title: { en: 'Tag 1 EN', fr: 'Tag 1 FR' },
+      deletedAt: DateTime.now(),
+    })
+
+    await TagModel.create({
+      title: { en: 'Tag 2 EN', fr: 'Tag 2 FR' },
+    })
+
+    const response = await client.get('/api/tags?deleted=false')
+
+    response.assertStatus(200)
+    const responseData = response.body().data
+    assert.isArray(responseData)
+    assert.lengthOf(responseData, 1)
+    assert.equal(responseData[0].title.en, 'Tag 2 EN')
+  })
+
+  test('should return all tags including deleted when deleted=true', async ({ client, assert }) => {
+    await TagModel.create({
+      title: { en: 'Tag 1 EN', fr: 'Tag 1 FR' },
+      deletedAt: DateTime.now(),
+    })
+
+    await TagModel.create({
+      title: { en: 'Tag 2 EN', fr: 'Tag 2 FR' },
+    })
+
+    const response = await client.get('/api/tags?deleted=true')
+
+    response.assertStatus(200)
+    const responseData = response.body().data
+    assert.isArray(responseData)
+    assert.lengthOf(responseData, 2)
+    assert.equal(responseData[1].title.en, 'Tag 1 EN')
+  })
+
+  test('should return 400 for invalid deleted parameter', async ({ client, assert }) => {
+    const response = await client.get('/api/tags?deleted=invalid')
+
+    response.assertStatus(400)
+    assert.equal(response.body().message, 'BadType: deleted needs to be true or false')
+  })
+})

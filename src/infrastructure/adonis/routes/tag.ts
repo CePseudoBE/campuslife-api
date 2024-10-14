@@ -1,5 +1,6 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#infrastructure/adonis/kernel'
+const FindTagsController = () => import('#controllers/tags/find_tags_controller')
 const FindTagByIdController = () => import('#controllers/tags/find_tags_by_id_controller')
 const UpdateTagController = () => import('#controllers/tags/update_tags_controller')
 const DeleteTagsController = () => import('#controllers/tags/delete_tags_controller')
@@ -10,6 +11,7 @@ router
     router
       .group(() => {
         router.get(':id', [FindTagByIdController]).as('get_tag_lang')
+        router.get('', [FindTagsController]).as('get_tags_lang')
       })
       .prefix('tags')
       .as('lang_tags_urls')
@@ -26,6 +28,7 @@ router
         router.delete(':id', [DeleteTagsController]).as('delete_tags')
         router.patch(':id', [UpdateTagController]).as('update_tags')
         router.get(':id', [FindTagByIdController]).as('get_tag')
+        router.get('', [FindTagsController]).as('get_tags')
       })
       .prefix('tags')
   })

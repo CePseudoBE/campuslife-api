@@ -7,7 +7,7 @@ import { FindTagsUseCase } from '#domain/use_cases/tags/find_tags_use_case'
 import TagModel from '#infrastructure/orm/models/tag_model'
 
 @inject()
-export default class FindWaypointsController {
+export default class FindTagsController {
   constructor(private findTagsUseCase: FindTagsUseCase) {}
 
   async handle(ctx: HttpContext) {
