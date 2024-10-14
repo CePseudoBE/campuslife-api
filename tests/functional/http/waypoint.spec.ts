@@ -351,6 +351,41 @@ test.group('Get all Waypoints Controller', (group) => {
     assert.isArray(response.body().data) // Vérifie que le résultat est bien un tableau
     assert.isEmpty(response.body().data) // Vérifie que le tableau est vide
   })
+
+  test('should return all waypoints including deleted when deleted=true', async ({
+    client,
+    assert,
+  }) => {
+    await WaypointModel.create({
+      latitude: 12.3456,
+      longitude: 65.4321,
+      title: { en: 'Waypoint EN 1', fr: 'Waypoint FR 1' },
+      description: { en: 'Description EN 1', fr: 'Description FR 1' },
+      types: 'type1',
+      pmr: true,
+      deletedAt: DateTime.now(), // Marquer comme supprimé
+    })
+
+    await WaypointModel.create({
+      latitude: 23.4567,
+      longitude: 54.321,
+      title: { en: 'Waypoint EN 2', fr: 'Waypoint FR 2' },
+      description: { en: 'Description EN 2', fr: 'Description FR 2' },
+      types: 'type2',
+      pmr: false,
+    })
+
+    const response = await client.get('/api/waypoints?deleted=true')
+
+    response.assertStatus(200)
+    const responseData = response.body().data
+    assert.isArray(responseData)
+    assert.lengthOf(responseData, 2)
+
+    assert.equal(responseData[0].title.en, 'Waypoint EN 2')
+    assert.exists(responseData[1].deletedAt, 'First waypoint should have a deletedAt field')
+    assert.equal(responseData[1].title.en, 'Waypoint EN 1')
+  })
 })
 
 test.group('Get waypoint through slug Controller', (group) => {
