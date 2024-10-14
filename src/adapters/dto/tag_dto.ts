@@ -5,6 +5,7 @@ type TagDTOType = {
   title: string | { [key: string]: string }
   createdAt: Date
   updatedAt: Date
+  deletedAt?: Date | null
   waypoints?: any[]
   events?: any[]
   collections?: any[]
@@ -17,6 +18,7 @@ export class TagDTO {
       title: lang === undefined ? tag.title : tag.title[lang],
       createdAt: tag.createdAt,
       updatedAt: tag.updatedAt,
+      deletedAt: tag.deletedAt ?? null,
     }
 
     if (includes?.includes('waypoints')) {

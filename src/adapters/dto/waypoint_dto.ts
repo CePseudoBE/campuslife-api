@@ -11,6 +11,7 @@ type WaypointDTOType = {
   slug?: string
   createdAt: Date
   updatedAt: Date
+  deletedAt?: Date | null
   events?: any[]
   tags?: any[]
 }
@@ -36,6 +37,7 @@ export class WaypointDTO {
       slug: waypoint.slug,
       createdAt: waypoint.createdAt,
       updatedAt: waypoint.updatedAt,
+      deletedAt: waypoint.deletedAt ?? null,
     }
     if (includes?.includes('events')) {
       dto.events = waypoint.events
