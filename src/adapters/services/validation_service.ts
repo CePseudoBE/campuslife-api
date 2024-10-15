@@ -62,6 +62,16 @@ export class ValidationService {
     })
   }
 
+  public static getLogRules() {
+    return vine.object({
+      sessionId: vine.string(),
+      userId: vine.string(),
+      actionState: vine.string(),
+      actionType: vine.string(),
+      actionInfo: vine.string(),
+    })
+  }
+
   static validateIncludes(includes: string[], model: typeof BaseModel): string[] {
     return includes.filter((relation) => {
       return model.$hasRelation(relation)

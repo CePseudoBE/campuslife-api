@@ -19,9 +19,9 @@ export default class CreateCollectionController {
         data: body,
       })
 
-      const tag = await this.createCollectionUseCase.handle(validatedData)
+      const collection = await this.createCollectionUseCase.handle(validatedData)
 
-      return response.created({ data: tag })
+      return response.created({ data: collection })
     } catch (error) {
       return response.badRequest({
         message: error.message,

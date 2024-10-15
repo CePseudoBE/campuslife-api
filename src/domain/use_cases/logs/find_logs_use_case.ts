@@ -4,7 +4,7 @@ import { ILogRepository } from '#domain/repositories/ilog_repository'
 import { Log } from '#domain/entities/log'
 
 @inject()
-export class FindLosUseCase {
+export class FindLogUseCase {
   constructor(
     private iLogRepository: ILogRepository,
     private sortingValidation: QueryValidationService
