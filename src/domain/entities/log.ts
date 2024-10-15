@@ -18,6 +18,22 @@ export class Log {
     createdAt: Date,
     updatedAt: Date
   ) {
+    if (!sessionId || sessionId.trim() === '') {
+      throw new Error('Session ID is required')
+    }
+
+    if (!userId || userId.trim() === '') {
+      throw new Error('User ID is required')
+    }
+
+    if (!actionState || actionState.trim() === '') {
+      throw new Error('Action state is required')
+    }
+
+    if (!actionType || actionType.trim() === '') {
+      throw new Error('Action type is required')
+    }
+
     this.id = id
     this.sessionId = sessionId
     this.userId = userId
