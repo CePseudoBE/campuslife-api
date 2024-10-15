@@ -8,6 +8,17 @@ export class Log {
   public createdAt: Date
   public updatedAt: Date
 
+  public static allowedColumns: string[] = [
+    'id',
+    'sessionId',
+    'userId',
+    'actionState',
+    'actionType',
+    'actionInfo',
+    'createdAt',
+    'updatedAt',
+  ]
+
   constructor(
     id: number | null,
     sessionId: string,
