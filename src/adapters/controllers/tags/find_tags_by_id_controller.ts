@@ -20,7 +20,11 @@ export default class FindTagByIdController {
     try {
       const validIncludes = await ValidationService.validateRequestAndIncludes(ctx, TagModel)
 
-      const tag = await this.findByIdTagUseCase.handle({ id, includes: validIncludes })
+      const tag = await this.findByIdTagUseCase.handle({
+        id,
+        connected: ctx.auth.isAuthenticated,
+        includes: validIncludes,
+      })
 
       if (!tag) {
         return ctx.response.badRequest({ message: `Waypoint with id : ${id} does not exist` })

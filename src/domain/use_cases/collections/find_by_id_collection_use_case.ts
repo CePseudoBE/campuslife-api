@@ -6,7 +6,11 @@ import { Collection } from '#domain/entities/collection'
 export class FindByIdCollectionUseCase {
   constructor(private iCollectionRepository: ICollectionRepository) {}
 
-  public async handle(data: { id: number; includes?: string[] }): Promise<Collection | null> {
-    return await this.iCollectionRepository.findById(data.id, data.includes)
+  public async handle(data: {
+    id: number
+    connected: boolean
+    includes?: string[]
+  }): Promise<Collection | null> {
+    return await this.iCollectionRepository.findById(data.id, data.connected, data.includes)
   }
 }

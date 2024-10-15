@@ -22,6 +22,7 @@ export default class FindByIdCollectionController {
 
       const collection = await this.findByIdCollectionUseCase.handle({
         id,
+        connected: ctx.auth.isAuthenticated,
         includes: validIncludes,
       })
 

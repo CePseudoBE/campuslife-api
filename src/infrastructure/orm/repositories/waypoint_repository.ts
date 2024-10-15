@@ -64,9 +64,13 @@ export class WaypointRepository extends IWaypointRepository {
     return WaypointMapper.toDomain(waypointModel)
   }
 
-  async findById(id: number, includes?: string[]): Promise<Waypoint | null> {
+  async findById(id: number, connected: boolean, includes?: string[]): Promise<Waypoint | null> {
     const waypointModel = await WaypointModel.find(id)
-    if (!waypointModel) return null
+    if (!waypointModel) throw new Error('NotFound: Waypoint not found')
+
+    if (!connected) {
+      if (waypointModel.deletedAt) throw new Error('AlreadyDelete: Tag deleted')
+    }
 
     if (includes && includes.length > 0) {
       for (const relation of includes) {

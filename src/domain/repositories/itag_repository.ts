@@ -4,7 +4,7 @@ import { Tag } from '#domain/entities/tag'
 export abstract class ITagRepository {
   abstract create(tag: Tag): Promise<Tag>
 
-  abstract findById(id: number, includes?: string[]): Promise<Tag>
+  abstract findById(id: number, connected: boolean, includes?: string[]): Promise<Tag>
 
   abstract findAll(
     { page, limit, order, column }: QueryParams,

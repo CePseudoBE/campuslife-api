@@ -6,7 +6,7 @@ import { IReportRepository } from '#domain/repositories/ireport_repository'
 export class FindByIdLogUseCase {
   constructor(private iReportRepository: IReportRepository) {}
 
-  public async handle(data: { id: number }): Promise<Report | null> {
-    return await this.iReportRepository.findById(data.id)
+  public async handle(data: { id: number; connected: boolean }): Promise<Report | null> {
+    return await this.iReportRepository.findById(data.id, data.connected)
   }
 }

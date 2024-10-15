@@ -4,7 +4,7 @@ import { QueryParams } from '#domain/services/sorting_validation'
 export abstract class IWaypointRepository {
   abstract create(waypoint: Waypoint): Promise<Waypoint>
 
-  abstract findById(id: number, includes?: string[]): Promise<Waypoint | null>
+  abstract findById(id: number, connected: boolean, includes?: string[]): Promise<Waypoint | null>
 
   abstract findBySlug(slug: string, includes?: string[]): Promise<Waypoint | null>
 

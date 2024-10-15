@@ -67,14 +67,14 @@ export class TagRepository extends ITagRepository {
     return tagModels.map((tag) => TagMapper.toDomain(tag))
   }
 
-  async findById(id: number, includes?: string[]): Promise<Tag> {
+  async findById(id: number, connected: boolean, includes?: string[]): Promise<Tag> {
     const tagModel = await TagModel.find(id)
     if (!tagModel) {
       throw new Error('NotFound: Tag not found')
     }
 
-    if (tagModel.deletedAt) {
-      throw new Error('AlreadyDelete: Tag deleted')
+    if (!connected) {
+      if (tagModel.deletedAt) throw new Error('AlreadyDelete: Tag deleted')
     }
 
     if (includes && includes.length > 0) {

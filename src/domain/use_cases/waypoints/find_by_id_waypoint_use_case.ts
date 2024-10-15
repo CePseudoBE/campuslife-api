@@ -6,7 +6,11 @@ import { inject } from '@adonisjs/core'
 export class FindByIdWaypointUseCase {
   constructor(private iwaypointrepository: IWaypointRepository) {}
 
-  public async handle(data: { id: number; includes?: string[] }): Promise<Waypoint | null> {
-    return await this.iwaypointrepository.findById(data.id, data.includes)
+  public async handle(data: {
+    id: number
+    connected: boolean
+    includes?: string[]
+  }): Promise<Waypoint | null> {
+    return await this.iwaypointrepository.findById(data.id, data.connected, data.includes)
   }
 }

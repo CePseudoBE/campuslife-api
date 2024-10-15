@@ -70,14 +70,14 @@ export class CollectionRepository extends ICollectionRepository {
     return collectionModels.map((collection) => CollectionMapper.toDomain(collection))
   }
 
-  async findById(id: number, includes?: string[]): Promise<Collection> {
+  async findById(id: number, connected: boolean, includes?: string[]): Promise<Collection> {
     const collectionModel = await CollectionModel.find(id)
     if (!collectionModel) {
       throw new Error('NotFound: Collection not found')
     }
 
-    if (collectionModel.deletedAt) {
-      throw new Error('AlreadyDelete: Collection deleted')
+    if (!connected) {
+      if (collectionModel.deletedAt) throw new Error('AlreadyDelete: Tag deleted')
     }
 
     if (includes && includes.length > 0) {

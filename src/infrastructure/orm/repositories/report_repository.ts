@@ -57,15 +57,15 @@ export class ReportRepository extends IReportRepository {
     return reportModels.map((reportModel) => ReportMapper.toDomain(reportModel))
   }
 
-  async findById(id: number): Promise<Report> {
+  async findById(id: number, connected: boolean): Promise<Report> {
     const reportModel = await ReportModel.find(id)
 
     if (!reportModel) {
       throw new Error('NotFound: Report not found')
     }
 
-    if (reportModel.deletedAt) {
-      throw new Error('AlreadyDeleted: Report deleted')
+    if (!connected) {
+      if (reportModel.deletedAt) throw new Error('AlreadyDelete: Tag deleted')
     }
 
     return ReportMapper.toDomain(reportModel)

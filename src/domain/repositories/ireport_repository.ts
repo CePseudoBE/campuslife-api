@@ -4,7 +4,7 @@ import { Report } from '#domain/entities/report'
 export abstract class IReportRepository {
   abstract create(report: Report): Promise<Report>
 
-  abstract findById(id: number): Promise<Report>
+  abstract findById(id: number, connected: boolean): Promise<Report>
 
   abstract findAll({ page, limit, order, column }: QueryParams): Promise<Report[]>
 

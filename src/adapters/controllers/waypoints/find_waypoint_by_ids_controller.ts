@@ -20,7 +20,11 @@ export default class FindWaypointByIdsController {
     try {
       const validIncludes = await ValidationService.validateRequestAndIncludes(ctx, WaypointModel)
 
-      const waypoint = await this.findWaypointByIdUseCase.handle({ id, includes: validIncludes })
+      const waypoint = await this.findWaypointByIdUseCase.handle({
+        id,
+        connected: ctx.auth.isAuthenticated,
+        includes: validIncludes,
+      })
 
       if (!waypoint) {
         return ctx.response.badRequest({ message: `Waypoint with id : ${id} does not exist` })

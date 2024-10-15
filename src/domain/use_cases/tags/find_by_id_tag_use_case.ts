@@ -6,7 +6,11 @@ import { Tag } from '#domain/entities/tag'
 export class FindByIdTagUseCase {
   constructor(private iTagRepository: ITagRepository) {}
 
-  public async handle(data: { id: number; includes?: string[] }): Promise<Tag | null> {
-    return await this.iTagRepository.findById(data.id, data.includes)
+  public async handle(data: {
+    id: number
+    connected: boolean
+    includes?: string[]
+  }): Promise<Tag | null> {
+    return await this.iTagRepository.findById(data.id, data.connected, data.includes)
   }
 }
