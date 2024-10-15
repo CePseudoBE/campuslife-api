@@ -11,6 +11,8 @@ import { ILogRepository } from '#domain/repositories/ilog_repository'
 import { LogRepository } from '#infrastructure/orm/repositories/log_repository'
 import { IYoutrackService } from '#domain/services/iyou_track_service'
 import { YouTrackService } from '#infrastructure/services/you_track_service'
+import { IReportRepository } from '#domain/repositories/ireport_repository'
+import { ReportRepository } from '#infrastructure/orm/repositories/report_repository'
 
 export default class AppProvider {
   constructor(protected app: ApplicationService) {}
@@ -22,5 +24,6 @@ export default class AppProvider {
     this.app.container.bind(ICollectionRepository, () => new CollectionRepository())
     this.app.container.bind(ILogRepository, () => new LogRepository())
     this.app.container.bind(IYoutrackService, () => new YouTrackService())
+    this.app.container.bind(IReportRepository, () => new ReportRepository())
   }
 }

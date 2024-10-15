@@ -18,7 +18,7 @@ export class YouTrackService implements IYoutrackService {
         { name: 'Contact', $type: 'TextIssueCustomField', value: { text: `${report.contact}` } },
       ],
     }
-
+    console.log(env.get('YOUTRACK_KEY'))
     try {
       await fetch('https://campuslife.youtrack.cloud/api/issues', {
         method: 'post',

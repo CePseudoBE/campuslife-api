@@ -65,7 +65,7 @@ export class ReportRepository extends IReportRepository {
     }
 
     if (!connected) {
-      if (reportModel.deletedAt) throw new Error('AlreadyDelete: Tag deleted')
+      if (reportModel.deletedAt) throw new Error('AlreadyDelete: Report deleted')
     }
 
     return ReportMapper.toDomain(reportModel)

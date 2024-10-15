@@ -29,7 +29,7 @@ export class CreateReportUseCase {
 
     const reportCreated = await this.iReportRepository.create(report)
 
-    await this.iYouTrackService.createIssue(report)
+    await this.iYouTrackService.createIssue(reportCreated)
 
     return reportCreated
   }
