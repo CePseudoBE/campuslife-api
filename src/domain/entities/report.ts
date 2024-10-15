@@ -8,6 +8,16 @@ export class Report {
   public updatedAt: Date
   public deletedAt: Date | null
 
+  public static allowedColumns: string[] = [
+    'id',
+    'sessionId',
+    'deviceId',
+    'message',
+    'createdAt',
+    'updatedAt',
+    'contact',
+  ]
+
   constructor(
     id: number | null,
     sessionId: string,

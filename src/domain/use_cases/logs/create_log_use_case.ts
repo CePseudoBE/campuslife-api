@@ -12,7 +12,7 @@ export class CreateLogUseCase {
     actionState: string
     actionType: string
     actionInfo: string
-  }) {
+  }): Promise<Log> {
     const log = new Log(
       null,
       data.sessionId,
