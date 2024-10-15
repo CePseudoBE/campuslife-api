@@ -54,6 +54,14 @@ export class ValidationService {
     })
   }
 
+  public static getUpdateCollectionRules() {
+    return vine.object({
+      name_en: vine.string().minLength(3).maxLength(50).optional(),
+      name_fr: vine.string().minLength(3).maxLength(50).optional(),
+      heroicons: vine.string().optional(),
+    })
+  }
+
   static validateIncludes(includes: string[], model: typeof BaseModel): string[] {
     return includes.filter((relation) => {
       return model.$hasRelation(relation)

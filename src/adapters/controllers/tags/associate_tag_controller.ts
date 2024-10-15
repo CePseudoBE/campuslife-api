@@ -23,12 +23,12 @@ export default class AssociateTagController {
         data: body.collections,
       })
 
-      const waypoint = await this.associateTagsCollectionsUseCase.handle({
+      const tags = await this.associateTagsCollectionsUseCase.handle({
         id,
         collections: validatedData,
       })
 
-      return response.created({ data: waypoint })
+      return response.created({ data: tags })
     } catch (error) {
       return response.badRequest({
         message: error.message,
