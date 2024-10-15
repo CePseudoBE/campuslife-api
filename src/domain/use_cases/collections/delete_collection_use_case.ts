@@ -6,7 +6,7 @@ export class DeleteCollectionUseCase {
   constructor(private iCollectionRepository: ICollectionRepository) {}
 
   public async handle(id: number): Promise<null> {
-    const collection = await this.iCollectionRepository.findById(id)
+    const collection = await this.iCollectionRepository.findById(id, false)
     collection.delete()
     return await this.iCollectionRepository.delete(collection)
   }

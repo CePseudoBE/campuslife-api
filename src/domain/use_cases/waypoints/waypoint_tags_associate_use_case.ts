@@ -22,14 +22,14 @@ export class WaypointTagsAssociateUseCase {
 
     // Vérification de l'existence des tags
     for (const tagId of data.tags) {
-      const tag = await this.iTagRepository.findById(tagId)
+      const tag = await this.iTagRepository.findById(tagId, false)
       if (!tag) {
         throw new Error(`Tag with ID ${tagId} does not exist`)
       }
     }
 
     // Création du waypoint dans la base de données
-    const waypoint = await this.iWaypointRepository.findById(data.id)
+    const waypoint = await this.iWaypointRepository.findById(data.id, false)
 
     if (!waypoint) {
       throw new Error(`Waypoint with ID ${data.id} does not exist`)

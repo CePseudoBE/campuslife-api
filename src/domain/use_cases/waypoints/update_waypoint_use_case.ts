@@ -24,7 +24,7 @@ export class UpdateWaypointUseCase {
       pmr?: boolean
     }
   ): Promise<Waypoint> {
-    const existingWaypoint = await this.iWaypointRepository.findById(id)
+    const existingWaypoint = await this.iWaypointRepository.findById(id, false)
     if (!existingWaypoint) {
       throw new Error('Waypoint not found')
     }

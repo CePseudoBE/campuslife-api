@@ -25,14 +25,14 @@ export class AssociateTagsCollectionsUseCase {
 
     // Vérification de l'existence des tags
     for (const collectionId of data.collections) {
-      const collection = await this.iCollectionRepository.findById(collectionId)
+      const collection = await this.iCollectionRepository.findById(collectionId, false)
       if (!collection) {
         throw new Error(`Tag with ID ${collectionId} does not exist`)
       }
     }
 
     // Création du waypoint dans la base de données
-    const tag = await this.iTagRepository.findById(data.id)
+    const tag = await this.iTagRepository.findById(data.id, false)
 
     if (!tag) {
       throw new Error(`NotFound: Tag with ID ${data.id} does not exist`)

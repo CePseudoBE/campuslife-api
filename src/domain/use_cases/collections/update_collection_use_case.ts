@@ -9,7 +9,7 @@ export class UpdateCollectionUseCase {
     id: number,
     data: { name_en?: string; name_fr?: string; heroicons?: string }
   ) {
-    const existingCollection = await this.iCollectionRepository.findById(id)
+    const existingCollection = await this.iCollectionRepository.findById(id, false)
     if (!existingCollection) {
       throw new Error(`NotFound: Tag with id : ${id} not found`)
     }

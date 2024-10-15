@@ -72,6 +72,15 @@ export class ValidationService {
     })
   }
 
+  public static getReportRules() {
+    return vine.object({
+      sessionId: vine.string(),
+      deviceId: vine.string(),
+      message: vine.string(),
+      contact: vine.string().optional(),
+    })
+  }
+
   static validateIncludes(includes: string[], model: typeof BaseModel): string[] {
     return includes.filter((relation) => {
       return model.$hasRelation(relation)

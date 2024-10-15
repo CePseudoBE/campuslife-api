@@ -37,7 +37,7 @@ export class CreateCollectionUseCase {
     }
 
     for (const tagId of data.tags) {
-      const tag = await this.iTagRepository.findById(tagId)
+      const tag = await this.iTagRepository.findById(tagId, false)
       if (!tag) {
         throw new Error(`IdNotFound : Collection with ID ${tagId} does not exist`)
       }

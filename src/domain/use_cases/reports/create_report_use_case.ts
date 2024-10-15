@@ -7,7 +7,7 @@ import { IYoutrackService } from '#domain/services/iyou_track_service'
 export class CreateReportUseCase {
   constructor(
     private iReportRepository: IReportRepository,
-    private iYourTrackService: IYoutrackService
+    private iYouTrackService: IYoutrackService
   ) {}
 
   public async handle(data: {
@@ -29,7 +29,7 @@ export class CreateReportUseCase {
 
     const reportCreated = await this.iReportRepository.create(report)
 
-    await this.iYourTrackService.createIssue(report)
+    await this.iYouTrackService.createIssue(report)
 
     return reportCreated
   }

@@ -6,7 +6,7 @@ export class DeleteWaypointUseCase {
   constructor(private iwaypointrepository: IWaypointRepository) {}
 
   public async handle(id: number): Promise<null> {
-    const waypoint = await this.iwaypointrepository.findById(id)
+    const waypoint = await this.iwaypointrepository.findById(id, false)
     if (!waypoint) {
       throw Error('Waypoint not found')
     }

@@ -6,7 +6,7 @@ export class UpdateTagUseCase {
   constructor(private iTagRepository: ITagRepository) {}
 
   public async handle(id: number, data: { title_en?: string; title_fr?: string }) {
-    const existingTag = await this.iTagRepository.findById(id)
+    const existingTag = await this.iTagRepository.findById(id, false)
     if (!existingTag) {
       throw new Error(`NotFound: Tag with id : ${id} not found`)
     }
