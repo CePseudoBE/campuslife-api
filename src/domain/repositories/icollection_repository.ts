@@ -12,7 +12,9 @@ export abstract class ICollectionRepository {
     deleted?: boolean
   ): Promise<Collection[]>
 
-  abstract update(tag: Collection): Promise<Collection>
+  abstract update(collection: Collection): Promise<Collection>
 
-  abstract delete(tag: Collection): Promise<null>
+  abstract delete(collection: Collection): Promise<null>
+
+  abstract associate_tags(tagsId: number[], collection: Collection): Promise<Collection>
 }

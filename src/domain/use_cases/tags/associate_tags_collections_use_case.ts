@@ -12,7 +12,7 @@ export class AssociateTagsCollectionsUseCase {
 
   public async handle(data: { id: number; collections: number[] | undefined }): Promise<Tag> {
     if (!data.collections || data.collections.length === 0) {
-      throw new Error('NoAssocation : 0 tags were provided, provide more tags')
+      throw new Error('NoAssocation : 0 collection were provided, provide collection tags')
     }
 
     // Validation des tags
@@ -35,10 +35,9 @@ export class AssociateTagsCollectionsUseCase {
     const tag = await this.iTagRepository.findById(data.id)
 
     if (!tag) {
-      throw new Error(`Waypoint with ID ${data.id} does not exist`)
+      throw new Error(`NotFound: Tag with ID ${data.id} does not exist`)
     }
 
-    // Association des tags avec le waypoint
     return await this.iTagRepository.associateCollections(data.collections, tag)
   }
 }

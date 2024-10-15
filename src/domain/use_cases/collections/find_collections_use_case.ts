@@ -1,12 +1,12 @@
-import { Waypoint } from '#domain/entities/waypoint'
-import { IWaypointRepository } from '#domain/repositories/iwaypoint_repository'
 import { inject } from '@adonisjs/core'
 import { QueryParams, QueryValidationService } from '#domain/services/sorting_validation'
+import { ICollectionRepository } from '#domain/repositories/icollection_repository'
+import { Collection } from '#domain/entities/collection'
 
 @inject()
-export class FindWaypointsUseCase {
+export class FindCollectionsUseCase {
   constructor(
-    private iwaypointrepository: IWaypointRepository,
+    private iCollectionRepository: ICollectionRepository,
     private sortingValidation: QueryValidationService
   ) {}
 
@@ -14,7 +14,7 @@ export class FindWaypointsUseCase {
     { page, limit, order, column }: QueryParams,
     includes: string[],
     deleted?: boolean
-  ): Promise<Waypoint[]> {
+  ): Promise<Collection[]> {
     const queryParams = this.sortingValidation.validateAndSanitizeQueryParams(
       {
         page,
@@ -22,8 +22,8 @@ export class FindWaypointsUseCase {
         order,
         column,
       },
-      { allowedColumns: Waypoint.allowedColumns }
+      { allowedColumns: Collection.allowedColumns }
     )
-    return await this.iwaypointrepository.findAll(queryParams, includes, deleted)
+    return await this.iCollectionRepository.findAll(queryParams, includes, deleted)
   }
 }

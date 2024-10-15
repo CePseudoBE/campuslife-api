@@ -22,7 +22,7 @@ export class FindTagsUseCase {
         order,
         column,
       },
-      Tag
+      { allowedColumns: Tag.allowedColumns }
     )
     return await this.iTagsRepository.findAll(queryParams, includes, deleted)
   }

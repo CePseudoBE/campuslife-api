@@ -110,4 +110,17 @@ export class CollectionRepository extends ICollectionRepository {
 
     return CollectionMapper.toDomain(collectionModel)
   }
+
+  async associate_tags(tagsId: number[], collection: Collection): Promise<Collection> {
+    const collectionModel = await CollectionModel.find(collection.id)
+    if (!collectionModel) {
+      throw new Error(`NotFound: Collection with ID: ${collection.id} not found`)
+    }
+
+    await collectionModel.related('tags').sync(tagsId)
+
+    await collectionModel.load('tags')
+
+    return CollectionMapper.toDomain(collectionModel)
+  }
 }

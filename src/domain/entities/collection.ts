@@ -10,6 +10,8 @@ export class Collection {
   public updatedAt: Date
   public deletedAt: Date | null
 
+  public static allowedColumns: string[] = ['id', 'created_at', 'updated_at']
+
   constructor(
     id: number | null,
     name: MultilingualField,
@@ -38,5 +40,27 @@ export class Collection {
 
   public delete() {
     this.deletedAt = new Date()
+  }
+
+  public update(data: {
+    name_en?: string
+    name_fr?: string
+    heroicons?: string
+    tags?: Tag[]
+  }): void {
+    this.heroicons = data.heroicons ?? this.heroicons
+    this.tags = data.tags ?? this.tags
+    this.updatedAt = new Date()
+
+    this.updateName(data)
+  }
+
+  private updateName(data: { name_en?: string; name_fr?: string }): void {
+    if (data.name_en) {
+      this.name.en = data.name_en
+    }
+    if (data.name_fr) {
+      this.name.fr = data.name_fr
+    }
   }
 }
