@@ -7,6 +7,8 @@ import { ITagRepository } from '#domain/repositories/itag_repository'
 import { TagRepository } from '#infrastructure/orm/repositories/tag_repository'
 import { ICollectionRepository } from '#domain/repositories/icollection_repository'
 import { CollectionRepository } from '#infrastructure/orm/repositories/collection_repository'
+import { ILogRepository } from '#domain/repositories/ilog_repository'
+import { LogRepository } from '#infrastructure/orm/repositories/log_repository'
 
 export default class AppProvider {
   constructor(protected app: ApplicationService) {}
@@ -16,5 +18,6 @@ export default class AppProvider {
     this.app.container.bind(ISlugService, () => new SlugService())
     this.app.container.bind(ITagRepository, () => new TagRepository())
     this.app.container.bind(ICollectionRepository, () => new CollectionRepository())
+    this.app.container.bind(ILogRepository, () => new LogRepository())
   }
 }

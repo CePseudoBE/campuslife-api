@@ -4,7 +4,7 @@ import { QueryParams } from '#domain/services/sorting_validation'
 import { FindLogUseCase } from '#domain/use_cases/logs/find_logs_use_case'
 
 @inject()
-export default class FindCollectionsController {
+export default class FindLogsController {
   constructor(private findLogUseCase: FindLogUseCase) {}
 
   async handle(ctx: HttpContext) {
