@@ -6,7 +6,7 @@ export abstract class IStibRepository {
 
   abstract findById(id: number): Promise<StibShape>
 
-  abstract findByName(id: number): Promise<StibShape>
+  abstract findByName(name: string): Promise<StibShape>
 
   abstract findAll({ page, limit, order, column }: QueryParams): Promise<StibShape[]>
 
