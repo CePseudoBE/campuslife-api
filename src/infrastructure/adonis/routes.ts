@@ -5,6 +5,7 @@ import './routes/tag.js'
 import './routes/collection.js'
 import './routes/log.js'
 import './routes/reports.js'
+import './routes/stib.js'
 
 // Route d'accueil pour tester l'API
 router.get('/', async () => {

@@ -10,7 +10,7 @@ export default class FindByNameStibController {
     const name = ctx.params.ligne
 
     try {
-      const stib = this.findByNameStibUseCase.handle({ name })
+      const stib = await this.findByNameStibUseCase.handle({ name })
 
       return ctx.response.ok({ data: stib })
     } catch (err) {
