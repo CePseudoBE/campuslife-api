@@ -17,6 +17,8 @@ import { IStibRepository } from '#domain/repositories/istib_repository'
 import { StibRepository } from '#infrastructure/orm/repositories/stib_repository'
 import { IStibShapeService } from '#domain/services/istib_shape_service'
 import { StibShapeService } from '#adapters/services/stib_shape_service'
+import { ICountryRepository } from '#domain/repositories/icountry_repository'
+import { CountryRepository } from '#infrastructure/orm/repositories/country_repository'
 
 export default class AppProvider {
   constructor(protected app: ApplicationService) {}
@@ -31,5 +33,6 @@ export default class AppProvider {
     this.app.container.bind(IReportRepository, () => new ReportRepository())
     this.app.container.bind(IStibRepository, () => new StibRepository())
     this.app.container.bind(IStibShapeService, () => new StibShapeService())
+    this.app.container.bind(ICountryRepository, () => new CountryRepository())
   }
 }

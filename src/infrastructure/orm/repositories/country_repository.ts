@@ -50,4 +50,10 @@ export class CountryRepository extends ICountryRepository {
 
     return CountryMapper.toDomain(countryModel)
   }
+
+  async findByIso(iso: string): Promise<Country> {
+    const countryModel = await CountryModel.findByOrFail('iso', iso)
+
+    return CountryMapper.toDomain(countryModel)
+  }
 }

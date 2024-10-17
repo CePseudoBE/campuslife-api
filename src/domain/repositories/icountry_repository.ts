@@ -9,4 +9,6 @@ export abstract class ICountryRepository {
   abstract findAll({ page, limit, order, column }: QueryParams): Promise<Country[]>
 
   abstract delete(country: Country): Promise<null>
+
+  abstract findByIso(iso: string): Promise<Country>
 }
