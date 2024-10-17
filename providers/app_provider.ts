@@ -13,6 +13,8 @@ import { IYoutrackService } from '#domain/services/iyou_track_service'
 import { YouTrackService } from '#infrastructure/services/you_track_service'
 import { IReportRepository } from '#domain/repositories/ireport_repository'
 import { ReportRepository } from '#infrastructure/orm/repositories/report_repository'
+import { IStibRepository } from '#domain/repositories/istib_repository'
+import { StibRepository } from '#infrastructure/orm/repositories/stib_repository'
 
 export default class AppProvider {
   constructor(protected app: ApplicationService) {}
@@ -25,5 +27,6 @@ export default class AppProvider {
     this.app.container.bind(ILogRepository, () => new LogRepository())
     this.app.container.bind(IYoutrackService, () => new YouTrackService())
     this.app.container.bind(IReportRepository, () => new ReportRepository())
+    this.app.container.bind(IStibRepository, () => new StibRepository())
   }
 }
