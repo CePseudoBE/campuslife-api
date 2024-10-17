@@ -27,7 +27,7 @@ export default class FindByIdCollectionController {
       })
 
       if (!collection) {
-        return ctx.response.badRequest({ message: `Waypoint with id : ${id} does not exist` })
+        return ctx.response.badRequest({ message: `Log with id : ${id} does not exist` })
       }
 
       const collectionDTO = CollectionDTO.toLanguages(collection, lang, validIncludes)

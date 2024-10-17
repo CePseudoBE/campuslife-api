@@ -1,10 +1,10 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { inject } from '@adonisjs/core'
-import { FindByIdLogUseCase } from '#domain/use_cases/logs/find_by_id_log_use_case'
+import { FindByIdCountryUseCase } from '#domain/use_cases/countries/find_by_id_country_use_case'
 
 @inject()
 export default class FindByIdLogController {
-  constructor(private findByIdLogUseCase: FindByIdLogUseCase) {}
+  constructor(private findByIdCountryUseCase: FindByIdCountryUseCase) {}
   async handle(ctx: HttpContext) {
     const id = Number.parseInt(ctx.params.id)
 
@@ -13,13 +13,13 @@ export default class FindByIdLogController {
     }
 
     try {
-      const log = await this.findByIdLogUseCase.handle({ id })
+      const country = await this.findByIdCountryUseCase.handle({ id })
 
-      if (!log) {
-        return ctx.response.badRequest({ message: `Log with id : ${id} does not exist` })
+      if (!country) {
+        return ctx.response.badRequest({ message: `Country with id : ${id} does not exist` })
       }
 
-      return ctx.response.ok({ data: log })
+      return ctx.response.ok({ data: country })
     } catch (err) {
       return ctx.response.badRequest({ message: err.message })
     }
