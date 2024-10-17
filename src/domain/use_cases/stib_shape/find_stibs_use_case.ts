@@ -4,7 +4,7 @@ import { IStibRepository } from '#domain/repositories/istib_repository'
 import { StibShape } from '#domain/entities/stib_shape'
 
 @inject()
-export class FindLogUseCase {
+export class FindStibsUseCase {
   constructor(
     private iStibRepository: IStibRepository,
     private sortingValidation: QueryValidationService
