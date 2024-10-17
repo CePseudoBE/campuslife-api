@@ -15,6 +15,8 @@ import { IReportRepository } from '#domain/repositories/ireport_repository'
 import { ReportRepository } from '#infrastructure/orm/repositories/report_repository'
 import { IStibRepository } from '#domain/repositories/istib_repository'
 import { StibRepository } from '#infrastructure/orm/repositories/stib_repository'
+import { IStibShapeService } from '#domain/services/istib_shape_service'
+import { StibShapeService } from '#adapters/services/stib_shape_service'
 
 export default class AppProvider {
   constructor(protected app: ApplicationService) {}
@@ -28,5 +30,6 @@ export default class AppProvider {
     this.app.container.bind(IYoutrackService, () => new YouTrackService())
     this.app.container.bind(IReportRepository, () => new ReportRepository())
     this.app.container.bind(IStibRepository, () => new StibRepository())
+    this.app.container.bind(IStibShapeService, () => new StibShapeService())
   }
 }
