@@ -12,13 +12,7 @@ export class CountryMapper {
   }
 
   static toDomain(countryModel: CountryModel): Country {
-    const country = new Country(
-      countryModel.id,
-      countryModel.name,
-      countryModel.iso,
-      countryModel.createdAt.toJSDate(),
-      countryModel.updatedAt.toJSDate()
-    )
+    const country = new Country(countryModel.id, countryModel.name, countryModel.iso)
 
     if (countryModel.addresses) {
       country.addresses = countryModel.addresses.map((addressModel) =>

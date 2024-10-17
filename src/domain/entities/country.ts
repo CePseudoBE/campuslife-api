@@ -5,22 +5,13 @@ export class Country {
   public name: string
   public iso: string
   public addresses?: Address[]
-  public createdAt: Date
-  public updatedAt: Date
 
-  constructor(
-    id: number | null,
-    name: string,
-    iso: string,
-    createdAt: Date,
-    updatedAt: Date,
-    addresses?: Address[]
-  ) {
+  public static allowedColumns: string[] = ['id', 'name', 'iso']
+
+  constructor(id: number | null, name: string, iso: string, addresses?: Address[]) {
     this.id = id
     this.name = name
     this.iso = iso
-    this.createdAt = createdAt
-    this.updatedAt = updatedAt
     this.addresses = addresses
   }
 }
