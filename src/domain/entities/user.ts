@@ -5,7 +5,7 @@ export class User {
   public email: string
   public firstName: string
   public lastName: string
-  public role: string
+  public role?: string
   public events?: Event[]
   public createdAt: Date
   public updatedAt: Date | null
@@ -15,11 +15,14 @@ export class User {
     email: string,
     firstName: string,
     lastName: string,
-    role: string,
     createdAt: Date,
     updatedAt: Date | null,
+    role?: string,
     events?: Event[]
   ) {
+    if(!role){
+      this.role = 'M'
+    }
     this.id = id
     this.email = email
     this.firstName = firstName
