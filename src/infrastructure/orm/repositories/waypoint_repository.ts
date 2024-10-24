@@ -50,10 +50,10 @@ export class WaypointRepository extends IWaypointRepository {
     return waypointModels.map((model) => WaypointMapper.toDomain(model))
   }
 
-  async findBySlug(slug: string, includes?: string[]): Promise<Waypoint | null> {
+  async findBySlug(slug: string, includes?: string[]): Promise<Waypoint> {
     const waypointModel = await WaypointModel.query().where('slug', slug).first()
 
-    if (!waypointModel) return null
+    if (!waypointModel) throw new Error(`NotFound: Waypoint with the slug ${slug} not found`)
 
     if (includes && includes.length > 0) {
       for (const relation of includes) {
