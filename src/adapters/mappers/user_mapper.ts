@@ -18,9 +18,9 @@ export class UserMapper {
       userModel.email,
       userModel.firstName,
       userModel.lastName,
-      userModel.role,
       userModel.createdAt.toJSDate(),
-      userModel.updatedAt.toJSDate()
+      userModel.updatedAt.toJSDate(),
+      userModel.role
     )
 
     if (userModel.events) {

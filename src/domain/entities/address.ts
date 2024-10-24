@@ -62,4 +62,42 @@ export class Address {
     this.updatedAt = updatedAt
     this.deletedAt = deletedAt
   }
+
+  public delete(): void {
+    this.deletedAt = new Date()
+  }
+
+  public update(data: {
+    street?: string
+    num?: string
+    complement?: string
+    zip?: string
+    city?: string
+    countryId?: number
+    events?: Event[]
+    country?: Country
+  }): void {
+    if (data.street) {
+      if (data.street.trim().length === 0) {
+        throw new Error('InvalidStreetError: The street name cannot be empty.')
+      }
+      this.street = data.street
+    }
+
+    if (data.num) {
+      if (data.num.trim().length === 0) {
+        throw new Error('InvalidNumError: The building number cannot be empty.')
+      }
+      this.num = data.num
+    }
+
+    this.complement = data.complement ?? this.complement
+
+    if (data.zip) {
+      if (data.zip.trim().length === 0) {
+        throw new Error('InvalidZipError: The postal code cannot be empty.')
+      }
+      this.zip = data.zip
+    }
+  }
 }
