@@ -23,7 +23,7 @@ export class AddressRepository extends IAddressRepository {
   async findById(id: number): Promise<Address> {
     const addressModel = await AddressModel.find(id)
     if (!addressModel) {
-      throw new Error('NotFound: Address not found')
+      throw new Error(`NotFound: Address  with id ${id} not found`)
     }
     return AddressMapper.toDomain(addressModel)
   }
@@ -31,7 +31,7 @@ export class AddressRepository extends IAddressRepository {
   async findAll({ page, limit, order, column }: QueryParams): Promise<Address[]> {
     const query = AddressModel.query()
 
-    query.whereNull('deleted_at') // Soft delete handling
+    query.whereNull('deleted_at')
 
     if (page && limit) {
       await query.paginate(page, limit)
@@ -93,7 +93,7 @@ export class AddressRepository extends IAddressRepository {
   async associateCountry(country: Country, address: Address): Promise<Address> {
     const addressModel = await AddressModel.find(address.id)
     if (!addressModel) {
-      throw new Error('NotFound: Address not found')
+      throw new Error(`NotFound: Address id ${address.id} not found`)
     }
 
     const countryModel = await CountryModel.find(country.id)

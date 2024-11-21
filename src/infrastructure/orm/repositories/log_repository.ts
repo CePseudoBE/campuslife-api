@@ -25,7 +25,7 @@ export class LogRepository extends ILogRepository {
     const logModel = await LogModel.find(log.id)
 
     if (!logModel) {
-      throw new Error('NotFound: Log not found')
+      throw new Error(`NotFound: Log with id ${log.id} not found`)
     }
     await logModel.delete()
 
@@ -52,8 +52,9 @@ export class LogRepository extends ILogRepository {
     const query = LogModel.query().where('id', id)
 
     const logModel = await query.first()
+
     if (!logModel) {
-      throw new Error('NotFound: Log not found')
+      throw new Error(`NotFound: Log with id ${id} not found`)
     }
 
     return LogMapper.toDomain(logModel)

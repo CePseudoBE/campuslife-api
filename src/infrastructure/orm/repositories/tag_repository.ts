@@ -70,7 +70,7 @@ export class TagRepository extends ITagRepository {
   async findById(id: number, connected: boolean, includes?: string[]): Promise<Tag> {
     const tagModel = await TagModel.find(id)
     if (!tagModel) {
-      throw new Error('NotFound: Tag not found')
+      throw new Error(`NotFound: Tag with id ${id} not found`)
     }
 
     if (!connected) {
@@ -95,7 +95,7 @@ export class TagRepository extends ITagRepository {
     const tagModel = await TagModel.query().whereNull('deleted_at').andWhere('id', tag.id).first()
 
     if (!tagModel) {
-      throw new Error('Deleted: Tag deleted')
+      throw new Error('AlreadyDeleted: Tag deleted')
     }
 
     tagModel.title = tag.title
@@ -108,7 +108,7 @@ export class TagRepository extends ITagRepository {
   async associateCollections(idCollections: number[], tag: Tag): Promise<Tag> {
     const tagModel = await TagModel.find(tag.id)
     if (!tagModel) {
-      throw new Error('NotFound: Tag not found')
+      throw new Error(`NotFound: Tag with id ${tag.id} not found`)
     }
 
     await tagModel.related('collections').sync(idCollections)

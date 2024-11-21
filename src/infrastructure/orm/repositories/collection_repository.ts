@@ -30,7 +30,7 @@ export class CollectionRepository extends ICollectionRepository {
       .first()
 
     if (!collectionModel) {
-      throw new Error('AlreadyDelete: Collection deleted')
+      throw new Error('AlreadyDeleted: Collection deleted')
     }
 
     collectionModel.deletedAt = DateTime.fromJSDate(collection.deletedAt!)
@@ -73,11 +73,11 @@ export class CollectionRepository extends ICollectionRepository {
   async findById(id: number, connected: boolean, includes?: string[]): Promise<Collection> {
     const collectionModel = await CollectionModel.find(id)
     if (!collectionModel) {
-      throw new Error('NotFound: Collection not found')
+      throw new Error(`NotFound: Collection with id ${id} not found`)
     }
 
     if (!connected) {
-      if (collectionModel.deletedAt) throw new Error('AlreadyDelete: Tag deleted')
+      if (collectionModel.deletedAt) throw new Error('AlreadyDeleted: Tag deleted')
     }
 
     if (includes && includes.length > 0) {
@@ -100,7 +100,7 @@ export class CollectionRepository extends ICollectionRepository {
       .first()
 
     if (!collectionModel) {
-      throw new Error('Deleted: Collection deleted')
+      throw new Error('AlreadyDeleted: Collection deleted')
     }
 
     collectionModel.name = collection.name
@@ -114,7 +114,7 @@ export class CollectionRepository extends ICollectionRepository {
   async associate_tags(tagsId: number[], collection: Collection): Promise<Collection> {
     const collectionModel = await CollectionModel.find(collection.id)
     if (!collectionModel) {
-      throw new Error(`NotFound: Collection with ID: ${collection.id} not found`)
+      throw new Error(`NotFound: Collection with id: ${collection.id} not found`)
     }
 
     await collectionModel.related('tags').sync(tagsId)
