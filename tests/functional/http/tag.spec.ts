@@ -431,7 +431,7 @@ test.group('AssociateTagController', (group) => {
     const response = await client.post(`/api/tags/${tag.id}/collections`).json(collectionsPayload)
 
     response.assertStatus(201)
-    assert.exists(response.body().data)
+    assert.exists(response.body().data)git
 
     const associatedTag = await TagModel.query().preload('collections').where('id', tag.id).first()
 

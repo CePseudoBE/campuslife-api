@@ -30,19 +30,19 @@ export class Log {
     updatedAt: Date
   ) {
     if (!sessionId || sessionId.trim() === '') {
-      throw new Error('Session ID is required')
+      throw new Error('InvalidFormat: Session ID is required')
     }
 
     if (!userId || userId.trim() === '') {
-      throw new Error('User ID is required')
+      throw new Error('InvalidFormat: User ID is required')
     }
 
     if (!actionState || actionState.trim() === '') {
-      throw new Error('Action state is required')
+      throw new Error('InvalidFormat: Action state is required')
     }
 
     if (!actionType || actionType.trim() === '') {
-      throw new Error('Action type is required')
+      throw new Error('InvalidFormat: Action type is required')
     }
 
     this.id = id

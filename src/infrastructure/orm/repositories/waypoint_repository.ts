@@ -69,7 +69,7 @@ export class WaypointRepository extends IWaypointRepository {
     if (!waypointModel) throw new Error('NotFound: Waypoint not found')
 
     if (!connected) {
-      if (waypointModel.deletedAt) throw new Error('AlreadyDelete: Tag deleted')
+      if (waypointModel.deletedAt) throw new Error('AlreadyDeleted: Tag deleted')
     }
 
     if (includes && includes.length > 0) {

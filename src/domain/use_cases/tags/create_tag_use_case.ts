@@ -22,7 +22,7 @@ export class CreateTagUseCase {
     }
 
     if (!data.title_en || !data.title_fr) {
-      throw Error('Title is required')
+      throw Error('InvalidFormat: Title is required')
     }
 
     const tag = new Tag(null, title, new Date(), new Date())
@@ -35,13 +35,13 @@ export class CreateTagUseCase {
       !Array.isArray(data.collections) ||
       data.collections.some((collection) => !Number.isInteger(collection))
     ) {
-      throw new Error('Invalid collection format: collections must be an array of numbers')
+      throw new Error('InvalidFormat: collections must be an array of numbers')
     }
 
     for (const collectionId of data.collections) {
       const collection = await this.iCollectionRepository.findById(collectionId, false)
       if (!collection) {
-        throw new Error(`IdNotFound : Collection with ID ${collectionId} does not exist`)
+        throw new Error(`NotFound: Collection with ID ${collectionId} does not exist`)
       }
     }
 
