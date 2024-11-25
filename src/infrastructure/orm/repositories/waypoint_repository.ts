@@ -90,7 +90,7 @@ export class WaypointRepository extends IWaypointRepository {
       .andWhere('id', waypoint.id)
       .first()
     if (!waypointModel) {
-      throw new Error('AlreadyDeleted: Waypoint deleted')
+      throw new Error('node AlreadyDeleted: Waypoint deleted')
     }
 
     waypointModel.latitude = waypoint.latitude
