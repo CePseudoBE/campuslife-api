@@ -16,12 +16,7 @@ export class FindWaypointsUseCase {
     deleted?: boolean
   ): Promise<Waypoint[]> {
     const queryParams = this.sortingValidation.validateAndSanitizeQueryParams(
-      {
-        page,
-        limit,
-        order,
-        column,
-      },
+      { page, limit, order, column },
       { allowedColumns: Waypoint.allowedColumns }
     )
     return await this.iwaypointrepository.findAll(queryParams, includes, deleted)

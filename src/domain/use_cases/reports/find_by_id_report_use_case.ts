@@ -7,6 +7,11 @@ export class FindByIdReportUseCase {
   constructor(private iReportRepository: IReportRepository) {}
 
   public async handle(data: { id: number; connected: boolean }): Promise<Report | null> {
-    return await this.iReportRepository.findById(data.id, data.connected)
+    const report = await this.iReportRepository.findById(data.id, data.connected)
+
+    if (!report) {
+      throw new Error(`NotFound: report with id ${data.id} not found`)
+    }
+    return report
   }
 }

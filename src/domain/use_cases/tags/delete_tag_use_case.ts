@@ -7,6 +7,9 @@ export class DeleteTagUseCase {
 
   public async handle(id: number): Promise<null> {
     const tag = await this.itagrepository.findById(id, false)
+    if (!tag) {
+      throw new Error(`NotFound: tag with id ${id} not found`)
+    }
     tag.delete()
     return await this.itagrepository.delete(tag)
   }

@@ -34,7 +34,7 @@ export class CreateWaypointUseCase {
     }
 
     if (!data.title_en || !data.title_fr) {
-      throw new Error('Title is required')
+      throw new Error('InvalidFormat: Title is required')
     }
 
     // Génération d'un slug unique
@@ -50,7 +50,7 @@ export class CreateWaypointUseCase {
     }
 
     if (iterationCount === maxIterations) {
-      throw new Error('MaxIteration: Unable to generate unique slug after several attempts')
+      throw new Error('LimitExceeded: Unable to generate unique slug after several attempts')
     }
 
     const waypoint = new Waypoint(
@@ -74,14 +74,14 @@ export class CreateWaypointUseCase {
 
     // Validation des tags
     if (!Array.isArray(data.tags) || data.tags.some((tag) => !Number.isInteger(tag))) {
-      throw new Error('Invalid tag format: tags must be an array of numbers')
+      throw new Error('InvalidFormat: tags must be an array of numbers')
     }
 
     // Vérification de l'existence des tags
     for (const tagId of data.tags) {
       const tag = await this.iTagRepository.findById(tagId, false)
       if (!tag) {
-        throw new Error(`Tag with ID ${tagId} does not exist`)
+        throw new Error(`NotFound: Tag with ID ${tagId} does not exist`)
       }
     }
 

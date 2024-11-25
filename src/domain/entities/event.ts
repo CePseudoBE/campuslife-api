@@ -51,34 +51,32 @@ export class Event {
     tags?: Tag[]
   ) {
     if (!title.en || title.en.trim().length === 0) {
-      throw new Error('InvalidTitleError: The English title must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The English title must be provided and cannot be empty.')
     }
     if (!title.fr || title.fr.trim().length === 0) {
-      throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The French title must be provided and cannot be empty.')
     }
 
     if (!description.en || description.en.trim().length === 0) {
       throw new Error(
-        'InvalidTitleError: The English description must be provided and cannot be empty.'
+        'InvalidFormat: The English description must be provided and cannot be empty.'
       )
     }
     if (!description.fr || description.fr.trim().length === 0) {
-      throw new Error(
-        'InvalidTitleError: The French description must be provided and cannot be empty.'
-      )
+      throw new Error('InvalidFormat: The French description must be provided and cannot be empty.')
     }
     if (start.getTime() <= Date.now()) {
-      throw new Error('InvalidStartDateError: Start date must be in the future.')
+      throw new Error('InvalidFormat: Start date must be in the future.')
     }
     if (end.getTime() <= start.getTime()) {
-      throw new Error('InvalidEndDateError: End date must be after the start date.')
+      throw new Error('InvalidFormat: End date must be after the start date.')
     }
     const urlRegex = /^(https?|ftp):\/\/[^\s\/$.?#].\S*$/i
     if (url && !urlRegex.test(url)) {
-      throw new Error('InvalidURLError: The provided URL is not valid.')
+      throw new Error('InvalidFormat: The provided URL is not valid.')
     }
     if (tags && new Set(tags.map((tag) => tag.id)).size !== tags.length) {
-      throw new Error('DuplicateTagsError: Each tag must be unique.')
+      throw new Error('LimitExceeded: Each tag must be unique.')
     }
     this.id = id
     this.title = title

@@ -30,23 +30,23 @@ export class Address {
     country?: Country
   ) {
     if (!street || street.trim().length === 0) {
-      throw new Error('InvalidStreetError: The street name must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The street name must be provided and cannot be empty.')
     }
 
     if (!num || num.trim().length === 0) {
-      throw new Error('InvalidNumError: The building number must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The building number must be provided and cannot be empty.')
     }
 
     if (!zip || zip.trim().length === 0) {
-      throw new Error('InvalidZipError: The postal code must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The postal code must be provided and cannot be empty.')
     }
 
     if (!city || city.trim().length === 0) {
-      throw new Error('InvalidCityError: The city name must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The city name must be provided and cannot be empty.')
     }
 
     if (countryId <= 0 || !Number.isInteger(countryId)) {
-      throw new Error('InvalidCountryIdError: The country ID must be a positive integer.')
+      throw new Error('InvalidFormat: The country ID must be a positive integer.')
     }
 
     this.id = id
@@ -79,14 +79,14 @@ export class Address {
   }): void {
     if (data.street) {
       if (data.street.trim().length === 0) {
-        throw new Error('InvalidStreetError: The street name cannot be empty.')
+        throw new Error('InvalidFormat: The street name cannot be empty.')
       }
       this.street = data.street
     }
 
     if (data.num) {
       if (data.num.trim().length === 0) {
-        throw new Error('InvalidNumError: The building number cannot be empty.')
+        throw new Error('InvalidFormat: The building number cannot be empty.')
       }
       this.num = data.num
     }
@@ -95,7 +95,7 @@ export class Address {
 
     if (data.zip) {
       if (data.zip.trim().length === 0) {
-        throw new Error('InvalidZipError: The postal code cannot be empty.')
+        throw new Error('InvalidFormat: The postal code cannot be empty.')
       }
       this.zip = data.zip
     }

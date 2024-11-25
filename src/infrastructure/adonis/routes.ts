@@ -6,7 +6,7 @@ import './routes/collection.js'
 import './routes/log.js'
 import './routes/reports.js'
 import './routes/stib.js'
-const HealthChecksController = () => import('#controllers/health_checks_controller')
+const HealthChecksController = () => import('#adapters/controllers/health_checks_controller')
 
 // Route d'accueil pour tester l'API
 router.get('/', [HealthChecksController])

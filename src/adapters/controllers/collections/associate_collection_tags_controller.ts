@@ -12,7 +12,7 @@ export default class AssociateCollectionTagsController {
     const id = Number(params.id)
 
     if (!id || Number.isNaN(id)) {
-      return response.badRequest({ message: 'Bad ID provided (non existent or NaN)' })
+      return response.badRequest({ message: 'InvalidFormat: Bad ID provided' })
     }
 
     const schema = vine.array(vine.number())

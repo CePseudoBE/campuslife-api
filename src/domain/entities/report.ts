@@ -30,15 +30,15 @@ export class Report {
   ) {
     // Validate required fields
     if (!sessionId || sessionId.trim().length === 0) {
-      throw new Error('InvalidArgument: sessionId is required and cannot be empty.')
+      throw new Error('InvalidFormat: sessionId is required and cannot be empty.')
     }
 
     if (!deviceId || deviceId.trim().length === 0) {
-      throw new Error('InvalidArgument: deviceId is required and cannot be empty.')
+      throw new Error('InvalidFormat: deviceId is required and cannot be empty.')
     }
 
     if (!message || message.trim().length === 0) {
-      throw new Error('InvalidArgument: message is required and cannot be empty.')
+      throw new Error('InvalidFormat: message is required and cannot be empty.')
     }
 
     this.id = id

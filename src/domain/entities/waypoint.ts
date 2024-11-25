@@ -42,21 +42,21 @@ export class Waypoint {
     events?: Event[]
   ) {
     if (latitude > 90 || latitude < -90) {
-      throw Error('Latitude must be between -90 and 90')
+      throw Error('InvalidFormat: Latitude must be between -90 and 90')
     }
     if (longitude > 180 || longitude < -180) {
-      throw Error('Longitude must be between -180 and 180')
+      throw Error('InvalidFormat: Longitude must be between -180 and 180')
     }
 
     if (!title.en || title.en.trim().length === 0) {
-      throw new Error('InvalidTitleError: The English title must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The English title must be provided and cannot be empty.')
     }
     if (!title.fr || title.fr.trim().length === 0) {
-      throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The French title must be provided and cannot be empty.')
     }
 
     if (!types || types.trim().length === 0) {
-      throw new Error('InvalidTypesError: The waypoint type must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The waypoint type must be provided and cannot be empty.')
     }
 
     if (!pmr) {

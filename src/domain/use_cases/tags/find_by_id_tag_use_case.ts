@@ -11,6 +11,11 @@ export class FindByIdTagUseCase {
     connected: boolean
     includes?: string[]
   }): Promise<Tag | null> {
-    return await this.iTagRepository.findById(data.id, data.connected, data.includes)
+    const tag = await this.iTagRepository.findById(data.id, data.connected, data.includes)
+
+    if (!tag) {
+      throw new Error(`NotFound: tag with id ${data.id} not found`)
+    }
+    return tag
   }
 }

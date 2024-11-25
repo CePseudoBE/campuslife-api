@@ -28,10 +28,10 @@ export class Tag {
     this.id = id
 
     if (!title.en || title.en.trim().length === 0) {
-      throw new Error('InvalidTitleError: The English title must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The English title must be provided and cannot be empty.')
     }
     if (!title.fr || title.fr.trim().length === 0) {
-      throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The French title must be provided and cannot be empty.')
     }
 
     this.title = title

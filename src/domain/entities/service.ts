@@ -24,25 +24,23 @@ export class Service {
   ) {
     const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
     if (!urlRegex.test(url)) {
-      throw new Error('InvalidURLError: The provided URL is not valid.')
+      throw new Error('InvalidFormat: The provided URL is not valid.')
     }
 
     if (!title.en || title.en.trim().length === 0) {
-      throw new Error('InvalidTitleError: The English title must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The English title must be provided and cannot be empty.')
     }
     if (!title.fr || title.fr.trim().length === 0) {
-      throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The French title must be provided and cannot be empty.')
     }
 
     if (!description.en || description.en.trim().length === 0) {
       throw new Error(
-        'InvalidTitleError: The English description must be provided and cannot be empty.'
+        'InvalidFormat: The English description must be provided and cannot be empty.'
       )
     }
     if (!description.fr || description.fr.trim().length === 0) {
-      throw new Error(
-        'InvalidTitleError: The French description must be provided and cannot be empty.'
-      )
+      throw new Error('InvalidFormat: The French description must be provided and cannot be empty.')
     }
 
     this.id = id

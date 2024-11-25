@@ -7,6 +7,9 @@ export class DeleteCollectionUseCase {
 
   public async handle(id: number): Promise<null> {
     const collection = await this.iCollectionRepository.findById(id, false)
+    if (!collection) {
+      throw new Error(`NotFound: collection with id ${id} not found`)
+    }
     collection.delete()
     return await this.iCollectionRepository.delete(collection)
   }

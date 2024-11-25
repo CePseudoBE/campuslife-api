@@ -9,7 +9,7 @@ export default class DeleteCollectionController {
     const id = Number.parseInt(ctx.params.id)
 
     if (!id || Number.isNaN(id)) {
-      return ctx.response.badRequest({ message: 'Bad ID provided (non existent or NaN)' })
+      return ctx.response.badRequest({ message: 'InvalidFormat: Bad ID provided' })
     }
     try {
       await this.deleteCollectionUseCase.handle(id)

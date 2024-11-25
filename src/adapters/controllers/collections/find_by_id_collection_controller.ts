@@ -12,7 +12,7 @@ export default class FindByIdCollectionController {
     const id = Number.parseInt(ctx.params.id)
 
     if (!id || Number.isNaN(id)) {
-      return ctx.response.badRequest({ message: 'Bad ID provided (non existent or NaN)' })
+      return ctx.response.badRequest({ message: 'InvalidFormat: Bad ID provided' })
     }
 
     const lang = ctx.params.lang
@@ -27,7 +27,7 @@ export default class FindByIdCollectionController {
       })
 
       if (!collection) {
-        return ctx.response.badRequest({ message: `Log with id : ${id} does not exist` })
+        return ctx.response.badRequest({ message: `NotFound: Log with id : ${id} does not exist` })
       }
 
       const collectionDTO = CollectionDTO.toLanguages(collection, lang, validIncludes)

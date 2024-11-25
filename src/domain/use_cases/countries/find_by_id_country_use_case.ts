@@ -7,6 +7,12 @@ export class FindByIdCountryUseCase {
   constructor(private iCountryRepository: ICountryRepository) {}
 
   public async handle(data: { id: number }): Promise<Country> {
-    return await this.iCountryRepository.findById(data.id)
+    const country = await this.iCountryRepository.findById(data.id)
+
+    if (!country) {
+      new Error(`NotFound: Collection with id ${data.id} not found`)
+    }
+
+    return country
   }
 }

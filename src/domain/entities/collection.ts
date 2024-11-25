@@ -24,10 +24,10 @@ export class Collection {
     this.id = id
 
     if (!name.en || name.en.trim().length === 0) {
-      throw new Error('InvalidTitleError: The English title must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The English title must be provided and cannot be empty.')
     }
     if (!name.fr || name.fr.trim().length === 0) {
-      throw new Error('InvalidTitleError: The French title must be provided and cannot be empty.')
+      throw new Error('InvalidFormat: The French title must be provided and cannot be empty.')
     }
 
     this.name = name

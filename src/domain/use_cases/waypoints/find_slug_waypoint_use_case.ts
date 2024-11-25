@@ -7,6 +7,10 @@ export class FindSlugWaypointUseCase {
   constructor(private iWaypointRepository: IWaypointRepository) {}
 
   public async handle(data: { slug: string; includes?: string[] }): Promise<Waypoint | null> {
-    return await this.iWaypointRepository.findBySlug(data.slug, data.includes)
+    const waypoint = await this.iWaypointRepository.findBySlug(data.slug, data.includes)
+    if (!waypoint) {
+      throw new Error(`NotFound: waypoint with slug ${data.slug} not found`)
+    }
+    return waypoint
   }
 }

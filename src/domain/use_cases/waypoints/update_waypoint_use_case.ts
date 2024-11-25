@@ -26,7 +26,7 @@ export class UpdateWaypointUseCase {
   ): Promise<Waypoint> {
     const existingWaypoint = await this.iWaypointRepository.findById(id, false)
     if (!existingWaypoint) {
-      throw new Error('Waypoint not found')
+      throw new Error(`NotFound: waypoint with id : ${id} not found`)
     }
 
     let slug = existingWaypoint.slug
@@ -44,7 +44,7 @@ export class UpdateWaypointUseCase {
       }
 
       if (iterationCount === maxIterations) {
-        throw new Error('MaxIteration: Unable to generate unique slug after several attempts')
+        throw new Error('LimitExceeded: Unable to generate unique slug after several attempts')
       }
 
       data = {

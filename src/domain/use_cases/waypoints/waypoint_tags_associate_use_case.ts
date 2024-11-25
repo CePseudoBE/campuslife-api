@@ -12,19 +12,19 @@ export class WaypointTagsAssociateUseCase {
 
   public async handle(data: { id: number; tags: number[] | undefined }): Promise<Waypoint> {
     if (!data.tags || data.tags.length === 0) {
-      throw new Error('NoAssocation : 0 tags were provided, provide more tags')
+      throw new Error('NoAssociation : 0 tags were provided, provide more tags')
     }
 
     // Validation des tags
     if (!Array.isArray(data.tags) || data.tags.some((tag) => !Number.isInteger(tag))) {
-      throw new Error('Invalid tag format: tags must be an array of numbers')
+      throw new Error('InvalidFormat: tags must be an array of numbers')
     }
 
     // Vérification de l'existence des tags
     for (const tagId of data.tags) {
       const tag = await this.iTagRepository.findById(tagId, false)
       if (!tag) {
-        throw new Error(`Tag with ID ${tagId} does not exist`)
+        throw new Error(`NotFound: Tag with ID ${tagId} does not exist`)
       }
     }
 
@@ -32,7 +32,7 @@ export class WaypointTagsAssociateUseCase {
     const waypoint = await this.iWaypointRepository.findById(data.id, false)
 
     if (!waypoint) {
-      throw new Error(`Waypoint with ID ${data.id} does not exist`)
+      throw new Error(`NotFound: Waypoint with ID ${data.id} does not exist`)
     }
 
     // Association des tags avec le waypoint

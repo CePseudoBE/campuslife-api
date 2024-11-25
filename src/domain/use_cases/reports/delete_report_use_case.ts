@@ -7,6 +7,9 @@ export class DeleteReportUseCase {
 
   public async handle(id: number): Promise<null> {
     const report = await this.iReportRepository.findById(id, false)
+    if (!report) {
+      throw new Error(`NotFound: report with id ${id} not found`)
+    }
     report.delete()
     return await this.iReportRepository.delete(report)
   }

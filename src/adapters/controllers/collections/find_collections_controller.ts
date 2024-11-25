@@ -27,14 +27,18 @@ export default class FindCollectionsController {
 
       if (deletedParam !== undefined) {
         if (deletedParam !== 'true' && deletedParam !== 'false') {
-          return ctx.response.badRequest({ message: 'BadType: deleted needs to be true or false' })
+          return ctx.response.badRequest({
+            message: 'InvalidFormat: deleted needs to be true or false',
+          })
         }
       }
 
       const deleted = deletedParam === 'true' ? true : deletedParam === 'false' ? false : undefined
 
       if (deleted === null) {
-        return ctx.response.badRequest({ message: 'BadType: deleted needs to be true or false' })
+        return ctx.response.badRequest({
+          message: 'InvalidFormat: deleted needs to be true or false',
+        })
       }
 
       const collections = await this.findCollectionsUseCase.handle(

@@ -11,6 +11,10 @@ export class FindByIdWaypointUseCase {
     connected: boolean
     includes?: string[]
   }): Promise<Waypoint | null> {
-    return await this.iwaypointrepository.findById(data.id, data.connected, data.includes)
+    const waypoint = await this.iwaypointrepository.findById(data.id, data.connected, data.includes)
+    if (!waypoint) {
+      throw new Error(`NotFound: waypoint with id ${data.id} not found`)
+    }
+    return waypoint
   }
 }

@@ -7,6 +7,11 @@ export class FindByIdStibUseCase {
   constructor(private iStibRepository: IStibRepository) {}
 
   public async handle(data: { id: number }): Promise<StibShape | null> {
-    return await this.iStibRepository.findById(data.id)
+    const stib = await this.iStibRepository.findById(data.id)
+
+    if (!stib) {
+      throw new Error(`NotFound: Stib shape with id ${data.id} not found`)
+    }
+    return stib
   }
 }

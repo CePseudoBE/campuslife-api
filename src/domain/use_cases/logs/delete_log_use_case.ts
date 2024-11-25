@@ -7,6 +7,9 @@ export class DeleteLogUseCase {
 
   public async handle(id: number): Promise<null> {
     const log = await this.iLogRepository.findById(id)
+    if (!log) {
+      throw new Error(`NotFound: log with id ${id} not found`)
+    }
     return await this.iLogRepository.delete(log)
   }
 }

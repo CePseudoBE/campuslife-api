@@ -20,6 +20,7 @@ export class FindStibsUseCase {
       },
       { allowedColumns: StibShape.allowedColumns }
     )
+
     return await this.iStibRepository.findAll(queryParams)
   }
 }

@@ -11,7 +11,6 @@ export class FindByNameStibUseCase {
     if (!stibShape) {
       throw new Error(`NotFound: Stib shape with name ${data.name} not found`)
     }
-
     return stibShape
   }
 }
