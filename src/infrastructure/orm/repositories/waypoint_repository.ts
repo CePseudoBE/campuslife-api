@@ -66,7 +66,7 @@ export class WaypointRepository extends IWaypointRepository {
 
   async findById(id: number, connected: boolean, includes?: string[]): Promise<Waypoint | null> {
     const waypointModel = await WaypointModel.find(id)
-    if (!waypointModel) throw new Error('NotFound: Waypoint not found')
+    if (!waypointModel) throw new Error(`NotFound: Waypoint with id ${id} not found`)
 
     if (!connected) {
       if (waypointModel.deletedAt) throw new Error('AlreadyDeleted: Tag deleted')
@@ -83,14 +83,14 @@ export class WaypointRepository extends IWaypointRepository {
 
   async update(waypoint: Waypoint): Promise<Waypoint> {
     if (!waypoint.id) {
-      throw new Error('Waypoint not found')
+      throw new Error('NotFound: Waypoint not found')
     }
     const waypointModel = await WaypointModel.query()
       .whereNull('deleted_at')
       .andWhere('id', waypoint.id)
       .first()
     if (!waypointModel) {
-      throw new Error('Waypoint deleted')
+      throw new Error('AlreadyDeleted: Waypoint deleted')
     }
 
     waypointModel.latitude = waypoint.latitude
@@ -108,7 +108,7 @@ export class WaypointRepository extends IWaypointRepository {
 
   async delete(waypoint: Waypoint): Promise<null> {
     if (!waypoint.id) {
-      throw new Error('Waypoint not found')
+      throw new Error('NotFound: Waypoint not found')
     }
     const waypointModel = await WaypointModel.query()
       .whereNull('deleted_at')
@@ -116,7 +116,7 @@ export class WaypointRepository extends IWaypointRepository {
       .first()
 
     if (!waypointModel) {
-      throw new Error('Waypoint deleted')
+      throw new Error('AlreadyDeleted: Waypoint deleted')
     }
 
     waypointModel.deletedAt = DateTime.fromJSDate(waypoint.deletedAt!)
@@ -129,7 +129,7 @@ export class WaypointRepository extends IWaypointRepository {
   async associateTags(idTags: number[], waypoint: Waypoint): Promise<Waypoint> {
     const waypointModel = await WaypointModel.find(waypoint.id)
     if (!waypointModel) {
-      throw new Error('Waypoint not found')
+      throw new Error('NotFound: Waypoint not found')
     }
 
     await waypointModel.related('tags').sync(idTags)

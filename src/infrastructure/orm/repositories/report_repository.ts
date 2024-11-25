@@ -29,7 +29,7 @@ export class ReportRepository extends IReportRepository {
       .first()
 
     if (!reportModel) {
-      throw new Error('AlreadyDeleted: Report already deleted')
+      throw new Error('AlreadyDeleted: Report deleted')
     }
 
     reportModel.deletedAt = DateTime.fromJSDate(report.deletedAt!)
@@ -61,7 +61,7 @@ export class ReportRepository extends IReportRepository {
     const reportModel = await ReportModel.find(id)
 
     if (!reportModel) {
-      throw new Error('NotFound: Report not found')
+      throw new Error(`NotFound: Report with id ${id} not found`)
     }
 
     if (!connected) {
