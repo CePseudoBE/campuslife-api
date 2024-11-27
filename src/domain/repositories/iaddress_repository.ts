@@ -1,6 +1,6 @@
 import { QueryParams } from '#domain/services/sorting_validation'
 import { Address } from '#domain/entities/address'
-import { Country } from '#domain/entities/country'
+//import { Country } from '#domain/entities/country'
 
 export abstract class IAddressRepository {
   abstract create(address: Address): Promise<Address>
@@ -13,5 +13,5 @@ export abstract class IAddressRepository {
 
   abstract delete(address: Address): Promise<null>
 
-  abstract associateCountry(country: Country, address: Address): Promise<Address>
+  //abstract associateCountry(country: Country, address: Address): Promise<Address>
 }

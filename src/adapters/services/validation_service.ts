@@ -96,9 +96,30 @@ export class ValidationService {
     const validIncludes = ValidationService.validateIncludes(includes, model)
     if (validIncludes.length !== includes.length) {
       const invalidIncludes = includes.filter((rel: string) => !validIncludes.includes(rel))
-      throw new Error(`Invalid includes: ${invalidIncludes.join(', ')}`)
+      throw new Error(`InvalidIncludes: ${invalidIncludes.join(', ')}`)
     }
 
     return validIncludes
+  }
+  public static getAddressRules() {
+    return vine.object({
+      street: vine.string().trim().minLength(3).maxLength(100),
+      num: vine.string().trim().minLength(1).maxLength(10),
+      complement: vine.string().trim().maxLength(50).optional(),
+      zip: vine.string().trim().minLength(3).maxLength(10),
+      city: vine.string().trim().minLength(2).maxLength(50),
+      country_id: vine.number().positive(),
+    })
+  }
+
+  public static getAddressUpdateRules() {
+    return vine.object({
+      street: vine.string().trim().minLength(3).maxLength(100).optional(),
+      num: vine.string().trim().minLength(1).maxLength(10).optional(),
+      complement: vine.string().trim().maxLength(50).optional(),
+      zip: vine.string().trim().minLength(3).maxLength(10).optional(),
+      city: vine.string().trim().minLength(2).maxLength(50).optional(),
+      country_id: vine.number().positive().optional(),
+    })
   }
 }

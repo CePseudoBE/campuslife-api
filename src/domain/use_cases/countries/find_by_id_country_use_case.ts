@@ -10,7 +10,7 @@ export class FindByIdCountryUseCase {
     const country = await this.iCountryRepository.findById(data.id)
 
     if (!country) {
-      new Error(`NotFound: Collection with id ${data.id} not found`)
+      throw new Error(`NotFound: Collection with id ${data.id} not found`)
     }
 
     return country
