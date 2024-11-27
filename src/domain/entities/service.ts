@@ -10,6 +10,17 @@ export class Service {
   public createdAt: Date
   public updatedAt: Date
   public deletedAt: Date | null
+  public static allowedColumns: string[] = [
+    'id',
+    'title',
+    'description',
+    'url',
+    'icon',
+    'isActive',
+    'createdAt',
+    'updatedAt',
+    'deletedAt',
+  ]
 
   constructor(
     id: number | null,
