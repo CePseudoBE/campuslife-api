@@ -122,4 +122,20 @@ export class ValidationService {
       country_id: vine.number().positive().optional(),
     })
   }
+
+  public static getServiceRules() {
+    return vine.object({
+      title: vine.object({
+        en: vine.string().minLength(3).maxLength(50),
+        fr: vine.string().minLength(3).maxLength(50),
+      }),
+      description: vine.object({
+        en: vine.string().minLength(5).maxLength(150),
+        fr: vine.string().minLength(5).maxLength(150),
+      }),
+      url: vine.string(),
+      icon: vine.string().optional(),
+      isActive: vine.boolean(),
+    })
+  }
 }

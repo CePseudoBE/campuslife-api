@@ -15,6 +15,8 @@ export class Address {
   public updatedAt: Date
   public deletedAt: Date | null
 
+  public static allowedColumns: string[] = ['id', 'street', 'num', 'complement', 'zip', 'city']
+
   constructor(
     id: number | null,
     street: string,
