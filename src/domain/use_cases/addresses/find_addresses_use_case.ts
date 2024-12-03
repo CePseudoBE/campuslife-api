@@ -4,7 +4,7 @@ import { IAddressRepository } from '#domain/repositories/iaddress_repository'
 import { Address } from '#domain/entities/address'
 
 @inject()
-export class FindCountriesUseCase {
+export class FindAddressesUseCase {
   constructor(
     private iAddressRepository: IAddressRepository,
     private sortingValidation: QueryValidationService

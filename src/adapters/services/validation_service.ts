@@ -125,17 +125,34 @@ export class ValidationService {
 
   public static getServiceRules() {
     return vine.object({
-      title: vine.object({
-        en: vine.string().minLength(3).maxLength(50),
-        fr: vine.string().minLength(3).maxLength(50),
-      }),
-      description: vine.object({
-        en: vine.string().minLength(5).maxLength(150),
-        fr: vine.string().minLength(5).maxLength(150),
-      }),
+      title_en: vine.string().minLength(3).maxLength(50),
+      title_fr: vine.string().minLength(3).maxLength(50),
+      description_en: vine.string().minLength(5).maxLength(150),
+      description_fr: vine.string().minLength(5).maxLength(150),
       url: vine.string(),
-      icon: vine.string().optional(),
+      icon: vine
+        .file({
+          size: '2mb',
+          extnames: ['svg'],
+        })
+        .optional(),
       isActive: vine.boolean(),
+    })
+  }
+  public static getUpdateServiceRules() {
+    return vine.object({
+      title_en: vine.string().minLength(3).maxLength(50).optional(),
+      title_fr: vine.string().minLength(3).maxLength(50).optional(),
+      description_en: vine.string().minLength(5).maxLength(150).optional(),
+      description_fr: vine.string().minLength(5).maxLength(150).optional(),
+      url: vine.string().optional(),
+      icon: vine
+        .file({
+          size: '2mb',
+          extnames: ['svg'],
+        })
+        .optional(),
+      isActive: vine.boolean().optional(),
     })
   }
 }

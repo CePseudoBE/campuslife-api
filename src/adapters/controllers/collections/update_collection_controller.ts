@@ -14,7 +14,7 @@ export default class UpdateCollectionController {
     const id = Number(params.id)
 
     if (Number.isNaN(id)) {
-      return response.badRequest({ message: 'NotFound: Invalid tag ID' })
+      return response.badRequest({ message: 'InvalidFormat: Invalid tag ID' })
     }
 
     const schema = ValidationService.getUpdateCollectionRules()

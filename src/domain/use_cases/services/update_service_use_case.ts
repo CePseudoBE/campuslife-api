@@ -1,6 +1,9 @@
 import { inject } from '@adonisjs/core'
 import { IServiceRepository } from '#domain/repositories/iservice_repository'
 import { Service } from '#domain/entities/service'
+import { MultipartFile } from '@adonisjs/core/bodyparser'
+import { cuid } from '@adonisjs/core/helpers'
+import app from '@adonisjs/core/services/app'
 
 @inject()
 export class UpdateServiceUseCase {
@@ -9,11 +12,13 @@ export class UpdateServiceUseCase {
   public async handle(
     id: number,
     data: {
-      title?: { en: string; fr: string }
-      description?: { en: string; fr: string }
-      url?: string
-      icon?: string
-      isActive?: boolean
+      title_en: string | undefined
+      title_fr: string | undefined
+      description_en: string | undefined
+      description_fr: string | undefined
+      url: string | undefined
+      icon: MultipartFile | undefined
+      isActive: boolean | undefined
     }
   ): Promise<Service> {
     const service = await this.serviceRepository.findById(id)
@@ -29,26 +34,28 @@ export class UpdateServiceUseCase {
       service.url = data.url
     }
 
-    if (data.title) {
-      if (data.title.en) {
-        service.title.en = data.title.en
-      }
-      if (data.title.fr) {
-        service.title.fr = data.title.fr
-      }
+    if (data.title_en) {
+      service.title.en = data.title_en
+    }
+    if (data.title_fr) {
+      service.title.fr = data.title_fr
     }
 
-    if (data.description) {
-      if (data.description.en) {
-        service.description.en = data.description.en
-      }
-      if (data.description.fr) {
-        service.description.fr = data.description.fr
-      }
+    if (data.description_en) {
+      service.description.en = data.description_en
+    }
+    if (data.description_fr) {
+      service.description.fr = data.description_fr
     }
 
     if (typeof data.icon !== 'undefined') {
-      service.icon = data.icon
+      let iconPath: string | undefined
+      if (data.icon) {
+        const iconName = `${cuid()}.${data.icon.extname}`
+        await data.icon.move(app.makePath('storage/uploads'), { name: iconName })
+        iconPath = `storage/uploads/icons/${iconName}`
+        service.icon = iconPath
+      }
     }
 
     if (typeof data.isActive !== 'undefined') {

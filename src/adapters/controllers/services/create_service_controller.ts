@@ -10,7 +10,15 @@ export default class CreateServiceController {
 
   public async handle({ request, response }: HttpContext) {
     try {
-      const body = request.only(['title', 'description', 'url', 'icon', 'isActive'])
+      const body = request.only([
+        'title_en',
+        'title_fr',
+        'description_en',
+        'description_fr',
+        'url',
+        'icon',
+        'isActive',
+      ])
 
       const validatedData = await vine.validate({
         schema: ValidationService.getServiceRules(),
