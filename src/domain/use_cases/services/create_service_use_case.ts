@@ -3,22 +3,23 @@ import { IServiceRepository } from '#domain/repositories/iservice_repository'
 import { Service } from '#domain/entities/service'
 import { MultilingualField } from '#domain/types/multilingual_field.type'
 import { MultipartFile } from '@adonisjs/core/bodyparser'
-import app from '@adonisjs/core/services/app'
-import { cuid } from '@adonisjs/core/helpers'
 
 @inject()
 export class CreateServiceUseCase {
   constructor(private serviceRepository: IServiceRepository) {}
 
-  public async handle(data: {
-    title_en: string
-    title_fr: string
-    description_en: string
-    description_fr: string
-    url: string
-    icon?: MultipartFile
-    isActive: boolean
-  }): Promise<Service> {
+  public async handle(
+    data: {
+      title_en: string
+      title_fr: string
+      description_en: string
+      description_fr: string
+      url: string
+      icon?: MultipartFile
+      isActive: boolean
+    },
+    iconPath?: string
+  ): Promise<Service> {
     const title: MultilingualField = {
       en: data.title_en || '',
       fr: data.title_fr || '',
@@ -48,13 +49,6 @@ export class CreateServiceUseCase {
 
     if (!data.description_fr || data.description_fr.trim().length === 0) {
       throw new Error('InvalidFormat: The French description must be provided and cannot be empty.')
-    }
-
-    let iconPath: string | undefined
-    if (data.icon) {
-      const iconName = `${cuid()}.${data.icon.extname}`
-      await data.icon.move(app.makePath('storage/uploads'), { name: iconName })
-      iconPath = `storage/uploads/icons/${iconName}`
     }
 
     const newService = new Service(

@@ -1,8 +1,10 @@
 import { ValidationService } from '#adapters/services/validation_service'
 import { CreateAddressUseCase } from '#domain/use_cases/addresses/create_address_use_case'
+import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 import vine from '@vinejs/vine'
-export class CreateAddressController {
+@inject()
+export default class CreateAddressController {
   constructor(private createAddressUseCase: CreateAddressUseCase) {}
   async handle({ request, response }: HttpContext) {
     const body = request.only(['street', 'num', 'complement', 'zip', 'city', 'country_id'])

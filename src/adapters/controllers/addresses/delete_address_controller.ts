@@ -1,7 +1,8 @@
 import { DeleteAddressUseCase } from '#domain/use_cases/addresses/delete_address_use_case'
+import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
-
-export class DeleteAddressController {
+@inject()
+export default class DeleteAddressController {
   constructor(private deleteAddressUseCase: DeleteAddressUseCase) {}
 
   async handle(ctx: HttpContext) {

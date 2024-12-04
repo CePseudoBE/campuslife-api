@@ -2,8 +2,6 @@ import { inject } from '@adonisjs/core'
 import { IServiceRepository } from '#domain/repositories/iservice_repository'
 import { Service } from '#domain/entities/service'
 import { MultipartFile } from '@adonisjs/core/bodyparser'
-import { cuid } from '@adonisjs/core/helpers'
-import app from '@adonisjs/core/services/app'
 
 @inject()
 export class UpdateServiceUseCase {
@@ -19,7 +17,8 @@ export class UpdateServiceUseCase {
       url: string | undefined
       icon: MultipartFile | undefined
       isActive: boolean | undefined
-    }
+    },
+    iconPath?: string
   ): Promise<Service> {
     const service = await this.serviceRepository.findById(id)
     if (!service) {
@@ -49,13 +48,7 @@ export class UpdateServiceUseCase {
     }
 
     if (typeof data.icon !== 'undefined') {
-      let iconPath: string | undefined
-      if (data.icon) {
-        const iconName = `${cuid()}.${data.icon.extname}`
-        await data.icon.move(app.makePath('storage/uploads'), { name: iconName })
-        iconPath = `storage/uploads/icons/${iconName}`
-        service.icon = iconPath
-      }
+      service.icon = iconPath
     }
 
     if (typeof data.isActive !== 'undefined') {
