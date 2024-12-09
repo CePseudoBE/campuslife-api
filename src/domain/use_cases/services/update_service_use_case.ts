@@ -18,7 +18,7 @@ export class UpdateServiceUseCase {
       icon: MultipartFile | undefined
       isActive: boolean | undefined
     },
-    iconPath?: string
+    iconPath: string | undefined
   ): Promise<Service> {
     const service = await this.serviceRepository.findById(id)
     if (!service) {

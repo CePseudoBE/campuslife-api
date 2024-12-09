@@ -77,7 +77,7 @@ export class CollectionRepository extends ICollectionRepository {
     }
 
     if (!connected) {
-      if (collectionModel.deletedAt) throw new Error('AlreadyDeleted: Tag deleted')
+      if (collectionModel.deletedAt) throw new Error('AlreadyDeleted: Collection deleted')
     }
 
     if (includes && includes.length > 0) {

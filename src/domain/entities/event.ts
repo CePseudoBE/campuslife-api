@@ -30,6 +30,14 @@ export class Event {
   public updatedAt: Date
   public deletedAt: Date | null
 
+  public static allowedColumns: string[] = [
+    'id',
+    'title',
+    'description',
+    'url',
+    'created_at',
+    'updated_at',
+  ]
   constructor(
     id: number | null,
     title: MultilingualField,
@@ -96,5 +104,40 @@ export class Event {
     this.createdAt = createdAt
     this.updatedAt = updatedAt
     this.deletedAt = deletedAt
+  }
+  public delete() {
+    this.deletedAt = new Date()
+  }
+
+  public update(
+    data: {
+      title_en?: string
+      title_fr?: string
+      description_en?: string
+      description_fr?: string
+      image?: string
+      start?: string
+      end?: string
+      url?: string
+      slug?: string
+      waypointId?: number
+      addressId?: number
+      tags?: Tag[]
+    },
+    imagePath?: string
+  ): void {
+    if (data.title_en) this.title.en = data.title_en
+    if (data.title_fr) this.title.fr = data.title_fr
+    if (data.description_en) this.description.en = data.description_en
+    if (data.image) this.image = imagePath || ''
+    if (data.start) this.start = new Date(data.start)
+    if (data.end) this.end = new Date(data.end)
+    if (data.url) this.url = data.url
+    if (data.slug) this.slug = data.slug
+    if (data.waypointId !== undefined) this.waypointId = data.waypointId
+    if (data.addressId !== undefined) this.addressId = data.addressId
+    if (data.tags) this.tags = data.tags
+
+    this.updatedAt = new Date()
   }
 }
