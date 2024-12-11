@@ -32,7 +32,7 @@ export class Waypoint {
     longitude: number,
     title: MultilingualField,
     types: string,
-    pmr: boolean,
+    pmr: boolean | undefined,
     createdAt: Date,
     updatedAt: Date,
     deletedAt: Date | null = null,

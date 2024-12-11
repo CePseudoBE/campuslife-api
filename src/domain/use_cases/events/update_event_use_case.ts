@@ -2,6 +2,7 @@ import { inject } from '@adonisjs/core'
 import { IEventRepository } from '#domain/repositories/ievent_repository'
 import { Event } from '#domain/entities/event'
 import { Tag } from '#domain/entities/tag'
+import { MultipartFile } from '@adonisjs/core/bodyparser'
 
 @inject()
 export class UpdateEventUseCase {
@@ -14,14 +15,14 @@ export class UpdateEventUseCase {
       title_fr?: string
       description_en?: string
       description_fr?: string
-      image?: string
+      image?: MultipartFile | undefined
       start?: string
       end?: string
       url?: string
       slug?: string
       waypointId?: number
       addressId?: number
-      tags?: Tag[]
+      tags?: number[]
     },
     imagePath?: string
   ): Promise<Event> {
@@ -46,7 +47,7 @@ export class UpdateEventUseCase {
       existingEvent.end = endDate
     }
 
-    existingEvent.update(data, imagePath)
+    existingEvent.update({}, imagePath)
 
     return await this.iEventRepository.update(existingEvent)
   }

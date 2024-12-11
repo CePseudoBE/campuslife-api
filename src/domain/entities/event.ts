@@ -4,6 +4,7 @@ import { Tag } from '#domain/entities/tag'
 import { Waypoint } from '#domain/entities/waypoint'
 import { User } from '#domain/entities/user'
 import { Address } from '#domain/entities/address'
+import { MultipartFile } from '@adonisjs/core/bodyparser'
 
 type MultilingualField = {
   en?: string
@@ -37,6 +38,8 @@ export class Event {
     'url',
     'created_at',
     'updated_at',
+    'start',
+    'end',
   ]
   constructor(
     id: number | null,
@@ -115,14 +118,14 @@ export class Event {
       title_fr?: string
       description_en?: string
       description_fr?: string
-      image?: string
+      image?: MultipartFile
       start?: string
       end?: string
       url?: string
       slug?: string
       waypointId?: number
       addressId?: number
-      tags?: Tag[]
+      tags?: number[]
     },
     imagePath?: string
   ): void {
@@ -136,7 +139,7 @@ export class Event {
     if (data.slug) this.slug = data.slug
     if (data.waypointId !== undefined) this.waypointId = data.waypointId
     if (data.addressId !== undefined) this.addressId = data.addressId
-    if (data.tags) this.tags = data.tags
+    // TODO : add Update for tags
 
     this.updatedAt = new Date()
   }

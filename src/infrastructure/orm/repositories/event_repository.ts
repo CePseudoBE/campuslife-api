@@ -7,7 +7,7 @@ import { DateTime } from 'luxon'
 import { QueryParams } from '#domain/services/sorting_validation'
 import { ExtractModelRelations } from '@adonisjs/lucid/types/relations'
 @inject()
-export class EvenRepository extends IEventRepository {
+export class EventRepository extends IEventRepository {
   constructor() {
     super()
   }
@@ -63,7 +63,6 @@ export class EvenRepository extends IEventRepository {
         query.preload(includes[i] as ExtractModelRelations<EventModel>)
       }
     }
-
     const eventModels = await query.exec()
 
     return eventModels.map((event) => EventMapper.toDomain(event))

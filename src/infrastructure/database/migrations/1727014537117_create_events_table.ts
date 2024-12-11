@@ -13,7 +13,7 @@ export default class extends BaseSchema {
       table.datetime('end').notNullable()
       table.string('url').notNullable()
       table.string('slug').index('slug_event_index')
-      table.integer('id_waypoint').unsigned().references('waypoints.id').onDelete('CASCADE')
+      table.integer('waypoint_id').unsigned().references('waypoints.id').onDelete('CASCADE')
       table.string('user_id').references('users.id').onDelete('CASCADE')
       table
         .integer('address_id')

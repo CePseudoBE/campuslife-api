@@ -155,4 +155,49 @@ export class ValidationService {
       isActive: vine.boolean().optional(),
     })
   }
+
+  public static getEventRules() {
+    return vine.object({
+      title_en: vine.string().minLength(3).maxLength(50),
+      title_fr: vine.string().minLength(3).maxLength(50),
+      description_en: vine.string().minLength(5).maxLength(150),
+      description_fr: vine.string().minLength(5).maxLength(150),
+      image: vine
+        .file({
+          size: '5mb',
+          extnames: ['svg', 'png', 'jpg', 'tif'],
+        })
+        .optional(),
+      start: vine.string(),
+      end: vine.string(),
+      url: vine.string(),
+      slug: vine.string().optional(),
+      waypoint: this.getWaypointRules(),
+      userId: vine.number(),
+      address: this.getAddressRules(),
+      tags: vine.array(vine.number()).optional(),
+    })
+  }
+  public static getUpdateEventRules() {
+    return vine.object({
+      title_en: vine.string().minLength(3).maxLength(50).optional(),
+      title_fr: vine.string().minLength(3).maxLength(50).optional(),
+      description_en: vine.string().minLength(5).maxLength(150).optional(),
+      description_fr: vine.string().minLength(5).maxLength(150).optional(),
+      image: vine
+        .file({
+          size: '5mb',
+          extnames: ['svg', 'png', 'jpg', 'tif'],
+        })
+        .optional(),
+      start: vine.string().optional(),
+      end: vine.string().optional(),
+      url: vine.string().optional(),
+      slug: vine.string().optional(),
+      waypoint: this.getWaypointRules().optional(),
+      userId: vine.number().optional(),
+      address: this.getAddressRules().optional(),
+      tags: vine.array(vine.number()).optional(),
+    })
+  }
 }

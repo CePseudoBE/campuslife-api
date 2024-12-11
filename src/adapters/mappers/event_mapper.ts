@@ -28,8 +28,8 @@ export class EventMapper {
       eventModel.title,
       eventModel.description,
       eventModel.image,
-      eventModel.start.toJSDate(),
-      eventModel.end.toJSDate(),
+      EventMapper.toDate(eventModel.start),
+      EventMapper.toDate(eventModel.end),
       eventModel.url,
       eventModel.waypointId,
       eventModel.userId,
@@ -61,5 +61,9 @@ export class EventMapper {
     }
 
     return event
+  }
+
+  private static toDate(dateTime: DateTime): Date {
+    return dateTime instanceof DateTime ? dateTime.toJSDate() : new Date(dateTime)
   }
 }

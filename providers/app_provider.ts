@@ -23,6 +23,8 @@ import { IServiceRepository } from '#domain/repositories/iservice_repository'
 import { ServiceRepository } from '#infrastructure/orm/repositories/service_repository'
 import { IAddressRepository } from '#domain/repositories/iaddress_repository'
 import { AddressRepository } from '#infrastructure/orm/repositories/address_repository'
+import { IEventRepository } from '#domain/repositories/ievent_repository'
+import { EventRepository } from '#infrastructure/orm/repositories/event_repository'
 
 export default class AppProvider {
   constructor(protected app: ApplicationService) {}
@@ -40,5 +42,6 @@ export default class AppProvider {
     this.app.container.bind(ICountryRepository, () => new CountryRepository())
     this.app.container.bind(IServiceRepository, () => new ServiceRepository())
     this.app.container.bind(IAddressRepository, () => new AddressRepository())
+    this.app.container.bind(IEventRepository, () => new EventRepository())
   }
 }

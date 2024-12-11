@@ -3,6 +3,7 @@ import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
 import { ValidationService } from '#adapters/services/validation_service'
 import { UpdateServiceUseCase } from '#domain/use_cases/services/update_service_use_case'
+import { UploadFilesService } from '#adapters/services/upload_files_service'
 
 @inject()
 export default class UpdateServiceController {
@@ -30,8 +31,12 @@ export default class UpdateServiceController {
         schema,
         data: body,
       })
-
-      const updatedAddress = await this.updateServiceUseCase.handle(id, validatedData)
+      const icon = request.file('icon')
+      let iconPath: string | undefined
+      if (icon) {
+        iconPath = await UploadFilesService.uploadIcon(icon)
+      }
+      const updatedAddress = await this.updateServiceUseCase.handle(id, validatedData, iconPath)
 
       return response.ok({ data: updatedAddress })
     } catch (error) {

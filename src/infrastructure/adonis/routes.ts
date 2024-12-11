@@ -6,8 +6,9 @@ import './routes/collection.js'
 import './routes/log.js'
 import './routes/reports.js'
 import './routes/stib.js'
-import './routes/service.js'
+import './routes/services.js'
 import './routes/address.js'
+import './routes/event.js'
 const HealthChecksController = () => import('#adapters/controllers/health_checks_controller')
 
 // Route d'accueil pour tester l'API
