@@ -47,7 +47,7 @@ export class UpdateEventUseCase {
       existingEvent.end = endDate
     }
 
-    existingEvent.update({}, imagePath)
+    existingEvent.update(data, imagePath)
 
     return await this.iEventRepository.update(existingEvent)
   }

@@ -17,4 +17,6 @@ export abstract class ITagRepository {
   abstract delete(tag: Tag): Promise<null>
 
   abstract associateCollections(idCollections: number[], tag: Tag): Promise<Tag>
+
+  abstract findByCollectionId(collectionId: number): Promise<Tag[]>
 }

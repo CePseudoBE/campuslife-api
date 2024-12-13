@@ -10,7 +10,8 @@ const FindWaypointsController = () => import('#controllers/waypoints/find_waypoi
 const FindWaypointByIdsController = () =>
   import('#controllers/waypoints/find_waypoint_by_ids_controller')
 const CreateWaypointController = () => import('#controllers/waypoints/create_waypoint_controller')
-
+const FindWaypointsByCollectionController = () =>
+  import('#controllers/waypoints/find_waypoints_by_collection_controller')
 // Groupes de routes GET avec paramètre de langue
 router
   .group(() => {
@@ -38,6 +39,9 @@ router
         router.get('', [FindWaypointsController]).as('find_waypoints_d')
         router.get(':id', [FindWaypointByIdsController]).as('find_waypoint_by_id')
         router.get(':slug/slug', [FindSlugWaypointController]).as('find_waypoint_by_slug')
+        router
+          .get('collections/:id/waypoints', [FindWaypointsByCollectionController])
+          .as('get_waypoints_by_collection')
       })
       .prefix('waypoints')
       .as('waypoints_urls')
