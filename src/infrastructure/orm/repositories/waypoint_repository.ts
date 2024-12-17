@@ -138,11 +138,14 @@ export class WaypointRepository extends IWaypointRepository {
 
     return WaypointMapper.toDomain(waypointModel)
   }
+
   async findByTagIds(tagIds: number[]): Promise<Waypoint[]> {
+    console.log('tagIds : ', tagIds)
     const waypointModel = await WaypointModel.query()
       .join('waypoints_tags', 'waypoints.id', 'waypoints_tags.waypoint_id')
       .whereIn('waypoints_tags.tag_id', tagIds)
-      .distinct()
+
+    console.log('waypointModel', waypointModel)
     return waypointModel.map((model) => WaypointMapper.toDomain(model))
   }
 }

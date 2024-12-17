@@ -120,9 +120,8 @@ export class TagRepository extends ITagRepository {
 
   async findByCollectionId(collectionId: number): Promise<Tag[]> {
     const tagModel = await TagModel.query()
-      .from('tags')
-      .join('collections_tags', 'tags.id', 'collections_tags.tag_id')
-      .where('collections_tags.collection_id', collectionId)
+      .join('tags_collections', 'tags.id', 'tags_collections.tag_id')
+      .where('tags_collections.collection_id', collectionId)
 
     return tagModel.map((tag) => TagMapper.toDomain(tag))
   }

@@ -26,8 +26,8 @@ export class WaypointMapper {
       waypointModel.title,
       waypointModel.types,
       waypointModel.pmr,
-      waypointModel.createdAt.toJSDate(),
-      waypointModel.updatedAt.toJSDate(),
+      WaypointMapper.toDate(waypointModel.createdAt),
+      WaypointMapper.toDate(waypointModel.updatedAt),
       waypointModel.deletedAt ? waypointModel.deletedAt.toJSDate() : null,
       waypointModel.description,
       waypointModel.slug
@@ -46,5 +46,9 @@ export class WaypointMapper {
     }
 
     return waypoint
+  }
+
+  private static toDate(dateTime: DateTime): Date {
+    return dateTime instanceof DateTime ? dateTime.toJSDate() : new Date(dateTime)
   }
 }

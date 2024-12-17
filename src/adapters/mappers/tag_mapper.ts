@@ -17,8 +17,8 @@ export class TagMapper {
     const tag = new Tag(
       tagModel.id,
       tagModel.title,
-      tagModel.createdAt.toJSDate(),
-      tagModel.updatedAt.toJSDate(),
+      TagMapper.toDate(tagModel.createdAt),
+      TagMapper.toDate(tagModel.updatedAt),
       tagModel.deletedAt ? tagModel.deletedAt.toJSDate() : null
     )
 
@@ -41,5 +41,8 @@ export class TagMapper {
     }
 
     return tag
+  }
+  private static toDate(dateTime: DateTime): Date {
+    return dateTime instanceof DateTime ? dateTime.toJSDate() : new Date(dateTime)
   }
 }
