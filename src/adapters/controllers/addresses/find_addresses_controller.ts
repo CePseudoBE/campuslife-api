@@ -5,7 +5,7 @@ import { FindAddressesUseCase } from '#domain/use_cases/addresses/find_addresses
 
 @inject()
 export default class FindAddressesController {
-  constructor(private findAddressessUseCase: FindAddressesUseCase) {}
+  constructor(private findAddressesUseCase: FindAddressesUseCase) {}
 
   async handle(ctx: HttpContext) {
     try {
@@ -16,7 +16,7 @@ export default class FindAddressesController {
         column: ctx.request.input('column'),
       }
 
-      const addresses = await this.findAddressessUseCase.handle(queryParams)
+      const addresses = await this.findAddressesUseCase.handle(queryParams)
 
       return ctx.response.ok({ data: addresses })
     } catch (err) {
